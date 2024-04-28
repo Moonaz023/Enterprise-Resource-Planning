@@ -63,6 +63,34 @@ li {
 .option {
   padding-left: 25px;
 }
+.halfinput{
+	width: 49.3%;
+	padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-TOP:15PX;
+}
+
+	.add-more {
+  display: inline-block;
+  font-size: .75rem;
+  color:black;
+  background-color:#d2dae2;
+  border: 1px solid #218c74;
+  border-radius: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
 
 /* CSS for responsive adjustments */
 @media only screen and (max-width: 768px) {

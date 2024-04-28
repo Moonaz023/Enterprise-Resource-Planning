@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity
-public class OrderDOT {
+public class OrderEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
