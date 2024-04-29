@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.erp.entity.CheckoutValidityResultDOT;
 import com.erp.entity.OrderEntity;
 import com.erp.repository.OrderRepository;
 import com.erp.service.OrderService;
@@ -44,7 +46,7 @@ public class OrderController {
 	}
 	@GetMapping("/checkOutValidity")
 	@ResponseBody
-	public Boolean CheckOutValidityTest(@RequestParam long order_id) {
+	public CheckoutValidityResultDOT CheckOutValidityTest(@RequestParam long order_id) {
 	
 		return orderService.CheckOutValidityTest(order_id);
 	    

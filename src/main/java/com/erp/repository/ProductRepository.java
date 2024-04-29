@@ -12,4 +12,6 @@ import com.erp.entity.ProductEntity;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	@Query("SELECT p.name FROM ProductEntity p WHERE p.id = :productId")
     String findProductNameById(@Param("productId") Long productId);
+	@Query("SELECT p.price FROM ProductEntity p WHERE p.id = :productId")
+	double findProductPriceById(long productId);
 }

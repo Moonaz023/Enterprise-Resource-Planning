@@ -129,7 +129,7 @@ function getOrderList() {
 					'<td>' + orderList_response[i].orderDetails + '</td>' +
 					'<td>' + orderList_response[i].date + '</td>' +
 					'<td>' + orderList_response[i].distributor_id.name + '</td>' +
-					'<td><a href="#" onclick="CheckOutValidation('+ orderList[i].id +');">Check Out Now</a></td>' +
+					'<td><a href="#" onclick="CheckOutValidation('+ orderList[i].id +');">Checkout Now</a></td>' +
 
 				     
 					'<td><a href="#" onclick="deleteRecord(' + orderList_response[i].id + ')"><i class="fa fa-ellipsis-v" style="font-size:24px"></i></a></td>' +
@@ -159,14 +159,16 @@ function CheckOutValidation(validity_id) {
         data: validity_id,
         success: function(response) {
             
-            if (response === true) {
-                
-              //  alert("Order validation successful. Proceeding with checkout.");
-              console.log(CheckOutOrder.id);
-          var CheckOutForm = `
+            if (response.success === true) {
+               // checkOutOrderDiv(validity_id);
+               var CheckOutForm = `
        
         <form >
              <h4>Checkout Order</h4>
+            ${response.prices.map(function(price, index) {
+    return `<div><h4>${CheckOutOrder.product[index]} (*${CheckOutOrder.productQuantity[index]}) = ${price}</h4></div>`;
+}).join('')}
+<h4> ${response.totalPrice}</h4>
             <label for="editRoll">Roll</label>
             
             <label for="editName">Name</label>
@@ -182,6 +184,7 @@ function CheckOutValidation(validity_id) {
     `; 
                 $("#CheckOutContainer").html(CheckOutForm).show();
 				$(".container").addClass("hidden");
+
                 
             } else {
                 // Handle validation failure
@@ -195,4 +198,45 @@ function CheckOutValidation(validity_id) {
         }
     });
 }
-
+function checkOutOrderDiv(valid_id) {
+	              //  alert("Order validation successful. Proceeding with checkout.");
+              var CheckOutOrder = orderList.find(function(CheckOutOrder) {
+		return CheckOutOrder.id === valid_id;
+	});
+	console.log(valid_id);
+		$.ajax({
+		type: "GET",
+		url: "/getodd",
+		success: function(orderList_response) {
+			
+			
+		},
+		error: function(err) {
+			alert("Error: " + err);
+			console.error("Error:", err);
+		}
+		});
+          var CheckOutForm = `
+       
+        <form >
+             <h4>Checkout Order</h4>
+             <div>
+           <h4>${CheckOutOrder.orderDetails}</h4>
+             
+             </div>
+            <label for="editRoll">Roll</label>
+            
+            <label for="editName">Name</label>
+            
+            <label for="editSesson">Session</label>
+           
+            <label for="editRegistration">Passing Year</label>
+            
+            
+            <button type="button" id="updateaStuRecord" class="btn btn-success">Update</button>
+            <button type="button" id="cancelupdateaStuRecord" class="btn btn-primary">Cancel</button>
+        </form>
+    `; 
+                $("#CheckOutContainer").html(CheckOutForm).show();
+				$(".container").addClass("hidden");
+}

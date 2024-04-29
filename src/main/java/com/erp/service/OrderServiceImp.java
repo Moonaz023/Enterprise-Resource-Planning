@@ -1,12 +1,17 @@
 package com.erp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.erp.entity.CheckoutData;
+import com.erp.entity.CheckoutValidityResultDOT;
 import com.erp.entity.OrderEntity;
+import com.erp.entity.ProductEntity;
+import com.erp.entity.ProductionEntity;
 import com.erp.repository.OrderRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.StockRepository;
@@ -48,25 +53,55 @@ public class OrderServiceImp implements OrderService{
 		return orderRepository.findAll();	
 	}
 	@Override
-	public Boolean CheckOutValidityTest(long order_id) {
+	public CheckoutValidityResultDOT CheckOutValidityTest(long order_id) {
+		CheckoutValidityResultDOT checkoutValidityResult = new CheckoutValidityResultDOT();
 	    Optional<OrderEntity> optionalOrder = orderRepository.findById(order_id);
+	    double total=0;
+	    //double[] prices;
+	    List<Double> prices = new ArrayList<>();
+	    double price;
+	    Optional<ProductEntity> optionalOrderedProduct;
 	    if (optionalOrder.isPresent()) {
 	        OrderEntity order = optionalOrder.get();
 	        long[] products = order.getProduct();
 	        int[] quantities = order.getProductQuantity();
 	        int i = 0;
+	        List<CheckoutData> Checkoutdetails= new ArrayList<>();;
 	        for (long productId : products) {
 	            int stock = stockRepository.findProductQuantityById(productId);
 	            if (stock - quantities[i] < 0) {
-	                return false;
+	            	checkoutValidityResult.setSuccess(false);
+	            	checkoutValidityResult.setPrices(null);
+	            	checkoutValidityResult.setTotalPrice(0);
+	            	checkoutValidityResult.setDetails(null);
+	                return checkoutValidityResult;
 	            }
 	            System.out.println("Stock Details of Product ID " + productId + ": " + stock);
+	            
+	            optionalOrderedProduct=productRepository.findById(productId);
+	            ProductEntity orderedProduct=optionalOrderedProduct.get();
+	            price = orderedProduct.getPrice();
+	            total=total+(quantities[i]*price);
+	            prices.add(quantities[i]*price);
+	            CheckoutData checkoutData = new CheckoutData();
+	            checkoutData.setPrice(quantities[i]*price);
+	            checkoutData.setQuantity(quantities[i]);
+	            checkoutData.setProductName(orderedProduct.getName());
+	            Checkoutdetails.add(checkoutData);
 	            i++;
 	        }
-	        return true;
+	        checkoutValidityResult.setSuccess(true);
+	        checkoutValidityResult.setPrices(prices);
+        	checkoutValidityResult.setTotalPrice(total);
+        	checkoutValidityResult.setDetails(Checkoutdetails);
+	        return checkoutValidityResult;
 	    } else {
 	        
-	        return false;
+	    	checkoutValidityResult.setSuccess(false);
+        	checkoutValidityResult.setPrices(null);
+        	checkoutValidityResult.setTotalPrice(0);
+        	checkoutValidityResult.setDetails(null);
+            return checkoutValidityResult;
 	    }
 	}
 }

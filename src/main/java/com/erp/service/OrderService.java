@@ -3,6 +3,7 @@ package com.erp.service;
 import java.util.List;
 
 import com.erp.entity.OrderEntity;
+import com.erp.entity.CheckoutValidityResultDOT;
 
 public interface OrderService {
 
@@ -10,7 +11,7 @@ public interface OrderService {
 
 	List<OrderEntity> getAllOrder();
 
-	Boolean CheckOutValidityTest(long order_id);
+	CheckoutValidityResultDOT CheckOutValidityTest(long order_id);
 	
 
 }
