@@ -20,7 +20,6 @@ import lombok.ToString;
 public class CheckoutValidityResultDOT {
 
 	private boolean success;
-	private List<Double> prices;
     private double totalPrice;
     private List<CheckoutData> details;
 }

@@ -13,7 +13,7 @@ $(document).ready(function() {
 		if (!form[0].checkValidity()) {
 
 			alert("Please fill out all required fields.");
-			return; 
+			return;
 		}
 
 		$.ajax({
@@ -119,19 +119,19 @@ function getOrderList() {
 		type: "GET",
 		url: "/getodd",
 		success: function(orderList_response) {
-			
+
 			orderList = orderList_response;
 
 			for (i = 0; i < orderList_response.length; i++) {
-				
+
 				$("#order_result").append(
 					'<tr class="tr">' +
 					'<td>' + orderList_response[i].orderDetails + '</td>' +
 					'<td>' + orderList_response[i].date + '</td>' +
 					'<td>' + orderList_response[i].distributor_id.name + '</td>' +
-					'<td><a href="#" onclick="CheckOutValidation('+ orderList[i].id +');">Checkout Now</a></td>' +
+					'<td><a href="#" onclick="CheckOutValidation(' + orderList[i].id + ');">Checkout Now</a></td>' +
 
-				     
+
 					'<td><a href="#" onclick="deleteRecord(' + orderList_response[i].id + ')"><i class="fa fa-ellipsis-v" style="font-size:24px"></i></a></td>' +
 					'</tr>'
 				);
@@ -149,94 +149,62 @@ function getOrderList() {
 }
 
 function CheckOutValidation(validity_id) {
-    var CheckOutOrder = orderList.find(function(CheckOutOrder) {
+	var CheckOutOrder = orderList.find(function(CheckOutOrder) {
 		return CheckOutOrder.id === validity_id;
 	});
-     console.log(validity_id);
-    $.ajax({
-        type: "GET",
-        url: "/checkOutValidity?order_id=" + validity_id,
-        data: validity_id,
-        success: function(response) {
-            
-            if (response.success === true) {
-               // checkOutOrderDiv(validity_id);
-               var CheckOutForm = `
-       
-        <form >
+	console.log(validity_id);
+	$.ajax({
+		type: "GET",
+		url: "/checkOutValidity?order_id=" + validity_id,
+		data: validity_id,
+		success: function(response) {
+
+			if (response.success === true) {
+				// checkOutOrderDiv(validity_id);
+				var CheckOutForm = `
+       <div class="CheckoutDiv">
              <h4>Checkout Order</h4>
-            ${response.prices.map(function(price, index) {
-    return `<div><h4>${CheckOutOrder.product[index]} (*${CheckOutOrder.productQuantity[index]}) = ${price}</h4></div>`;
-}).join('')}
-<h4> ${response.totalPrice}</h4>
-            <label for="editRoll">Roll</label>
-            
-            <label for="editName">Name</label>
-            
-            <label for="editSesson">Session</label>
-           
-            <label for="editRegistration">Passing Year</label>
-            
-            
-            <button type="button" id="updateaStuRecord" class="btn btn-success">Update</button>
-            <button type="button" id="cancelupdateaStuRecord" class="btn btn-primary">Cancel</button>
-        </form>
-    `; 
-                $("#CheckOutContainer").html(CheckOutForm).show();
+            ${response.details.map(function(detail) {
+			return `
+					
+					<div class="CheckoutContent">
+					<div class="CheckoutContentLeft">
+						<h6>${detail.productName} (*${detail.quantity})</h6> </div>
+					<div class="CheckoutContentRight"> 
+						<h6>${detail.price}</h6></div>
+					</div>
+					
+					
+					`;
+			}).join('')}
+			<hr>
+			<div class="CheckoutContent">
+			<div class="CheckoutContentLeft">
+						<h4>Total</h4> </div>
+			<div class="CheckoutContentRight"> 
+			<h4> ${response.totalPrice}</h4>
+			</div></div>
+			<div class="formdiv">
+			<form>
+			form here
+			</form>
+			</div>
+        </div>
+    `;
+				$("#CheckOutContainer").html(CheckOutForm).show();
 				$(".container").addClass("hidden");
 
-                
-            } else {
-                // Handle validation failure
-                alert("Not Enough product in stock. Please start new production.");
-            }
-        },
-        error: function(xhr, status, error) {
-            // Handle error response
-            console.error("Error performing order validation:", error);
-            alert("An error occurred while validating the order. Please try again later.");
-        }
-    });
-}
-function checkOutOrderDiv(valid_id) {
-	              //  alert("Order validation successful. Proceeding with checkout.");
-              var CheckOutOrder = orderList.find(function(CheckOutOrder) {
-		return CheckOutOrder.id === valid_id;
-	});
-	console.log(valid_id);
-		$.ajax({
-		type: "GET",
-		url: "/getodd",
-		success: function(orderList_response) {
-			
-			
+
+			} else {
+				// Handle validation failure
+				alert("Not Enough product in stock. Please start new production.");
+			}
 		},
-		error: function(err) {
-			alert("Error: " + err);
-			console.error("Error:", err);
+		error: function(xhr, status, error) {
+			// Handle error response
+			console.error("Error performing order validation:", error);
+			alert("An error occurred while validating the order. Please try again later.");
 		}
-		});
-          var CheckOutForm = `
-       
-        <form >
-             <h4>Checkout Order</h4>
-             <div>
-           <h4>${CheckOutOrder.orderDetails}</h4>
-             
-             </div>
-            <label for="editRoll">Roll</label>
-            
-            <label for="editName">Name</label>
-            
-            <label for="editSesson">Session</label>
-           
-            <label for="editRegistration">Passing Year</label>
-            
-            
-            <button type="button" id="updateaStuRecord" class="btn btn-success">Update</button>
-            <button type="button" id="cancelupdateaStuRecord" class="btn btn-primary">Cancel</button>
-        </form>
-    `; 
-                $("#CheckOutContainer").html(CheckOutForm).show();
-				$(".container").addClass("hidden");
+	});
 }
+

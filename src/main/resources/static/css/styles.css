@@ -108,3 +108,27 @@ li {
 .hidden {
   display: none;
 }
+
+.CheckoutDiv{
+	background-color:#ecf0f1;
+	width: 60%;
+	margin:auto;
+	padding: 5rem;
+	border: solid black;
+}
+.CheckoutContent {
+    overflow: hidden; /* Clear float */
+}
+
+.CheckoutContentLeft {
+    float: left;
+}
+
+.CheckoutContentRight {
+    float: right;
+}
+
+.formdiv{
+	display: block;
+	
+}
