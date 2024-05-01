@@ -2,32 +2,25 @@ $(document).ready(function() {
 	getAllProduct();
 	getAllDistributors();
 	getOrderList();
+
 	$("#insertOrder").click(function() {
-
 		var form = $("#orderForm");
-
 		event.preventDefault();
-
 		var formData = form.serializeArray();
 		var products = [];
 		if (!form[0].checkValidity()) {
-
 			alert("Please fill out all required fields.");
 			return;
 		}
-
 		$.ajax({
 			type: "POST",
 			url: "/addOrder",
 			data: formData,
-
 			success: function(result) {
 				console.log(result);
-
 				$("#productsContainerDynamic").empty();
-
 				document.getElementById("orderForm").reset();
-
+				getOrderList();
 			},
 			error: function(err) {
 				alert("Error: " + JSON.stringify(err));
@@ -37,7 +30,6 @@ $(document).ready(function() {
 
 	$("#resetOrder").click(function() {
 		$("#productsContainerDynamic").empty();
-
 		document.getElementById("orderForm").reset();
 
 	});
@@ -121,7 +113,8 @@ function getOrderList() {
 		success: function(orderList_response) {
 
 			orderList = orderList_response;
-
+			 $('#orderTable').DataTable().destroy();
+			$('#order_result').empty();
 			for (i = 0; i < orderList_response.length; i++) {
 
 				$("#order_result").append(
@@ -130,19 +123,15 @@ function getOrderList() {
 					'<td>' + orderList_response[i].date + '</td>' +
 					'<td>' + orderList_response[i].distributor_id.name + '</td>' +
 					'<td><a href="#" onclick="CheckOutValidation(' + orderList[i].id + ');">Checkout Now</a></td>' +
-
-
 					'<td><a href="#" onclick="deleteRecord(' + orderList_response[i].id + ')"><i class="fa fa-ellipsis-v" style="font-size:24px"></i></a></td>' +
 					'</tr>'
 				);
 			}
-
-
 			// Initialize DataTables plugin
 			$('#orderTable').DataTable();
 		},
 		error: function(err) {
-			alert("Error: " + err);
+			//alert("Error: " + err);
 			console.error("Error:", err);
 		}
 	});
@@ -152,7 +141,7 @@ function CheckOutValidation(validity_id) {
 	var CheckOutOrder = orderList.find(function(CheckOutOrder) {
 		return CheckOutOrder.id === validity_id;
 	});
-	console.log(validity_id);
+	//console.log(validity_id);
 	$.ajax({
 		type: "GET",
 		url: "/checkOutValidity?order_id=" + validity_id,
@@ -165,7 +154,7 @@ function CheckOutValidation(validity_id) {
        <div class="CheckoutDiv">
              <h4>Checkout Order</h4>
             ${response.details.map(function(detail) {
-			return `
+					return `
 					
 					<div class="CheckoutContent">
 					<div class="CheckoutContentLeft">
@@ -176,7 +165,7 @@ function CheckOutValidation(validity_id) {
 					
 					
 					`;
-			}).join('')}
+				}).join('')}
 			<hr>
 			<div class="CheckoutContent">
 			<div class="CheckoutContentLeft">
@@ -185,18 +174,69 @@ function CheckOutValidation(validity_id) {
 			<h4> ${response.totalPrice}</h4>
 			</div></div>
 			<div class="formdiv">
-			<form>
-			form here
-			</form>
+			<form id="paymentForm">
+			<input type="number" id="orderId" name="orderId" value="${validity_id}" class="hidden">
+            <div>
+                <label for="fullPaymentReceived">Full Payment Received</label>
+                <input type="checkbox" id="fullPaymentReceived" onchange="togglePaymentFields(${response.totalPrice})">
+            </div>
+            <div class="CheckoutContent">
+            <div class="CheckoutContentLeft">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+            </div>
+            <div id="dueField" class="CheckoutContentRight dueField">
+                <label for="due">Due:</label>
+                <input type="number" id="due" name="due" readonly>
+            </div>
+            </div>
+            <div class="btnDiv">
+            <button type="button" id="Checkoutbtn"class="btn btn-success">Checkout</button>
+            <button type="button"id="resetCheckout" class="btn btn-primary">Cancel</button>
+            </div>
+        </form>
+
 			</div>
         </div>
     `;
 				$("#CheckOutContainer").html(CheckOutForm).show();
 				$(".container").addClass("hidden");
+				const amountInput = document.getElementById('amount');
 
+				amountInput.addEventListener('input', function() {
 
+					var dueInput = document.getElementById("due");
+					dueInput.value = response.totalPrice - amountInput.value;
+
+				});
+
+				$("#Checkoutbtn").click(function() {
+					var paymentinfo = {
+						id: $("input[name='orderId']").val(),
+						receptAmount: $("input[name='amount']").val()
+					};
+					event.preventDefault();
+					$.ajax({
+						type: "POST",
+						url: "/checkoutNow",
+						data: paymentinfo,
+						success: function(result) {
+							if (result === "Checkout successful") {
+								alert("Checkout successful");
+							}
+						},
+						error: function(err) {
+							alert("Error Checkout: " + JSON.stringify(err));
+						}
+					});
+
+				});
+				$("#resetCheckout").click(function() {
+					$("#CheckOutContainer").hide();
+					$(".container").removeClass("hidden");
+				});
 			} else {
-				// Handle validation failure
+
 				alert("Not Enough product in stock. Please start new production.");
 			}
 		},
@@ -206,5 +246,22 @@ function CheckOutValidation(validity_id) {
 			alert("An error occurred while validating the order. Please try again later.");
 		}
 	});
+}
+
+function togglePaymentFields(recived) {
+	//	console.log(recived);
+	var fullPaymentReceived = document.getElementById("fullPaymentReceived");
+	var dueField = document.getElementById("dueField");
+	if (fullPaymentReceived.checked) {
+		dueField.style.display = "none";
+		var dueInput = document.getElementById("due");
+		dueInput.value = 0;
+		var dueInput = document.getElementById("amount");
+		dueInput.value = recived;
+
+	} else {
+		dueField.style.display = "block";
+
+	}
 }
 
