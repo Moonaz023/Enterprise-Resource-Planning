@@ -1,4 +1,5 @@
-package com.erp.entity;
+package com.erp.dto;
+
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ import lombok.ToString;
 @ToString
 
 @Builder
-public class CheckoutData {
+public class CheckoutValidityResultDTO {
 
-	private String productName;
-	private double price;
-	int quantity;
+	private boolean success;
+    private double totalPrice;
+    private List<CheckoutDataDTO> details;
 }

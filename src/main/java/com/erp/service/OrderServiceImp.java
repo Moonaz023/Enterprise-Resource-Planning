@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.erp.entity.CheckoutData;
-import com.erp.entity.CheckoutValidityResultDOT;
+
+import com.erp.dto.CheckoutDataDTO;
+import com.erp.dto.CheckoutPaymentDTO;
+import com.erp.dto.CheckoutValidityResultDTO;
+import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
 import com.erp.entity.ProductEntity;
+import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.StockRepository;
@@ -21,6 +25,8 @@ public class OrderServiceImp implements OrderService {
 	private ProductRepository productRepository;
 	@Autowired
 	private StockRepository stockRepository;
+	@Autowired
+	private DistributorRepository distributorRepository;
 
 	@Override
 	public String addOrder(OrderEntity order) {
@@ -53,8 +59,8 @@ public class OrderServiceImp implements OrderService {
 	}
 
 	@Override
-	public CheckoutValidityResultDOT CheckOutValidityTest(long order_id) {
-		CheckoutValidityResultDOT checkoutValidityResult = new CheckoutValidityResultDOT();
+	public CheckoutValidityResultDTO CheckOutValidityTest(long order_id) {
+		CheckoutValidityResultDTO checkoutValidityResult = new CheckoutValidityResultDTO();
 		Optional<OrderEntity> optionalOrder = orderRepository.findById(order_id);
 		double total = 0;
 		double price;
@@ -64,7 +70,7 @@ public class OrderServiceImp implements OrderService {
 			long[] products = order.getProduct();
 			int[] quantities = order.getProductQuantity();
 			int i = 0;
-			List<CheckoutData> Checkoutdetails = new ArrayList<>();
+			List<CheckoutDataDTO> Checkoutdetails = new ArrayList<>();
 			;
 			for (long productId : products) {
 				int stock = stockRepository.findProductQuantityById(productId);
@@ -79,7 +85,8 @@ public class OrderServiceImp implements OrderService {
 				ProductEntity orderedProduct = optionalOrderedProduct.get();
 				price = orderedProduct.getPrice();
 				total = total + (quantities[i] * price);
-				CheckoutData checkoutData = new CheckoutData();
+				CheckoutDataDTO checkoutData = new CheckoutDataDTO();
+				checkoutData.setProductId(productId);
 				checkoutData.setPrice(quantities[i] * price);
 				checkoutData.setQuantity(quantities[i]);
 				checkoutData.setProductName(orderedProduct.getName());
@@ -98,4 +105,30 @@ public class OrderServiceImp implements OrderService {
 			return checkoutValidityResult;
 		}
 	}
+
+	@Override
+	public String checkoutNow(CheckoutPaymentDTO checkoutPayment) {
+		CheckoutValidityResultDTO validityDTO=CheckOutValidityTest(checkoutPayment.getOrderId());
+		boolean validity=validityDTO.isSuccess();
+		if(validity==false)
+		{
+		return "not enough item";
+		}
+		List<CheckoutDataDTO> details=validityDTO.getDetails();
+		for (CheckoutDataDTO order : details) {
+			int stock = stockRepository.findProductQuantityById(order.getProductId());
+			stock=stock-order.getQuantity();
+			Optional<ProductEntity> Optional_product=productRepository.findById(order.getProductId());
+			ProductEntity product=Optional_product.get();
+			
+			stockRepository.updateProductQuantityById(product, stock);
+		}
+		DistributorEntity distributor= orderRepository.findDistributorByOrderId(checkoutPayment.getOrderId());
+		distributor.setTotal_order(distributor.getTotal_order()+1);
+		distributorRepository.save(distributor);
+		
+		orderRepository.deleteById(checkoutPayment.getOrderId());
+		return"Checkout successful";
+	}
+
 }

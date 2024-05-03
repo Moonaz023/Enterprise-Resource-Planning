@@ -2,8 +2,9 @@ package com.erp.service;
 
 import java.util.List;
 
+import com.erp.dto.CheckoutPaymentDTO;
+import com.erp.dto.CheckoutValidityResultDTO;
 import com.erp.entity.OrderEntity;
-import com.erp.entity.CheckoutValidityResultDOT;
 
 public interface OrderService {
 
@@ -11,7 +12,9 @@ public interface OrderService {
 
 	List<OrderEntity> getAllOrder();
 
-	CheckoutValidityResultDOT CheckOutValidityTest(long order_id);
+	CheckoutValidityResultDTO CheckOutValidityTest(long order_id);
+
+	String checkoutNow(CheckoutPaymentDTO checkoutPayment);
 	
 
 }

@@ -212,7 +212,7 @@ function CheckOutValidation(validity_id) {
 
 				$("#Checkoutbtn").click(function() {
 					var paymentinfo = {
-						id: $("input[name='orderId']").val(),
+						orderId: $("input[name='orderId']").val(),
 						receptAmount: $("input[name='amount']").val()
 					};
 					event.preventDefault();
@@ -223,6 +223,9 @@ function CheckOutValidation(validity_id) {
 						success: function(result) {
 							if (result === "Checkout successful") {
 								alert("Checkout successful");
+								getOrderList();
+								$("#CheckOutContainer").hide();
+								$(".container").removeClass("hidden");
 							}
 						},
 						error: function(err) {
