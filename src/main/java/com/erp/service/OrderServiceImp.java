@@ -12,10 +12,15 @@ import com.erp.dto.CheckoutValidityResultDTO;
 import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
 import com.erp.entity.ProductEntity;
+import com.erp.entity.SalesReportEntity;
 import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
 import com.erp.repository.ProductRepository;
+import com.erp.repository.SalesReportRepository;
 import com.erp.repository.StockRepository;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -27,7 +32,9 @@ public class OrderServiceImp implements OrderService {
 	private StockRepository stockRepository;
 	@Autowired
 	private DistributorRepository distributorRepository;
-
+	@Autowired
+	private SalesReportRepository salesReportRepository;
+	
 	@Override
 	public String addOrder(OrderEntity order) {
 		int i = 0;
@@ -114,21 +121,40 @@ public class OrderServiceImp implements OrderService {
 		{
 		return "not enough item";
 		}
+		SalesReportEntity salesReport = new SalesReportEntity();
+		StringBuilder orderDetailsBuilder = new StringBuilder();
 		List<CheckoutDataDTO> details=validityDTO.getDetails();
 		for (CheckoutDataDTO order : details) {
 			int stock = stockRepository.findProductQuantityById(order.getProductId());
 			stock=stock-order.getQuantity();
 			Optional<ProductEntity> Optional_product=productRepository.findById(order.getProductId());
 			ProductEntity product=Optional_product.get();
-			
+			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(", ");
 			stockRepository.updateProductQuantityById(product, stock);
 		}
+		String orderDetails = orderDetailsBuilder.toString();
+		if (orderDetails.endsWith(", ")) {
+			orderDetails = orderDetails.substring(0, orderDetails.length() - 2);
+		}
+		
 		DistributorEntity distributor= orderRepository.findDistributorByOrderId(checkoutPayment.getOrderId());
 		distributor.setTotal_order(distributor.getTotal_order()+1);
 		distributorRepository.save(distributor);
-		
+		salesReport.setDistributor(distributor);
+		salesReport.setDetails(orderDetails);
+		salesReport.setReceptAmount(checkoutPayment.getReceptAmount());
+		salesReport.setDue(validityDTO.getTotalPrice()-checkoutPayment.getReceptAmount());
+		LocalDate today = LocalDate.now();
+		StringBuilder todayStringBuilder = new StringBuilder();
+		todayStringBuilder.append(today);
+		String todayString = todayStringBuilder.toString();
+		salesReport.setDate(todayString);
+		salesReportRepository.save(salesReport);
 		orderRepository.deleteById(checkoutPayment.getOrderId());
+		
 		return"Checkout successful";
 	}
+	
+	
 
 }

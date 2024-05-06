@@ -4,12 +4,12 @@ $(document).ready(function() {
 });
 
    //==========================================show table========================================================
-   var data = "";
+var data = "";
 
 function getAllStockRecords() {
     $.ajax({
         type: "GET",
-        url: "/getAllProductsStock", // Replace with your actual endpoint
+        url: "/getAllProductsStock", 
         success: function (stock) {
             console.log(stock); 
             stockdata = stock;
