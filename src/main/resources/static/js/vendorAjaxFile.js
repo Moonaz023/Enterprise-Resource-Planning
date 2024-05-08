@@ -1,9 +1,9 @@
 //===========================================Insert=========================================================
 $(document).ready(function() {
-	getAllRecords();
+	getVendors();
 	$("#insert").click(function() {
 		// Get the form associated with the clicked button
-		var form = $("#formProduct");
+		var form = $("#formVendor");
 		// Prevent the default form submission
 		event.preventDefault();
 		// Make the AJAX request
@@ -11,51 +11,54 @@ $(document).ready(function() {
 			type: "POST",
 			url: form.attr("action"),
 			data: form.serialize(),
-			success: function(result) {
-				getAllRecords();
-				$("#formProduct")[0].reset();
+			success: function() {
+				getVendors();
+				$("#formVendor")[0].reset();
 			},
 			error: function(err) {
 				alert("Error: " + JSON.stringify(err));
 			}
 		});
 	});
+	$("#resett").click(function() {
+		
+		$("#formVendor")[0].reset();
+	
+	});
 });
-//==========================================show table========================================================
-var data = "";
 
-function getAllRecords() {
+//==========================================show table========================================================
+var vendor = "";
+
+function getVendors() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllProducts", 
-		success: function(response) {
-			console.log(response); 
-			data = response;
-			$('#example').DataTable().destroy();
-			$('#tableresult').empty();
+		url: "/getAllVendors", 
+		success: function(vendor_response) {
+			console.log(vendor_response); 
+			vendor = vendor_response;
+			$('#Vendor').DataTable().destroy();
+			$('#Vendor_result').empty();
 
-			for (i = 0; i < response.length; i++) {
-				var editUrl = "/edit/" + response[i].id; // Replace with your actual edit URL
-				var deleteUrl = "/delete/" + response[i].id; // Replace with your actual delete URL
-				// console.log("Row data:", response[i]); // Add this line
-
-				$("#tableresult").append(
+			for (i = 0; i < vendor_response.length; i++) {
+				$("#Vendor_result").append(
 					'<tr class="tr">' +
-					'<td>' + response[i].productCode + '</td>' +
-					'<td>' + response[i].name + '</td>' +
-					'<td>' + response[i].category + '</td>' +
-					'<td>' + response[i].price + '</td>' +
-					//                    '<td>' + response[i].discount + '</td>' +
+					
+					'<td>' + vendor_response[i].name + '</td>' +
+					'<td>' + vendor_response[i].address + '</td>' +
+					'<td>' + vendor_response[i].phone + '</td>' +
+					'<td>' + vendor_response[i].email + '</td>' +
+					
 
-					'<td><a href="#" onclick="editRecord(' + data[i].id + ')">Edit</a></td>' +
-					'<td><a href="#" onclick="deleteRecord(' + response[i].id + ')">Delete</a></td>' +
+					'<td><a href="#" onclick="editRecord(' + vendor[i].id + ')">Edit</a></td>' +
+					'<td><a href="#" onclick="deleteRecord(' + vendor_response[i].id + ')">Delete</a></td>' +
 					'</tr>'
 				);
 			}
 
 
 			// Initialize DataTables plugin
-			$('#example').DataTable();
+			$('#Vendor').DataTable();
 		},
 		error: function(err) {
 			alert("Error: " + err);
@@ -64,25 +67,41 @@ function getAllRecords() {
 	});
 }
 
+//=========================================DELETE====================================================================
+
+function deleteRecord(id) {
+	$.ajax({
+		type: "DELETE",
+		url: "/admin/deleteVendor?id=" + id,
+		success: function() {
+			// Refresh the table after successful deletion
+			getVendors();
+		},
+		error: function(err) {
+			alert("Error deleting record: " + JSON.stringify(err));
+		}
+	});
+}
+
 //====================================Edit==========================================================================
 
 function editRecord(id) {
-	var record = data.find(function(item) {
+	var record = vendor.find(function(item) {
 		return item.id === id;
 	});
 
 	var editFormHtml = `
-        <h2>Edit Product Record</h2>
+        <h2>Edit Vendor Record</h2>
         <form id="editForm" name="editForm" class="edit-form" action="@{/update}" method="post">
             <input type="hidden" id="id" name="id" value="${record.id}"><br>
-            <label for="editProductCode">product Code</label>
-            <input type="text" id="editProductCode" name="productCode" value="${record.productCode}"><br>
             <label for="editName">Name</label>
-            <input type="text" id="editName" name="name" value="${record.name}"><br>
-            <label for="editCategory">Category</label>
-            <input type="text" id="editCategory" name="category" value="${record.category}"><br>
-            <label for="editPrice">Price</label>
-            <input type="text" id="editPrice" name="price" value="${record.price}"><br>
+            <input type="text" id="editProductCode" name="name" value="${record.name}"><br>
+            <label for="editAddress">Address</label>
+            <input type="text" id="editAddress" name="address" value="${record.address}"><br>
+            <label for="editPhone">Phone</label>
+            <input type="text" id="editPhone" name="phone" value="${record.phone}"><br>
+            <label for="editEmail">Email</label>
+            <input type="text" id="editEmail" name="email" value="${record.email}"><br>
             <button type="button" id="update" class="btn btn-success">Save</button>
             <button type="button" id="cancel" class="btn btn-primary">Cancel</button>
         </form>
@@ -104,14 +123,14 @@ function editRecord(id) {
 		console.log(editForm.serialize())
 		$.ajax({
 			type: "POST",
-			url: "/admin/updateProduct",
+			url: "/admin/updateVendor",
 			data: editForm.serialize(),
 			success: function(result) {
 				// Handle success, e.g., update the UI
-				alert("product updated successfully!");
+				alert("Vendor updated successfully!");
 				$("#editFormContainer").empty().hide();
 				$(".container").removeClass("hidden");
-				getAllRecords();
+				getVendors();
 			},
 			error: function(err) {
 				alert("Error: " + JSON.stringify(err));
@@ -123,22 +142,6 @@ function editRecord(id) {
 	$("#cancel").click(function(event) {
 		$("#editFormContainer").empty().hide();
 		$(".container").removeClass("hidden");
-		getAllRecords();
-	});
-}
-
-//=========================================DELETE====================================================================
-
-function deleteRecord(id) {
-	$.ajax({
-		type: "DELETE",
-		url: "/admin/deleteProduct?id=" + id,
-		success: function(result) {
-			// Refresh the table after successful deletion
-			getAllRecords();
-		},
-		error: function(err) {
-			alert("Error deleting record: " + JSON.stringify(err));
-		}
+		getVendors();
 	});
 }
