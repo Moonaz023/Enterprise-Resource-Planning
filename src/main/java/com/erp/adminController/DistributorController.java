@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.erp.entity.DistributorEntity;
-import com.erp.entity.ProductEntity;
 import com.erp.service.DistributorService;
 
 import jakarta.servlet.http.HttpSession;

@@ -22,7 +22,7 @@ public class VendorController {
 		@Autowired
 	    private VendorService vendorService;
 		
-		@GetMapping("/Vendor")
+		@GetMapping("/vendor")
 		public String VendorIndex() {
 			return "Vendors";
 		}
