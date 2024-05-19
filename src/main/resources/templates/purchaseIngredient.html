@@ -39,7 +39,7 @@
 
 	<div class="container">
 
-		<form id="formProduction" name="formProduction" class="product-form" th:action="@{/admin/saveProduction}"
+		<form id="formPurchaseIngredient" name="formPurchaseIngredient" class="ingredient-form" th:action="@{savePurchasedIngredient}"
 			method="post">
 			<div class="row">
 				<div class="col-sm-4">
@@ -49,14 +49,13 @@
 						<label for="ingredient">Ingredient</label>
 						<!-- using controller method to fetch product list -->
 						<select class="form-control" id="ingredient" name="ingredient">
-							
-							<option ></option>
+							<option value="">Select Type</option>	
 						</select>
 					</div>
 
 					<div class="form-group">
 						<label for="dateOfPurchase">Purchase Date</label>
-						<input type="text" class="form-control" id="dateOfPurchase" name="dateOfPurchase"
+						<input type="date" class="form-control" id="dateOfPurchase" name="dateOfPurchase"
 							placeholder="Purchase Date">
 					</div>
 
@@ -82,7 +81,7 @@
 						</select>
 
 					<div class="form-group">
-						<button type="submit" id="insertProduction" class="btn btn-success">Save</button>
+						<button type="submit" id="insertPurchase" class="btn btn-success">Save</button>
 						<button type="reset" class="btn btn-primary">Reset</button>
 					</div>
 
@@ -92,7 +91,7 @@
 				<div class="col-sm-8">
 					<h3>Purchase Record</h3>
 					<br>
-					<table id="ProductionTable" class="table table-hover">
+					<table id="PurchasedIngredientsTable" class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Ingredient</th>
@@ -105,7 +104,7 @@
 								<th scope="col">Delete</th>
 							</tr>
 						</thead>
-						<tbody id="ProductionTableResult">
+						<tbody id="PurchasedIngredientsTableResult">
 							<!-- Table rows will be dynamically added here based on your data -->
 						</tbody>
 					</table>

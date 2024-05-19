@@ -28,9 +28,9 @@ var allIngredientsdata = "";
 function getAllIngredients() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllIngredients", 
+		url: "/getAllIngredients",
 		success: function(response) {
-			console.log(response); 
+			console.log(response);
 			allIngredientsdata = response;
 			$('#IngredientTable').DataTable().destroy();
 			$('#IngredientResult').empty();
@@ -40,7 +40,7 @@ function getAllIngredients() {
 					'<tr class="tr">' +
 					'<td>' + response[i].ingredientCode + '</td>' +
 					'<td>' + response[i].ingredientName + '</td>' +
-					
+
 					'<td><a href="#" onclick="editIngredientRecord(' + allIngredientsdata[i].id + ')">Edit</a></td>' +
 					'<td><a href="#" onclick="deleteIngredientRecord(' + response[i].id + ')">Delete</a></td>' +
 					'</tr>'
@@ -63,7 +63,7 @@ function deleteIngredientRecord(id) {
 		type: "DELETE",
 		url: "/deleteIngredient?id=" + id,
 		success: function(result) {
-			
+
 			getAllIngredients();
 		},
 		error: function(err) {

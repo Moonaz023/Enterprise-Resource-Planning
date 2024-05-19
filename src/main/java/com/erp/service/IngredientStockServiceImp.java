@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.erp.entity.PurchaseIngredientEntity;
 import com.erp.repository.IngredientStockRepository;
+import com.erp.entity.IngredientEntity;
 import com.erp.entity.IngredientStockEntity;
 
 @Service
@@ -30,5 +31,16 @@ public class IngredientStockServiceImp implements  IngredientStockService{
         ingredientStockRepository.save(ingredientStock);
 		
 	}
+
+	@Override
+	public void modifystock_purchagedlt(IngredientEntity ingredient, double quantity) {
+		IngredientStockEntity ingredientStock = ingredientStockRepository.findByIngredient(ingredient);
+		
+		ingredientStock.setIngredientQuantity(ingredientStock.getIngredientQuantity()-quantity);
+		ingredientStockRepository.save(ingredientStock);
+		
+	}
+
+	
 
 }
