@@ -5,7 +5,7 @@ import com.erp.entity.ProductionEntity;
 
 public interface ProductionService {
 
-	void saveProduction(ProductionEntity production);
+	public String saveProduction(ProductionEntity production);
 	List<ProductionEntity> getAllproduction();
 	public ProductionEntity getProductionById(long id);
 	void updateProduction(ProductionEntity updatedProduction);

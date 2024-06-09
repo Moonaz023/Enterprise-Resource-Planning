@@ -1,6 +1,7 @@
 var optionsHtml = "";
 
 $(document).ready(function () {
+	getAllIngredients();
     $.ajax({
         type: "GET",
         url: "/getAllProducts",
@@ -100,14 +101,23 @@ $(document).ready(function () {
         var form = $("#formProduction");
         // Prevent the default form submission
         event.preventDefault();
+        const formData = gatherFormData();
         // Make the AJAX request
         $.ajax({
             type: "POST",
             url: form.attr("action"),
-            data: form.serialize(),
-            success: function (result) {
+            data: formData,
+			//data: form.serialize(),
+            
+            success: function (result) {//console.log(form.serialize());
+            if(result=="no")
+            {
+				alert("Not enough ingrediant for this production");
+				
+			}else{
                 getAllProductionRecords();
                 $("#formProduction")[0].reset();
+                $("#recipeContainerdynamic").empty();}
             },
             error: function (err) {
                 alert("Error: " + JSON.stringify(err));
@@ -174,4 +184,106 @@ function getAllProductionRecords() {
             }
         });
     }
-   
+   //========================================================================================================================
+   $("#addProduct").click(function() {
+		var productInput = $("<select>").attr({
+			class: "productInput halfinput",
+			name: "ingredient"
+		});
+
+		if (ingredientlist) {
+			productInput.append(`<option value="">Select Ingredient</option>`);
+			ingredientlist.forEach(function(ingredient) {
+				productInput.append(`<option value="${ingredient.id}">${ingredient.ingredientName}</option>`);
+			});
+		}
+		var productQuantity = $("<input>").attr({
+			type: "text",
+			class: "productQuantity halfinput",
+			name: "ingredientQuantity",
+			placeholder: "Ingredient Quantity"
+		});
+		$("#usedIngrediantContainerDynamic").append(productInput).append('<span>&nbsp;</span>').append(productQuantity).append("<br>");
+	});
+	
+var ingredientlist = "";
+
+function getAllIngredients() {
+	$.ajax({
+		type: "GET",
+		url: "/getAllIngredients",
+		success: function(responsex) {
+
+			ingredientlist = responsex;
+			var dropdown = $("#productInput");
+			dropdown.empty();
+			dropdown.append('<option value="">Select Ingredient</option>');
+			$.each(responsex, function(index, ingredient) {
+				dropdown.append('<option value="' + ingredient.id + '">' + ingredient.ingredientName + '</option>');
+			});
+		},
+		error: function(err) {
+			alert("Error: " + err);
+			console.error("Error:", err);
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+//--------------------NEWWWWWWWWWWW---------------------------------
+
+function addRecipeItem() {
+            const container = document.getElementById('recipeContainerdynamic');
+            const newItem = document.createElement('div');
+            newItem.classList.add('recipeItem');
+
+            let ingredientOptions = '<option value="">Select Ingredient</option>';
+            ingredientlist.forEach(function(ingredient) {
+                ingredientOptions += `<option value="${ingredient.id}">${ingredient.ingredientName}</option>`;
+            });
+
+            newItem.innerHTML = `
+                <select type="text" class="ingredient productInput halfinput" required>
+                    ${ingredientOptions}
+                </select>
+                <input type="number" class="quantity productQuantity halfinput" placeholder="Quantity" required>
+                <i onclick="removeRecipeItem(this)" style="font-size:30px; color:red" class="fa fa-trash" aria-hidden="true"></i>
+            `;
+            container.appendChild(newItem);
+        }
+        
+               function removeRecipeItem(button) {
+            const item = button.parentNode;
+            item.parentNode.removeChild(item);
+        }
+
+        
+        
+function gatherFormData() {
+    const dateOfProduction = document.getElementById('dateOfProduction').value;
+    const product = document.getElementById('product').value;
+    const productionQuantity = document.getElementById('productionQuantity').value;
+
+    const container = document.getElementById('recipeContainer');
+    const ingredientInputs = container.getElementsByClassName('ingredient');
+    const quantityInputs = container.getElementsByClassName('quantity');
+
+    let formData = `product=${product}&dateOfProduction=${dateOfProduction}&productionQuantity=${productionQuantity}`;
+
+    for (let i = 0; i < ingredientInputs.length; i++) {
+        let ingredientId = ingredientInputs[i].value;
+        let quantity = quantityInputs[i].value;
+
+        formData += `&recipe[${i}].ingredient.id=${ingredientId}&recipe[${i}].ingredientQuantity=${quantity}`;
+    }
+console.log(formData);
+    return formData;
+}
+

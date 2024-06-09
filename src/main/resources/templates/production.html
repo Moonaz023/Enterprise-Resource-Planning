@@ -30,6 +30,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
@@ -66,6 +67,64 @@
 						<input type="text" class="form-control" id="productionQuantity" name="productionQuantity"
 							placeholder="Production Quantity">
 					</div>
+					
+					
+					
+					
+					
+					
+<!--					<div id="usedIngrediantContainer" class="form-group">-->
+<!--						<label for="product">Products:</label><br>-->
+					
+<!--						<select class="productInput halfinput" id="productInput" name="recipe[1].ingredient.id" required>-->
+<!--							<option value="">Select Type</option>-->
+<!--						</select>-->
+					
+<!--						<input type="number" class="productQuantity halfinput" name="recipe[1].ingredientQuantity" placeholder="Product Quantity">-->
+					
+<!--						<div id="usedIngrediantContainerDynamic" class="form-group"></div>-->
+<!--					</div>-->
+
+
+<div>
+	<label for="recipe">Recipe:</label>
+	<div id="recipeContainer">
+		<div class="recipeItem form-group">
+			<select type="text" class="ingredient productInput halfinput" id="productInput"  required>
+				<option value="">Select Type</option>
+			</select>
+			<input type="number" class="quantity productQuantity halfinput" placeholder="Quantity" required>
+			<i onclick="removeRecipeItem(this)" style="font-size:30px; color:red" class="fa fa-trash" aria-hidden="true"></i>
+		</div>
+		<div id="recipeContainerdynamic"></div>
+	</div>
+	<button type="button" class="add-more"  onclick="addRecipeItem()">Add More <i style="font-size:12px"
+							class="fa">&#xf067;</i></button>
+</div>
+
+
+<!--					<button type="button" class="add-more" id="addProduct">Add More <i style="font-size:12px"-->
+<!--							class="fa">&#xf067;</i></button>-->
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 
 					<div class="form-group">
 						<button type="submit" id="insertProduction" class="btn btn-success">Save</button>
@@ -105,3 +164,6 @@
 </body>
 
 </html>
+
+
+

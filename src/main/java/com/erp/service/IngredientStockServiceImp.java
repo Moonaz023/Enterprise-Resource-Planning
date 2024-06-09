@@ -1,10 +1,13 @@
 package com.erp.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.erp.entity.PurchaseIngredientEntity;
 import com.erp.repository.IngredientStockRepository;
+import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.IngredientEntity;
 import com.erp.entity.IngredientStockEntity;
 
@@ -41,6 +44,25 @@ public class IngredientStockServiceImp implements  IngredientStockService{
 		
 	}
 
-	
+	@Override
+	public List<IngredientStockEntity> getAllIngredientsStock() {
+		
+		return ingredientStockRepository.findAll();
+	}
+
+	@Override
+	public boolean checkAvailablity(List<RecipeDataDOT> recipe) {
+		for(RecipeDataDOT item:recipe) {
+			IngredientStockEntity ingredientStock = ingredientStockRepository.findByIngredient(item.getIngredient());
+			if(ingredientStock==null || ingredientStock.getIngredientQuantity()<item.getIngredientQuantity())
+			{
+				return false;
+			}
+			
+		}
+		return true;
+		
+	}
+	 
 
 }

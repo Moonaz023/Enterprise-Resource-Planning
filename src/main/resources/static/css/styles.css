@@ -76,7 +76,10 @@ li {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin-TOP:15PX;
 }
-
+.productQuantity{
+	
+	width: 39.3%;
+}
 	.add-more {
   display: inline-block;
   font-size: .75rem;

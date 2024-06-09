@@ -9,6 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.erp.dto.RecipeDataDOT;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +33,9 @@ public class ProductionEntity {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
-
     @Column(name = "production_quantity")
     private int productionQuantity;
+    @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
+    private List<RecipeDataDOT> recipe;
 }

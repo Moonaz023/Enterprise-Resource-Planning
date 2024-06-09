@@ -6,9 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
 import com.erp.repository.ProductionRepository;
+import java.lang.String;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductionServiceImp implements ProductionService {
@@ -17,13 +21,32 @@ public class ProductionServiceImp implements ProductionService {
 	private ProductionRepository productionRepository;
 	@Autowired
     private StockService stockService;
+	@Autowired
+    private IngredientStockService ingredientStockService;
 	
 	 @Override
-	 public void saveProduction(ProductionEntity production) {
-	      
-		 ProductionEntity savedProduction =productionRepository.save(production);
+	 @Transactional
+	 public String saveProduction(ProductionEntity production) {
 		 
-		 stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity());
+		 List<RecipeDataDOT> recipeDatas =production.getRecipe();
+		 if(ingredientStockService.checkAvailablity(recipeDatas))
+		 {
+			try { for(RecipeDataDOT recipeData:recipeDatas ) {
+			 ingredientStockService.modifystock_purchagedlt(recipeData.getIngredient(), recipeData.getIngredientQuantity()); }
+			 ProductionEntity savedProduction =productionRepository.save(production);
+			 
+			 stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity());
+			 return "ok";
+			 }
+			catch (Exception e) {
+				throw e;
+			}
+		 }
+		 else {
+			 System.out.println("Not enough ingrediant");
+			 return "no";
+		 } 
+		 
 	    
 	 }
 	 @Override

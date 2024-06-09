@@ -1,6 +1,8 @@
 package com.erp.adminController;
 
+
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class ProductController {
 	@Autowired
-    private ProductService productService;
-	
-	
+	private ProductService productService;
+
 	@GetMapping("/")
 	public String index() {
 		return "Product";
@@ -31,33 +32,35 @@ public class ProductController {
 	@GetMapping("/getAllProducts")
 	@ResponseBody
 	public List<ProductEntity> getAllproduct(Model m, HttpSession session) {
-		
-	    List<ProductEntity> listOfproduct = productService.getAllproduct();
 
-	    return listOfproduct;
+		List<ProductEntity> listOfproduct = productService.getAllproduct();
+
+		return listOfproduct;
 	}
 
 	@PostMapping("admin/saveProduct")
-	public String saveProduct(@ModelAttribute ProductEntity product )
-	{
+	public String saveProduct(@ModelAttribute ProductEntity product) {
 		System.out.println(product);
 		productService.saveProduct(product);
 		return "redirect:/";
 	}
+
 	@PostMapping("admin/updateProduct")
-    @ResponseBody
-    public String updateProduct( @ModelAttribute ProductEntity updatedProduct,HttpSession session ) {
-        
+	@ResponseBody
+	public String updateProduct(@ModelAttribute ProductEntity updatedProduct, HttpSession session) {
+
 		productService.updateProduct(updatedProduct);
 
-        return "Product record updated successfully";
-    }
+		return "Product record updated successfully";
+	}
+
 	@DeleteMapping("admin/deleteProduct")
 	@ResponseBody
 	public String deleteProduct(@RequestParam("id") long id) {
 		productService.deleteProduct(id);
-	    return "Product deleted successfully";
+		return "Product deleted successfully";
 	}
+
 	@GetMapping("/getProductById")
 	@ResponseBody
 	public ProductEntity getProductById(@RequestParam("id") long id) {

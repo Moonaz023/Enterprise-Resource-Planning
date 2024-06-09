@@ -38,11 +38,12 @@ public class ProductionController {
 	}
 	
 	@PostMapping("admin/saveProduction")
+	@ResponseBody
 	public String saveProduct(@ModelAttribute ProductionEntity production )
 	{
-		//System.out.println(production);
-		productionService.saveProduction(production);
-		return "redirect:/production";
+		System.out.println(production);
+		return productionService.saveProduction(production);
+		 
 	}
 	@PostMapping("admin/updateProduction")
     @ResponseBody
