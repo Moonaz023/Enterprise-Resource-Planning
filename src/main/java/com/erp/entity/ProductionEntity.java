@@ -38,4 +38,6 @@ public class ProductionEntity {
     @ElementCollection
     @CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
     private List<RecipeDataDOT> recipe;
+    //private double totalCost;
+    
 }

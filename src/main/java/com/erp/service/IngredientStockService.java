@@ -11,7 +11,7 @@ public interface IngredientStockService {
 
 	void saveIngredientStock(PurchaseIngredientEntity purchasedIngredient);
 
-	void modifystock_purchagedlt(IngredientEntity ingredient, double quantity);
+	double modifystock_purchagedlt(IngredientEntity ingredient, double quantity);
 
 	List<IngredientStockEntity> getAllIngredientsStock();
 	public boolean checkAvailablity(List<RecipeDataDOT> recipe);

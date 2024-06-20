@@ -1,14 +1,18 @@
 package com.erp.entity;
 
 import java.sql.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,4 +46,8 @@ public class PurchaseIngredientEntity {
     @ManyToOne
     @JoinColumn(name = "vendor", nullable = false)
     private VendorEntity  vendor;
+    
+    @OneToMany(mappedBy = "purchaseId", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+    private List<IngredientBatchesStockEntity> ingredientBatchesStockEntity;
 }
