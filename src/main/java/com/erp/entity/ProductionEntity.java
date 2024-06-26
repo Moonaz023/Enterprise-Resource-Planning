@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.erp.dto.RecipeDataDOT;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,21 +24,30 @@ import com.erp.dto.RecipeDataDOT;
 @Table(name = "production")
 public class ProductionEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "date_of_production")
-    private Date dateOfProduction;
+	@Column(name = "date_of_production")
+	private Date dateOfProduction;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
-    @Column(name = "production_quantity")
-    private int productionQuantity;
-    @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
-    private List<RecipeDataDOT> recipe;
-    //private double totalCost;
-    
+	@ManyToOne
+	@JoinColumn(name = "product_id", nullable = false)
+	private ProductEntity product;
+	@Column(name = "production_quantity")
+	private int productionQuantity;
+	@ElementCollection
+	@CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
+	private List<RecipeDataDOT> recipe;
+	// private double totalCost;
+	@OneToMany(mappedBy = "production", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<ProductBatchesStockEntity> productBatchesStockEntity;
+	
+	@OneToMany(mappedBy = "productionId", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<DamagedProductEntity> damagedProduct;
+	
+	private double margin ;
+
 }

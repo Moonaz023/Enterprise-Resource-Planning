@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.IngredientBatchesStockEntity;
+import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
+import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductionRepository;
 import java.lang.String;
 
@@ -24,23 +26,35 @@ public class ProductionServiceImp implements ProductionService {
 	private StockService stockService;
 	@Autowired
 	private IngredientStockService ingredientStockService;
+	@Autowired
+	private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
 	@Transactional
 	public String saveProduction(ProductionEntity production) {
-		
-		double totalCost=0;
+
+		double totalCost = 0;
 		List<RecipeDataDOT> recipeDatas = production.getRecipe();
 		if (ingredientStockService.checkAvailablity(recipeDatas)) {
 			try {
 				for (RecipeDataDOT recipeData : recipeDatas) {
-					totalCost+=ingredientStockService.modifystock_purchagedlt(recipeData.getIngredient(),
+					totalCost += ingredientStockService.modifystock_purchagedlt(recipeData.getIngredient(),
 							recipeData.getIngredientQuantity());
 				}
+				production.setMargin(production.getProduct().getPrice()-(totalCost/production.getProductionQuantity()));
 				ProductionEntity savedProduction = productionRepository.save(production);
 
 				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity());
-				System.out.println("Total Cost="+totalCost);
+				System.out.println("Total Cost=" + totalCost);
+
+				ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
+				productBatchesStock.setCostPerUnit(totalCost / production.getProductionQuantity());
+				productBatchesStock.setProduct(production.getProduct());
+				productBatchesStock.setProduction(savedProduction);
+				productBatchesStock.setQuantity(savedProduction.getProductionQuantity());
+
+				productBatchesStockRepository.save(productBatchesStock);
+
 				return "ok";
 			} catch (Exception e) {
 				throw e;
@@ -87,7 +101,7 @@ public class ProductionServiceImp implements ProductionService {
 		} else {
 
 		}
-
+		//Edit connection with ingredient also
 	}
 
 	@Override
@@ -99,6 +113,8 @@ public class ProductionServiceImp implements ProductionService {
 			ProductEntity Product = production.getProduct();
 			int Quantity = production.getProductionQuantity();
 			stockService.updateStockWhenProductionDeteted(Product, Quantity);
+			
+			//Delete connection with ingredient also
 		}
 
 		productionRepository.deleteById(id);
