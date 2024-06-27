@@ -1,5 +1,7 @@
 package com.erp.adminController;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,11 @@ public class DamagedProductController {
 		damagedProductService.save(damagedProduct);
 		return "ok";
 
+	}
+	@GetMapping("/getAllDamagedProduct")
+	@ResponseBody
+	public List<DamagedProductEntity> getAllDamagedProduct(){
+		return damagedProductService.findAll();
 	}
 
 }
