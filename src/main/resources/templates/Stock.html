@@ -4,7 +4,8 @@
 <head>
 
 
-
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+	<link rel="stylesheet" th:href="@{/css/editForm.css}" />
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -28,28 +29,34 @@
 </head>
 
 <body>
-	<div class="container">
+	<div th:replace="~{Base :: header}"></div>
+	<main id="main">
+		<div th:replace="~{Base :: sidebar}"></div>
 
-		<div class="col-sm-12">
+		<div class="container">
 
-			<h3>Stock Record</h3>
-			<br>
-			<table id="Stock" class="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Product Code</th>
-						<th scope="col">Name</th>
-						<th scope="col">Quantity</th>
+			<div class="col-sm-12">
+
+				<h3>Stock Record</h3>
+				<br>
+				<table id="Stock" class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Product Code</th>
+							<th scope="col">Name</th>
+							<th scope="col">Quantity</th>
 
 
-					</tr>
-				</thead>
-				<tbody id="Stockresult">
-					<!-- Table rows will be dynamically added here based on your data -->
-				</tbody>
-			</table>
+						</tr>
+					</thead>
+					<tbody id="Stockresult">
+						<!-- Table rows will be dynamically added here based on your data -->
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+	</main>
+	<div th:replace="~{Base :: footer}"></div>
 	<script src="/js/stockAjaxFile.js"></script>
 </body>
 

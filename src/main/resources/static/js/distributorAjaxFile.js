@@ -42,8 +42,8 @@ function getDistributors() {
 
 				$("#distributor_result").append(
 					'<tr class="tr">' +
-					
-					'<td>' + distributor_response[i].name + '</td>' +
+
+					'<td><a href="DistributorProfile/' + distributor_response[i].id + '" >' + distributor_response[i].name + '</a></td>' +
 					'<td>' + distributor_response[i].address + '</td>' +
 					'<td>' + distributor_response[i].phone + '</td>' +
 					'<td>' + distributor_response[i].email + '</td>' +

@@ -35,6 +35,9 @@
 </head>
 
 <body>
+<div th:replace="~{Base :: header}"></div>
+	<main id="main">
+		<div th:replace="~{Base :: sidebar}"></div>
 
 	<div id="editFormContainer" style="display: none;"></div>
 
@@ -135,7 +138,7 @@
 				</div>
 
 				<div class="col-sm-8">
-					<h3>Product Record</h3>
+					<h3>Production Record</h3>
 					<br>
 					<table id="ProductionTable" class="table table-hover">
 						<thead>
@@ -159,7 +162,8 @@
 
 
 	</div>
-
+</main>
+	<div th:replace="~{Base :: footer}"></div>
 	<script src="/js/productionAjaxFile.js"></script>
 </body>
 

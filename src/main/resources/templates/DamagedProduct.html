@@ -35,68 +35,74 @@
 </head>
 
 <body>
+	<div th:replace="~{Base :: header}"></div>
+	<main id="main">
+		<div th:replace="~{Base :: sidebar}"></div>
 
 
-	<div id="editFormContainer" style="display: none;"></div>
+
+		<div class="container">
+
+			<div id="editFormContainer" style="display: none;"></div>
 
 
-	<div class="container">
-
-		<form id="formDamagedProduct" name="formDamagedProduct" class="product-form">
-			<div class="row">
-				<div class="col-sm-4">
-					<h4>Add Damaged Product</h4>
+			<form id="formDamagedProduct" name="formDamagedProduct" class="product-form">
+				<div class="row">
+					<div class="col-sm-4">
+						<h4>Add Damaged Product</h4>
 
 
-					<label for="inputEmail3" class="col-sm-2 col-form-label">Production</label>
-					
-					<select class="distributor_id form-control" id="productionInput" name="productionId"required>
-								<option value="">Select production</option>
-					</select>
+						<label for="inputEmail3" class="col-sm-2 col-form-label">Production</label>
 
-					<label for="inputEmail3" class="col-sm-2 col-form-label">Quantity</label>
-					<input type="number" class="form-control" name="quantity" id="inputEmail3" placeholder="Damaged Quantity">
+						<select class="distributor_id form-control" id="productionInput" name="productionId" required>
+							<option value="">Select production</option>
+						</select>
 
-					
+						<label for="inputEmail3" class="col-sm-2 col-form-label">Quantity</label>
+						<input type="number" class="form-control" name="quantity" id="inputEmail3"
+							placeholder="Damaged Quantity">
 
-					<div class="form-group">
-						<button type="button" id="insert" class="btn btn-success">Save</button>
-						<button type="button" id="cancle" class="btn btn-primary">Reset</button>
+
+
+						<div class="form-group">
+							<button type="button" id="insert" class="btn btn-success">Save</button>
+							<button type="button" id="cancle" class="btn btn-primary">Reset</button>
+						</div>
+
 					</div>
 
+					<div class="col-sm-8">
+						<h3>Damaged Product List</h3>
+						<br>
+						<table id="damagedProduct" class="table table-hover">
+							<thead>
+								<tr>
+
+									<th scope="col">Production date</th>
+									<th scope="col">Product</th>
+									<th scope="col">Quantity</th>
+
+
+									<!--        <th scope="col">Discount</th>-->
+
+									<th scope="col">Edit</th>
+									<th scope="col">Delete</th>
+								</tr>
+							</thead>
+							<tbody id="damagedProduct_result">
+								<!-- Table rows will be dynamically added here based on your data -->
+							</tbody>
+						</table>
+
+					</div>
 				</div>
-
-				<div class="col-sm-8">
-					<h3>Damaged Product List</h3>
-					<br>
-					<table id="damagedProduct" class="table table-hover">
-						<thead>
-							<tr>
-
-								<th scope="col">Production date</th>
-								<th scope="col">Product</th>
-								<th scope="col">Quantity</th>
-								
-
-								<!--        <th scope="col">Discount</th>-->
-
-								<th scope="col">Edit</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody id="damagedProduct_result">
-							<!-- Table rows will be dynamically added here based on your data -->
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-		</form>
+			</form>
 
 
 
-	</div>
-
+		</div>
+	</main>
+	<div th:replace="~{Base :: footer}"></div>
 	<script src="/js/damagedProductAjaxFile.js"></script>
 </body>
 

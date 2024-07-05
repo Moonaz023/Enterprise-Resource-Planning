@@ -4,13 +4,16 @@ body {
   padding: 0;
 }
 
-#container {
+#main {
   display: flex;
   min-height: 100vh;
 }
+footer{
+	text-align: center;
+}
 
 #sidebar {
-  width: 200px;
+  width: 250px;
   background: #f2f2f2;
 }
 
@@ -19,8 +22,7 @@ body {
   padding: 20px;
 }
 
-#header,
-#footer {
+header,footer {
   background: #333;
   color: #fff;
   padding: 10px;
@@ -53,7 +55,14 @@ li {
   padding: 0;
   margin: 0;
 }
-
+aside li {
+	background-color: #f9f9f9;
+	margin: 10px 0;
+	padding: 5px;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
 /* CSS for header */
 #header {
   order: -1;

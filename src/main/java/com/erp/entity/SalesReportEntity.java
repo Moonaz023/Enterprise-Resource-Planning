@@ -1,5 +1,12 @@
 package com.erp.entity;
 
+import java.util.List;
+
+import com.erp.dto.ItemAndQuantityDTO;
+import com.erp.dto.RecipeDataDOT;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,5 +38,10 @@ public class SalesReportEntity {
 	@ManyToOne
     @JoinColumn(name = "distributor_id", nullable = false)
     private DistributorEntity distributor;
+	
+	
+	@ElementCollection
+	@CollectionTable(joinColumns = @JoinColumn(name = "SalesId"))
+	private List<ItemAndQuantityDTO> itemAndQuantity;
 	
 }

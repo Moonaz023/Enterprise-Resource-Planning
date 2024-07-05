@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.erp.dto.CheckoutDataDTO;
 import com.erp.dto.CheckoutPaymentDTO;
 import com.erp.dto.CheckoutValidityResultDTO;
+import com.erp.dto.ItemAndQuantityDTO;
 import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
 import com.erp.entity.ProductBatchesStockEntity;
@@ -130,12 +131,18 @@ public class OrderServiceImp implements OrderService {
 		SalesReportEntity salesReport = new SalesReportEntity();
 		StringBuilder orderDetailsBuilder = new StringBuilder();
 		List<CheckoutDataDTO> details = validityDTO.getDetails();
+		List<ItemAndQuantityDTO> itemAndQuantityList =  new ArrayList<>();;
 		for (CheckoutDataDTO order : details) {
 			int stock = stockRepository.findProductQuantityById(order.getProductId());
 			stock = stock - order.getQuantity();
 			Optional<ProductEntity> Optional_product = productRepository.findById(order.getProductId());
 			ProductEntity product = Optional_product.get();
 			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(", ");
+			
+			ItemAndQuantityDTO itemAndQuantity=new ItemAndQuantityDTO();
+			itemAndQuantity.setProduct(product);
+			itemAndQuantity.setProductQuantity(order.getQuantity());
+			itemAndQuantityList.add(itemAndQuantity);
 			stockRepository.updateProductQuantityById(product, stock);
 
 			List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProduct(product);
@@ -163,6 +170,7 @@ public class OrderServiceImp implements OrderService {
 			}
 
 		}
+		salesReport.setItemAndQuantity(itemAndQuantityList);
 		String orderDetails = orderDetailsBuilder.toString();
 		if (orderDetails.endsWith(", ")) {
 			orderDetails = orderDetails.substring(0, orderDetails.length() - 2);
