@@ -1,0 +1,77 @@
+.main-section {
+	background: white;
+	margin: auto;
+	margin-top: 50px;
+	max-width: 900px;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+#filterForm label{
+	margin: 0;
+}
+#filterForm input {
+            margin: 5px;
+            width: 35%;
+        }
+.section-title {
+	margin-bottom: 20px;
+	font-size: 1.5em;
+	border-bottom: 2px solid #007bff;
+	padding-bottom: 10px;
+}
+
+.stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(220px, 1fr));
+	gap: 20px;
+
+}
+.filter-section {
+	background: white;
+	margin: auto;
+	margin-top: 50px;
+	max-width: 400px;
+	padding: 5px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtered-stats{
+	display: grid;
+	grid-template-columns: repeat(2, minmax(150px, 1fr));
+	gap: 20px;
+	
+}
+.filter{
+	margin-left: 25%;
+	width: 50%;
+}
+
+.stat-item {
+
+	margin: 10px;
+	background: #e9f1fb;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s, box-shadow 0.3s;
+	text-align: center;
+}
+
+.stat-item:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item h5 {
+	margin: 0 0 10px 0;
+	color: #007bff;
+}
+
+.stat-item p {
+	margin: 0;
+	font-size: 1.2em;
+}
