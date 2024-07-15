@@ -5,14 +5,18 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import com.erp.entity.ProductEntity;
 import com.erp.service.ProductService;
@@ -23,6 +27,7 @@ import jakarta.servlet.http.HttpSession;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
+	
 
 	@GetMapping("/")
 	public String index() {
@@ -34,7 +39,7 @@ public class ProductController {
 	public List<ProductEntity> getAllproduct(Model m, HttpSession session) {
 
 		List<ProductEntity> listOfproduct = productService.getAllproduct();
-
+		
 		return listOfproduct;
 	}
 
@@ -67,4 +72,9 @@ public class ProductController {
 		return productService.getProductById(id);
 	}
 
+	
+	@ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>("Internal Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

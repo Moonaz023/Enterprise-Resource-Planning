@@ -6,7 +6,7 @@ function getSalesOverview() {
 	$.ajax({
 		url: "/getSalesOverview",
 		success: function(salesOverview) {
-			salesOverviewData=salesOverview;
+			salesOverviewData = salesOverview;
 			console.log(salesOverview);
 			var total = 0;
 			var totalDue = 0;

@@ -29,7 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-	
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
 </head>
@@ -44,63 +44,64 @@
 
 
 		<div class="container">
-<div class="stats">
-			<div class="filter-section">
-				<h2 class="section-title">Filter Sales</h2>
-			
-				<form id="filterForm">
-					<label for="startDate">From:</label>
-					<input type="date" id="startDate" name="startDate">
-					<label for="endDate">To:</label>
-					<input type="date" id="endDate" name="endDate"><br>
-					<button type="button" id="filterButton" class="btn btn-success filter">Filter <i class="fa fa-search" aria-hidden="true"></i></button>
-				</form>
-				<div class="filtered-stats">
-					<div class="stat-item little">
-						<h5>Total Sales</h5>
-						<p id="filteredTotalSales">৳ 0</p>
-					</div>
-					<div class="stat-item little">
-						<h5>Total Due</h5>
-						<p id="filteredTotalDue">৳ 0</p>
-					</div>
-				</div>
-			
-			</div>
-			
-			
-			<div class="main-section">
-				<h2 class="section-title">Sales Overview</h2>
-				<div class="stats">
-					<div class="stat-item">
-						<h5>Lifetime Sales</h5>
-						<p class="LifetimeSales">৳ 1,234,567</p>
-					</div>
-					<div class="stat-item">
-						<h5>Current Year Sales</h5>
-						<p class="totalThisYear">৳ 123,456</p>
-					</div>
-					<div class="stat-item">
-						<h5>Current Month Sales</h5>
-						<p class="totalThisMonth">৳ 12,345</p>
-					</div>
-					<div class="stat-item">
-						<h5>Total Due</h5>
-						<p class="totalDue">৳ 12,345</p>
+			<div class="stats">
+				<div class="filter-section">
+					<h2 class="section-title">Filter Sales</h2>
+
+					<form id="filterForm">
+						<label for="startDate">From:</label>
+						<input type="date" id="startDate" name="startDate">
+						<label for="endDate">To:</label>
+						<input type="date" id="endDate" name="endDate"><br>
+						<button type="button" id="filterButton" class="btn btn-success filter">Filter <i
+								class="fa fa-search" aria-hidden="true"></i></button>
+					</form>
+					<div class="filtered-stats">
+						<div class="stat-item little">
+							<h5>Total Sales</h5>
+							<p id="filteredTotalSales">৳ 0</p>
+						</div>
+						<div class="stat-item little">
+							<h5>Total Due</h5>
+							<p id="filteredTotalDue">৳ 0</p>
+						</div>
 					</div>
 
-					<div class="stat-item">
-						<h5>Due From Current Year</h3>
-							<p class="totalDueThisYear">৳ 12,345</p>
-					</div>
+				</div>
 
-					<div class="stat-item">
-						<h5>Due From Current Month</h5>
-						<p class="totalDueThisMonth">৳ 12,345</p>
+
+				<div class="main-section">
+					<h2 class="section-title">Sales Overview</h2>
+					<div class="stats">
+						<div class="stat-item">
+							<h5>Lifetime Sales</h5>
+							<p class="LifetimeSales">৳ 1,234,567</p>
+						</div>
+						<div class="stat-item">
+							<h5>Current Year Sales</h5>
+							<p class="totalThisYear">৳ 123,456</p>
+						</div>
+						<div class="stat-item">
+							<h5>Current Month Sales</h5>
+							<p class="totalThisMonth">৳ 12,345</p>
+						</div>
+						<div class="stat-item">
+							<h5>Total Due</h5>
+							<p class="totalDue">৳ 12,345</p>
+						</div>
+
+						<div class="stat-item">
+							<h5>Due From Current Year</h3>
+								<p class="totalDueThisYear">৳ 12,345</p>
+						</div>
+
+						<div class="stat-item">
+							<h5>Due From Current Month</h5>
+							<p class="totalDueThisMonth">৳ 12,345</p>
+						</div>
 					</div>
 				</div>
 			</div>
-</div>
 			<div class="main-section">
 				<h2 class="section-title">Sales Overview</h2>
 				<canvas id="salesChart" width="400" height="200"></canvas>

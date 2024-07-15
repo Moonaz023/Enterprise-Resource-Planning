@@ -9,13 +9,15 @@
 }
 
 
-#filterForm label{
+#filterForm label {
 	margin: 0;
 }
+
 #filterForm input {
-            margin: 5px;
-            width: 35%;
-        }
+	margin: 5px;
+	width: 35%;
+}
+
 .section-title {
 	margin-bottom: 20px;
 	font-size: 1.5em;
@@ -29,6 +31,7 @@
 	gap: 20px;
 
 }
+
 .filter-section {
 	background: white;
 	margin: auto;
@@ -39,13 +42,14 @@
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.filtered-stats{
+.filtered-stats {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(150px, 1fr));
 	gap: 20px;
-	
+
 }
-.filter{
+
+.filter {
 	margin-left: 25%;
 	width: 50%;
 }

@@ -20,7 +20,7 @@ public class IngredientServiceImp implements IngredientService{
 	}
 	@Override
 	public List<IngredientEntity> getAllIngredients() {
-		// TODO Auto-generated method stub
+		
 		return ingredientRepository.findAll();
 	}
 	@Override
