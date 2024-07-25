@@ -1,4 +1,16 @@
-$(document).ready(function() {
+var Ingredientdata,unit = "";
+		function preferedBrowser(){
+			prefer = document.forms[0].ingredient.value;
+  
+		 $.each(Ingredientdata, function(index, xxx) {
+				
+				if(xxx.id==prefer)
+				unit=document.getElementById("unit").innerHTML =xxx.unit.name;
+				//alert(xxx.ingredientName);
+				
+			});
+		}
+		$(document).ready(function() {
 	getVendors();
 	getAllIngredient();
 	getAllPurchasedIngredients();
@@ -27,7 +39,7 @@ function getVendors() {
 		}
 	});
 }
-var Ingredientdata = "";
+
 function getAllIngredient() {
 	$.ajax({
 		type: "GET",
@@ -36,10 +48,15 @@ function getAllIngredient() {
 
 			Ingredientdata = responseIngredient;
 			var dropdown = $("#ingredient");
+			
 			dropdown.empty();
+			
 			dropdown.append('<option value="">Select Ingredient</option>');
+			
 			$.each(responseIngredient, function(index, ingredient) {
-				dropdown.append('<option value="' + ingredient.id + '">' + ingredient.ingredientName + '</option>');
+				dropdown.append('<option  value="' + ingredient.id + '">' + ingredient.ingredientName + '</option>');
+				
+
 			});
 		},
 		error: function(err) {

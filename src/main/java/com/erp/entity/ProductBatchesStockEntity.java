@@ -31,6 +31,8 @@ public class ProductBatchesStockEntity {
 	private double costPerUnit;
 	private int quantity;
 	@ManyToOne
+	private UnitEntity productionUnit;
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private ProductionEntity production;
 

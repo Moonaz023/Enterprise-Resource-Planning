@@ -2,6 +2,7 @@ var optionsHtml = "";
 
 $(document).ready(function () {
 	getAllIngredients();
+	getUnits();
     $.ajax({
         type: "GET",
         url: "/getAllProducts",
@@ -102,6 +103,7 @@ $(document).ready(function () {
         // Prevent the default form submission
         event.preventDefault();
         const formData = gatherFormData();
+        console.log(formData);
         // Make the AJAX request
         $.ajax({
             type: "POST",
@@ -109,7 +111,7 @@ $(document).ready(function () {
             data: formData,
 			//data: form.serialize(),
             
-            success: function (result) {//console.log(form.serialize());
+            success: function (result) {console.log(form.serialize());
             if(result=="no")
             {
 				alert("Not enough ingrediant for this production");
@@ -229,6 +231,29 @@ function getAllIngredients() {
 	});
 }
 
+function getUnits() {
+	$.ajax({
+		type: "GET",
+		url: "/getAllUnits",
+		success: function(respons_unit) {
+
+			//ingredientlist = respons_unit;
+			var dropdown = $("#productionUnitdrop");
+			dropdown.empty();
+			dropdown.append('<option value="">Select Unityyy</option>');
+			$.each(respons_unit, function(index, unit) {
+				//alert(unit.id);
+				dropdown.append('<option value="' + unit.id + '">' + unit.name + '</option>');
+				
+			});
+		},
+		error: function(err) {
+			alert("Error: " + err);
+			console.error("Error:", err);
+		}
+	});
+}
+
 
 
 
@@ -270,12 +295,13 @@ function gatherFormData() {
     const dateOfProduction = document.getElementById('dateOfProduction').value;
     const product = document.getElementById('product').value;
     const productionQuantity = document.getElementById('productionQuantity').value;
+    const productionUnit = document.getElementById('productionUnitdrop').value;
 
     const container = document.getElementById('recipeContainer');
     const ingredientInputs = container.getElementsByClassName('ingredient');
     const quantityInputs = container.getElementsByClassName('quantity');
 
-    let formData = `product=${product}&dateOfProduction=${dateOfProduction}&productionQuantity=${productionQuantity}`;
+    let formData = `product=${product}&dateOfProduction=${dateOfProduction}&productionQuantity=${productionQuantity}&productionUnit=${productionUnit}`;
 
     for (let i = 0; i < ingredientInputs.length; i++) {
         let ingredientId = ingredientInputs[i].value;

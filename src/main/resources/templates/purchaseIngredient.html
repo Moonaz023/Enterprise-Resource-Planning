@@ -51,7 +51,7 @@
 						<div class="form-group">
 							<label for="ingredient">Ingredient</label>
 							<!-- using controller method to fetch product list -->
-							<select class="form-control" id="ingredient" name="ingredient">
+							<select class="form-control" id="ingredient" name="ingredient" onchange="preferedBrowser()">
 								<option value="">Select Type</option>
 							</select>
 						</div>
@@ -63,10 +63,13 @@
 						</div>
 
 						<div class="form-group">
-							<label for="purchaseQuantity">Purchase Quantity</label>
-							<input type="text" class="form-control" id="purchaseQuantity" name="quantity"
-								placeholder="Production Quantity">
+							<label for="purchaseQuantity" class="col-form-label">Purchase Quantity</label><br>
+							<input type="text" class="quter_halfinput halfinput" id="purchaseQuantity" name="quantity"
+								placeholder="0.00">
+
+							<i id="unit" class="halfinput">Unit</i>
 						</div>
+
 						<div class="form-group">
 							<label for="bill">Bill</label>
 							<input type="number" class="form-control" id="bill" name="bill" placeholder="Bill">

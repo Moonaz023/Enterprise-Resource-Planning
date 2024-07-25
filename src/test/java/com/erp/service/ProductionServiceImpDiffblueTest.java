@@ -15,6 +15,7 @@ import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductionRepository;
 
@@ -76,6 +77,14 @@ class ProductionServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         ProductionEntity production = new ProductionEntity();
         production.setDamagedProduct(new ArrayList<>());
         production.setDateOfProduction(mock(Date.class));
@@ -84,13 +93,23 @@ class ProductionServiceImpDiffblueTest {
         production.setProduct(product2);
         production.setProductBatchesStockEntity(new ArrayList<>());
         production.setProductionQuantity(1);
+        production.setProductionUnit(productionUnit);
         production.setRecipe(new ArrayList<>());
+
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
 
         ProductBatchesStockEntity productBatchesStockEntity = new ProductBatchesStockEntity();
         productBatchesStockEntity.setCostPerUnit(10.0d);
         productBatchesStockEntity.setId(1L);
         productBatchesStockEntity.setProduct(product);
         productBatchesStockEntity.setProduction(production);
+        productBatchesStockEntity.setProductionUnit(productionUnit2);
         productBatchesStockEntity.setQuantity(1);
         when(productBatchesStockRepository.save(Mockito.<ProductBatchesStockEntity>any()))
                 .thenReturn(productBatchesStockEntity);
@@ -103,6 +122,14 @@ class ProductionServiceImpDiffblueTest {
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit3 = new UnitEntity();
+        productionUnit3.setCf(10.0d);
+        productionUnit3.setId(1L);
+        productionUnit3.setName("Name");
+        productionUnit3.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit3.setProductionEntity(new ArrayList<>());
+        productionUnit3.setStockEntity(new ArrayList<>());
+
         ProductionEntity productionEntity = new ProductionEntity();
         productionEntity.setDamagedProduct(new ArrayList<>());
         productionEntity.setDateOfProduction(mock(Date.class));
@@ -111,9 +138,10 @@ class ProductionServiceImpDiffblueTest {
         productionEntity.setProduct(product3);
         productionEntity.setProductBatchesStockEntity(new ArrayList<>());
         productionEntity.setProductionQuantity(1);
+        productionEntity.setProductionUnit(productionUnit3);
         productionEntity.setRecipe(new ArrayList<>());
         when(productionRepository.save(Mockito.<ProductionEntity>any())).thenReturn(productionEntity);
-        doNothing().when(stockService).updateStock(Mockito.<ProductEntity>any(), anyInt());
+        doNothing().when(stockService).updateStock(Mockito.<ProductEntity>any(), anyInt(), Mockito.<UnitEntity>any());
 
         ProductEntity product4 = new ProductEntity();
         product4.setCategory("Category");
@@ -123,6 +151,14 @@ class ProductionServiceImpDiffblueTest {
         product4.setProductCode("Product Code");
         product4.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit4 = new UnitEntity();
+        productionUnit4.setCf(10.0d);
+        productionUnit4.setId(1L);
+        productionUnit4.setName("Name");
+        productionUnit4.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit4.setProductionEntity(new ArrayList<>());
+        productionUnit4.setStockEntity(new ArrayList<>());
+
         ProductionEntity production2 = new ProductionEntity();
         production2.setDamagedProduct(new ArrayList<>());
         production2.setDateOfProduction(mock(Date.class));
@@ -131,6 +167,7 @@ class ProductionServiceImpDiffblueTest {
         production2.setProduct(product4);
         production2.setProductBatchesStockEntity(new ArrayList<>());
         production2.setProductionQuantity(1);
+        production2.setProductionUnit(productionUnit4);
         production2.setRecipe(new ArrayList<>());
 
         // Act
@@ -138,7 +175,7 @@ class ProductionServiceImpDiffblueTest {
 
         // Assert
         verify(ingredientStockService).checkAvailablity(isA(List.class));
-        verify(stockService).updateStock(isA(ProductEntity.class), eq(1));
+        verify(stockService).updateStock(isA(ProductEntity.class), eq(1), isA(UnitEntity.class));
         verify(productBatchesStockRepository).save(isA(ProductBatchesStockEntity.class));
         verify(productionRepository).save(isA(ProductionEntity.class));
         assertEquals("ok", actualSaveProductionResult);
@@ -161,6 +198,14 @@ class ProductionServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         ProductionEntity production = new ProductionEntity();
         production.setDamagedProduct(new ArrayList<>());
         production.setDateOfProduction(mock(Date.class));
@@ -169,6 +214,7 @@ class ProductionServiceImpDiffblueTest {
         production.setProduct(product);
         production.setProductBatchesStockEntity(new ArrayList<>());
         production.setProductionQuantity(1);
+        production.setProductionUnit(productionUnit);
         production.setRecipe(new ArrayList<>());
 
         // Act
@@ -211,6 +257,14 @@ class ProductionServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         ProductionEntity productionEntity = new ProductionEntity();
         productionEntity.setDamagedProduct(new ArrayList<>());
         productionEntity.setDateOfProduction(mock(Date.class));
@@ -219,6 +273,7 @@ class ProductionServiceImpDiffblueTest {
         productionEntity.setProduct(product);
         productionEntity.setProductBatchesStockEntity(new ArrayList<>());
         productionEntity.setProductionQuantity(1);
+        productionEntity.setProductionUnit(productionUnit);
         productionEntity.setRecipe(new ArrayList<>());
         Optional<ProductionEntity> ofResult = Optional.of(productionEntity);
         when(productionRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
@@ -246,6 +301,14 @@ class ProductionServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         ProductionEntity productionEntity = new ProductionEntity();
         productionEntity.setDamagedProduct(new ArrayList<>());
         productionEntity.setDateOfProduction(mock(Date.class));
@@ -254,6 +317,7 @@ class ProductionServiceImpDiffblueTest {
         productionEntity.setProduct(product);
         productionEntity.setProductBatchesStockEntity(new ArrayList<>());
         productionEntity.setProductionQuantity(1);
+        productionEntity.setProductionUnit(productionUnit);
         productionEntity.setRecipe(new ArrayList<>());
         Optional<ProductionEntity> ofResult = Optional.of(productionEntity);
 
@@ -265,6 +329,14 @@ class ProductionServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
+
         ProductionEntity productionEntity2 = new ProductionEntity();
         productionEntity2.setDamagedProduct(new ArrayList<>());
         productionEntity2.setDateOfProduction(mock(Date.class));
@@ -273,6 +345,7 @@ class ProductionServiceImpDiffblueTest {
         productionEntity2.setProduct(product2);
         productionEntity2.setProductBatchesStockEntity(new ArrayList<>());
         productionEntity2.setProductionQuantity(1);
+        productionEntity2.setProductionUnit(productionUnit2);
         productionEntity2.setRecipe(new ArrayList<>());
         when(productionRepository.save(Mockito.<ProductionEntity>any())).thenReturn(productionEntity2);
         when(productionRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
@@ -287,6 +360,14 @@ class ProductionServiceImpDiffblueTest {
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit3 = new UnitEntity();
+        productionUnit3.setCf(10.0d);
+        productionUnit3.setId(1L);
+        productionUnit3.setName("Name");
+        productionUnit3.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit3.setProductionEntity(new ArrayList<>());
+        productionUnit3.setStockEntity(new ArrayList<>());
+
         ProductionEntity updatedProduction = new ProductionEntity();
         updatedProduction.setDamagedProduct(new ArrayList<>());
         updatedProduction.setDateOfProduction(mock(Date.class));
@@ -295,6 +376,7 @@ class ProductionServiceImpDiffblueTest {
         updatedProduction.setProduct(product3);
         updatedProduction.setProductBatchesStockEntity(new ArrayList<>());
         updatedProduction.setProductionQuantity(1);
+        updatedProduction.setProductionUnit(productionUnit3);
         updatedProduction.setRecipe(new ArrayList<>());
 
         // Act
@@ -321,6 +403,14 @@ class ProductionServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         ProductionEntity productionEntity = new ProductionEntity();
         productionEntity.setDamagedProduct(new ArrayList<>());
         productionEntity.setDateOfProduction(mock(Date.class));
@@ -329,6 +419,7 @@ class ProductionServiceImpDiffblueTest {
         productionEntity.setProduct(product);
         productionEntity.setProductBatchesStockEntity(new ArrayList<>());
         productionEntity.setProductionQuantity(1);
+        productionEntity.setProductionUnit(productionUnit);
         productionEntity.setRecipe(new ArrayList<>());
         Optional<ProductionEntity> ofResult = Optional.of(productionEntity);
         when(productionRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);

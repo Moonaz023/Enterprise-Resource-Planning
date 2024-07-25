@@ -29,6 +29,9 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 
 </head>
@@ -47,23 +50,51 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<h4>Insert Product</h4>
-					<label for="inputEmail3" class="col-sm-2 col-form-label">Product Code</label>
-					<input type="text" class="form-control" name="productCode" id="inputEmail3"
+					<label for="inputEmail3" class="col-sm-8 col-form-label">Product Code</label>
+					<input type="text" class="form-control" name="productCode" id="productCode"
 						placeholder="Product Code">
 
 					<label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
-					<input type="text" class="form-control" name="name" id="inputEmail3" placeholder="Name">
+					<input type="text" class="form-control" name="name" id="name" placeholder="Name">
 
 					<label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
-					<input type="text" class="form-control" name="category" id="inputEmail3" placeholder="Category">
+					<input type="text" class="form-control" name="category" id="category" placeholder="Category">
 
 					<label for="inputEmail3" class="col-sm-2 col-form-label">Price</label>
-					<input type="text" class="form-control" name="price" id="inputEmail3" placeholder="Price">
+					<input type="text" class="form-control" name="price" id="price" placeholder="Price">
 
 
 
 					<!--					<label for="inputEmail3" class="col-sm-2 col-form-label">Discount</label>-->
 					<!--					<input type="text" class="form-control" name="discount" id="inputEmail3" placeholder="Discount">-->
+
+
+
+
+
+<div>
+	<label for="recipe" class="col-sm-8 col-form-label">Selling Unit & Price:</label>
+	<div id="recipeContainer">
+		<div class="recipeItem form-group">
+			
+			<select type="text" class="sellingUnit productInput halfinput" id="sellingUnit"  required>
+				<option value="">Select Unit</option>
+			</select>
+			<input type="number" class="sellingPrice productQuantity halfinput" placeholder="Price" required>
+			<i onclick="removeRecipeItem(this)" style="font-size:30px; color:red" class="fa fa-trash" aria-hidden="true"></i>
+		</div>
+		<div id="recipeContainerdynamic"></div>
+	</div>
+	<button type="button" class="add-more"  onclick="addRecipeItem()">Add More <i style="font-size:12px"
+							class="fa">&#xf067;</i></button>
+</div>
+
+
+
+
+
+
+
 
 
 

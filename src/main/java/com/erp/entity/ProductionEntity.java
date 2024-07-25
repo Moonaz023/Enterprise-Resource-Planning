@@ -36,6 +36,11 @@ public class ProductionEntity {
 	private ProductEntity product;
 	@Column(name = "production_quantity")
 	private int productionQuantity;
+	
+	@ManyToOne
+	//@ToString.Exclude
+	private UnitEntity productionUnit;
+	
 	@ElementCollection
 	@CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
 	private List<RecipeDataDOT> recipe;

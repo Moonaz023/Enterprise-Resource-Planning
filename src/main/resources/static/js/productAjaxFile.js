@@ -1,16 +1,20 @@
 //===========================================Insert=========================================================
+var unitlist; 
 $(document).ready(function() {
 	getAllRecords();
+	getUnits();
 	$("#insert").click(function() {
 		// Get the form associated with the clicked button
 		var form = $("#formProduct");
+		//var form = gatherFormData();
+		 const formData = gatherFormData();
 		// Prevent the default form submission
 		event.preventDefault();
 		// Make the AJAX request
 		$.ajax({
 			type: "POST",
-			url: form.attr("action"),
-			data: form.serialize(),
+			url: "/admin/saveProduct",
+			data: formData,
 			success: function(result) {
 				getAllRecords();
 				$("#formProduct")[0].reset();
@@ -141,4 +145,88 @@ function deleteRecord(id) {
 			alert("Error deleting record: " + JSON.stringify(err));
 		}
 	});
+}
+
+
+
+
+
+
+
+
+
+
+function addRecipeItem() {
+            const container = document.getElementById('recipeContainerdynamic');
+            const newItem = document.createElement('div');
+            newItem.classList.add('recipeItem');
+
+            let ingredientOptions = '<option value="">Select Ingredient</option>';
+            unitlist.forEach(function(unit) {
+                ingredientOptions += `<option value="${unit.id}">${unit.name}</option>`;
+            });
+           // let ingredientOptions = '<option value="">Select Unit</option>';
+            
+
+            newItem.innerHTML = `
+            	 
+                <select type="text" class="sellingUnit productInput halfinput" required>
+                    ${ingredientOptions}
+                </select>
+               <input type="number" class="sellingPrice productQuantity halfinput" placeholder="Price" required>
+                <i onclick="removeRecipeItem(this)" style="font-size:30px; color:red" class="fa fa-trash" aria-hidden="true"></i>
+            `;
+            container.appendChild(newItem);
+        }
+        
+               function removeRecipeItem(button) {
+            const item = button.parentNode;
+            item.parentNode.removeChild(item);
+        }
+
+       
+ function getUnits() {
+	$.ajax({
+		type: "GET",
+		url: "/getAllUnits",
+		success: function(respons_unit) {
+
+			unitlist = respons_unit;
+			var dropdown = $("#sellingUnit");
+			dropdown.empty();
+			dropdown.append('<option value="">Select Unity</option>');
+			$.each(respons_unit, function(index, unit) {
+				//alert(unit.id);
+				dropdown.append('<option value="' + unit.id + '">' + unit.name + '</option>');
+				
+			});
+		},
+		error: function(err) {
+			alert("Error: " + err);
+			console.error("Error:", err);
+		}
+	});
+}       
+        
+        
+function gatherFormData() {
+    const productCode = document.getElementById('productCode').value;
+    const name = document.getElementById('name').value;
+    const category = document.getElementById('category').value;
+    const price = document.getElementById('price').value;
+
+    const container = document.getElementById('recipeContainer');
+    const ingredientInputs = container.getElementsByClassName('sellingUnit');
+    const quantityInputs = container.getElementsByClassName('sellingPrice');
+
+    let formData = `productCode=${productCode}&name=${name}&category=${category}&price=${price}`;
+
+    for (let i = 0; i < ingredientInputs.length; i++) {
+        let unitId = ingredientInputs[i].value;
+        let Sellingprice = quantityInputs[i].value;
+
+        formData += `&unitPrice[${i}].unit.id=${unitId}&unitPrice[${i}].price=${Sellingprice}`;
+    }
+console.log(formData);
+    return formData;
 }

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.erp.entity.ProductEntity;
 import com.erp.entity.StockEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.StockRepository;
 
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ class StockServiceImpDiffblueTest {
     private StockServiceImp stockServiceImp;
 
     /**
-     * Method under test: {@link StockServiceImp#updateStock(ProductEntity, int)}
+     * Method under test:
+     * {@link StockServiceImp#updateStock(ProductEntity, int, UnitEntity)}
      */
     @Test
     void testUpdateStock() {
@@ -47,9 +49,18 @@ class StockServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity = new StockEntity();
         stockEntity.setProduct(product);
         stockEntity.setProductQuantity(1);
+        stockEntity.setProductionUnit(productionUnit);
         stockEntity.setStock_id(1L);
 
         ProductEntity product2 = new ProductEntity();
@@ -60,11 +71,21 @@ class StockServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity2 = new StockEntity();
         stockEntity2.setProduct(product2);
         stockEntity2.setProductQuantity(1);
+        stockEntity2.setProductionUnit(productionUnit2);
         stockEntity2.setStock_id(1L);
-        when(stockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(stockEntity);
+        when(stockRepository.findByProductAndProductionUnit(Mockito.<ProductEntity>any(), Mockito.<UnitEntity>any()))
+                .thenReturn(stockEntity);
         when(stockRepository.save(Mockito.<StockEntity>any())).thenReturn(stockEntity2);
 
         ProductEntity product3 = new ProductEntity();
@@ -75,11 +96,19 @@ class StockServiceImpDiffblueTest {
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
 
+        UnitEntity unit = new UnitEntity();
+        unit.setCf(10.0d);
+        unit.setId(1L);
+        unit.setName("Name");
+        unit.setProductBatchesStockEntity(new ArrayList<>());
+        unit.setProductionEntity(new ArrayList<>());
+        unit.setStockEntity(new ArrayList<>());
+
         // Act
-        stockServiceImp.updateStock(product3, 1);
+        stockServiceImp.updateStock(product3, 1, unit);
 
         // Assert
-        verify(stockRepository).findByProduct(isA(ProductEntity.class));
+        verify(stockRepository).findByProductAndProductionUnit(isA(ProductEntity.class), isA(UnitEntity.class));
         verify(stockRepository).save(isA(StockEntity.class));
     }
 
@@ -98,9 +127,18 @@ class StockServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity = new StockEntity();
         stockEntity.setProduct(product);
         stockEntity.setProductQuantity(1);
+        stockEntity.setProductionUnit(productionUnit);
         stockEntity.setStock_id(1L);
 
         ProductEntity product2 = new ProductEntity();
@@ -111,9 +149,18 @@ class StockServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity2 = new StockEntity();
         stockEntity2.setProduct(product2);
         stockEntity2.setProductQuantity(1);
+        stockEntity2.setProductionUnit(productionUnit2);
         stockEntity2.setStock_id(1L);
         when(stockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(stockEntity);
         when(stockRepository.save(Mockito.<StockEntity>any())).thenReturn(stockEntity2);
@@ -149,9 +196,18 @@ class StockServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity = new StockEntity();
         stockEntity.setProduct(product);
         stockEntity.setProductQuantity(1);
+        stockEntity.setProductionUnit(productionUnit);
         stockEntity.setStock_id(1L);
 
         ProductEntity product2 = new ProductEntity();
@@ -162,9 +218,18 @@ class StockServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity2 = new StockEntity();
         stockEntity2.setProduct(product2);
         stockEntity2.setProductQuantity(1);
+        stockEntity2.setProductionUnit(productionUnit2);
         stockEntity2.setStock_id(1L);
         when(stockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(stockEntity);
         when(stockRepository.save(Mockito.<StockEntity>any())).thenReturn(stockEntity2);
@@ -208,9 +273,18 @@ class StockServiceImpDiffblueTest {
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setName("Name");
+        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity = new StockEntity();
         stockEntity.setProduct(product);
         stockEntity.setProductQuantity(1);
+        stockEntity.setProductionUnit(productionUnit);
         stockEntity.setStock_id(1L);
 
         ProductEntity product2 = new ProductEntity();
@@ -221,9 +295,18 @@ class StockServiceImpDiffblueTest {
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
 
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setName("Name");
+        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
+
         StockEntity stockEntity2 = new StockEntity();
         stockEntity2.setProduct(product2);
         stockEntity2.setProductQuantity(1);
+        stockEntity2.setProductionUnit(productionUnit2);
         stockEntity2.setStock_id(1L);
         when(stockRepository.save(Mockito.<StockEntity>any())).thenReturn(stockEntity2);
         when(stockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(stockEntity);

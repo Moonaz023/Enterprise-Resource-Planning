@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.erp.entity.ProductEntity;
 import com.erp.entity.StockEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.StockRepository;
 
 import java.util.List;
@@ -16,13 +17,16 @@ public class StockServiceImp implements StockService {
 	@Autowired
     private StockRepository stockRepository;
 	@Override
-	public void updateStock(ProductEntity product, int productionQuantity) {
-		StockEntity stock = stockRepository.findByProduct(product);
+	public void updateStock(ProductEntity product, int productionQuantity, UnitEntity unit) {
+		//StockEntity stock = stockRepository.findByProduct(product);
+
+		StockEntity stock= stockRepository.findByProductAndProductionUnit(product,unit);
 
         if (stock == null) {
             
             stock = new StockEntity();
             stock.setProduct(product);
+            stock.setProductionUnit(unit);
             stock.setProductQuantity(productionQuantity);
         } else {
             

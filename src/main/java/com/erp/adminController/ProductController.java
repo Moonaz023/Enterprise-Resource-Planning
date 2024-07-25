@@ -1,6 +1,7 @@
 package com.erp.adminController;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+import com.erp.dto.SellingUnitPriceDTO;
 import com.erp.entity.ProductEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
@@ -45,6 +48,21 @@ public class ProductController {
 
 	@PostMapping("admin/saveProduct")
 	public String saveProduct(@ModelAttribute ProductEntity product) {
+		
+		/*
+		UnitEntity unit = new UnitEntity();
+		unit.setCf(10.0d);
+		unit.setId(1L);
+		unit.setName("Name");
+		SellingUnitPriceDTO SellingUnitPrice=new SellingUnitPriceDTO();
+		List<SellingUnitPriceDTO> sellingUnitPriceList = new ArrayList<>();
+		SellingUnitPrice.setPrice(20);
+		SellingUnitPrice.setUnit(unit);
+		sellingUnitPriceList.add(SellingUnitPrice);
+		product.setUnitPrice(sellingUnitPriceList);
+		*/
+		
+		
 		System.out.println(product);
 		productService.saveProduct(product);
 		return "redirect:/";

@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	getAllIngredients();
+	getUnits();
 	$("#insertIngredient").click(function() {
 		// Get the form associated with the clicked button
 		var form = $("#formIngredient");
@@ -22,6 +23,28 @@ $(document).ready(function() {
 	});
 });
 
+function getUnits() {
+	$.ajax({
+		type: "GET",
+		url: "/getAllUnits",
+		success: function(respons_unit) {
+
+			unitlist = respons_unit;
+			var dropdown = $("#sellingUnit");
+			dropdown.empty();
+			dropdown.append('<option value="">Select Unity</option>');
+			$.each(respons_unit, function(index, unit) {
+				//alert(unit.id);
+				dropdown.append('<option value="' + unit.id + '">' + unit.name + '</option>');
+				
+			});
+		},
+		error: function(err) {
+			alert("Error: " + err);
+			console.error("Error:", err);
+		}
+	});
+}       
 //==========================================show table========================================================
 var allIngredientsdata = "";
 

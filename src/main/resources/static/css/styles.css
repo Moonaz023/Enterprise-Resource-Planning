@@ -85,6 +85,10 @@ aside li {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin-TOP:15PX;
 }
+.quter_halfinput{
+width: 80.3%;
+	
+}
 .productQuantity{
 	
 	width: 39.3%;

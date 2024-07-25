@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.erp.entity.ProductEntity;
 import com.erp.entity.StockEntity;
+import com.erp.entity.UnitEntity;
 
 public interface StockService {
 
-	void updateStock(ProductEntity product, int productionQuantity);
+	void updateStock(ProductEntity product, int productionQuantity,UnitEntity unit);
 
 	void updateStockQuantity(ProductEntity product, int productionQuantity, int productionQuantity2);
 

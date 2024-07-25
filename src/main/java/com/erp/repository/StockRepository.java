@@ -7,12 +7,15 @@ import org.springframework.data.repository.query.Param;
 
 import com.erp.entity.ProductEntity;
 import com.erp.entity.StockEntity;
+import com.erp.entity.UnitEntity;
 
 import jakarta.transaction.Transactional;
 
 public interface StockRepository extends JpaRepository<StockEntity, Long>  {
 
 	StockEntity findByProduct(ProductEntity product);
+	
+	StockEntity findByProductAndProductionUnit(ProductEntity product, UnitEntity unit);
 	
 	@Query("SELECT s.productQuantity FROM StockEntity s WHERE s.product.id = :productId")
     int findProductQuantityById(@Param("productId") Long productId);

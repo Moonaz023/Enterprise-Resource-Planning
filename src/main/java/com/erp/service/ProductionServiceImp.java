@@ -44,7 +44,7 @@ public class ProductionServiceImp implements ProductionService {
 				production.setMargin(production.getProduct().getPrice()-(totalCost/production.getProductionQuantity()));
 				ProductionEntity savedProduction = productionRepository.save(production);
 
-				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity());
+				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity(),savedProduction.getProductionUnit());
 				System.out.println("Total Cost=" + totalCost);
 
 				ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
@@ -52,6 +52,8 @@ public class ProductionServiceImp implements ProductionService {
 				productBatchesStock.setProduct(production.getProduct());
 				productBatchesStock.setProduction(savedProduction);
 				productBatchesStock.setQuantity(savedProduction.getProductionQuantity());
+				
+				productBatchesStock.setProductionUnit(production.getProductionUnit());
 
 				productBatchesStockRepository.save(productBatchesStock);
 
