@@ -89,9 +89,13 @@ aside li {
 width: 80.3%;
 	
 }
+
 .productQuantity{
 	
 	width: 39.3%;
+}
+.lessThanHalf{
+	width: 30.5%;
 }
 	.add-more {
   display: inline-block;

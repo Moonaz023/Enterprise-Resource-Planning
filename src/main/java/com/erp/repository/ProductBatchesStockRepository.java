@@ -1,4 +1,4 @@
-package com.erp.repository;
+/*package com.erp.repository;
 
 import java.util.List;
 
@@ -24,3 +24,4 @@ public interface ProductBatchesStockRepository extends JpaRepository<ProductBatc
 	void modifyStockByProduction(ProductionEntity productionId, int quantity);
 
 }
+*/

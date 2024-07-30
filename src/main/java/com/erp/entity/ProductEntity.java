@@ -42,7 +42,7 @@ public class ProductEntity {
 	@ElementCollection
 	@CollectionTable(joinColumns = @JoinColumn(name = "unitPrice"))
 	private List<SellingUnitPriceDTO> unitPrice;
-	private double price;
+	//private double price;
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	@ToString.Exclude

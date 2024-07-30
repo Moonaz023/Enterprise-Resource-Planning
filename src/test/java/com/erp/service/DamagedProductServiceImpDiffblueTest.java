@@ -13,8 +13,8 @@ import static org.mockito.Mockito.when;
 import com.erp.entity.DamagedProductEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.DamagedProductRepository;
-import com.erp.repository.ProductBatchesStockRepository;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -32,15 +32,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {DamagedProductServiceImp.class})
 @ExtendWith(SpringExtension.class)
 @DisabledInAotMode
-class DamagedProductServiceImpDiffblueTest {
+public class DamagedProductServiceImpDiffblueTest {
     @MockBean
     private DamagedProductRepository damagedProductRepository;
 
     @Autowired
     private DamagedProductServiceImp damagedProductServiceImp;
-
-    @MockBean
-    private ProductBatchesStockRepository productBatchesStockRepository;
 
     @MockBean
     private StockService stockService;
@@ -50,51 +47,66 @@ class DamagedProductServiceImpDiffblueTest {
      * {@link DamagedProductServiceImp#save(DamagedProductEntity)}
      */
     @Test
-    void testSave() {
+    public void testSave() {
         // Arrange
         ProductEntity product = new ProductEntity();
         product.setCategory("Category");
         product.setId(1L);
         product.setName("Name");
-        product.setPrice(10.0d);
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
+        product.setUnitPrice(new ArrayList<>());
+
+        UnitEntity productionUnit = new UnitEntity();
+        productionUnit.setCf(10.0d);
+        productionUnit.setId(1L);
+        productionUnit.setIngredientEntity(new ArrayList<>());
+        productionUnit.setName("Name");
+        productionUnit.setProductionEntity(new ArrayList<>());
+        productionUnit.setStockEntity(new ArrayList<>());
 
         ProductionEntity productionId = new ProductionEntity();
         productionId.setDamagedProduct(new ArrayList<>());
         productionId.setDateOfProduction(mock(Date.class));
         productionId.setId(1L);
-        productionId.setMargin(10.0d);
         productionId.setProduct(product);
-        productionId.setProductBatchesStockEntity(new ArrayList<>());
         productionId.setProductionQuantity(1);
+        productionId.setProductionUnit(productionUnit);
         productionId.setRecipe(new ArrayList<>());
+        productionId.setUnitCost(10.0d);
 
         DamagedProductEntity damagedProductEntity = new DamagedProductEntity();
         damagedProductEntity.setId(1L);
         damagedProductEntity.setProductionId(productionId);
         damagedProductEntity.setQuantity(1);
         when(damagedProductRepository.save(Mockito.<DamagedProductEntity>any())).thenReturn(damagedProductEntity);
-        doNothing().when(productBatchesStockRepository).modifyStockByProduction(Mockito.<ProductionEntity>any(), anyInt());
-        doNothing().when(stockService).updateStockWhenProductionDeteted(Mockito.<ProductEntity>any(), anyInt());
+        doNothing().when(stockService).updateStockWhenProductionDeteted(Mockito.<ProductEntity>any(),Mockito.<UnitEntity>any(), anyInt());
 
         ProductEntity product2 = new ProductEntity();
         product2.setCategory("Category");
         product2.setId(1L);
         product2.setName("Name");
-        product2.setPrice(10.0d);
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
+        product2.setUnitPrice(new ArrayList<>());
+
+        UnitEntity productionUnit2 = new UnitEntity();
+        productionUnit2.setCf(10.0d);
+        productionUnit2.setId(1L);
+        productionUnit2.setIngredientEntity(new ArrayList<>());
+        productionUnit2.setName("Name");
+        productionUnit2.setProductionEntity(new ArrayList<>());
+        productionUnit2.setStockEntity(new ArrayList<>());
 
         ProductionEntity productionId2 = new ProductionEntity();
         productionId2.setDamagedProduct(new ArrayList<>());
         productionId2.setDateOfProduction(mock(Date.class));
         productionId2.setId(1L);
-        productionId2.setMargin(10.0d);
         productionId2.setProduct(product2);
-        productionId2.setProductBatchesStockEntity(new ArrayList<>());
         productionId2.setProductionQuantity(1);
+        productionId2.setProductionUnit(productionUnit2);
         productionId2.setRecipe(new ArrayList<>());
+        productionId2.setUnitCost(10.0d);
 
         DamagedProductEntity damagedProduct = new DamagedProductEntity();
         damagedProduct.setId(1L);
@@ -105,8 +117,7 @@ class DamagedProductServiceImpDiffblueTest {
         damagedProductServiceImp.save(damagedProduct);
 
         // Assert that nothing has changed
-        verify(productBatchesStockRepository).modifyStockByProduction(isA(ProductionEntity.class), eq(1));
-        verify(stockService).updateStockWhenProductionDeteted(isA(ProductEntity.class), eq(1));
+        verify(stockService).updateStockWhenProductionDeteted(isA(ProductEntity.class),isA(UnitEntity.class), eq(1));
         verify(damagedProductRepository).save(isA(DamagedProductEntity.class));
     }
 
@@ -114,7 +125,7 @@ class DamagedProductServiceImpDiffblueTest {
      * Method under test: {@link DamagedProductServiceImp#findAll()}
      */
     @Test
-    void testFindAll() {
+    public void testFindAll() {
         // Arrange
         ArrayList<DamagedProductEntity> damagedProductEntityList = new ArrayList<>();
         when(damagedProductRepository.findAll()).thenReturn(damagedProductEntityList);

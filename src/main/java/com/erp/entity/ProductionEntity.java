@@ -45,14 +45,16 @@ public class ProductionEntity {
 	@CollectionTable(joinColumns = @JoinColumn(name = "production_id"))
 	private List<RecipeDataDOT> recipe;
 	// private double totalCost;
+	/*
 	@OneToMany(mappedBy = "production", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<ProductBatchesStockEntity> productBatchesStockEntity;
+	private List<ProductBatchesStockEntity> productBatchesStockEntity;*/
 	
 	@OneToMany(mappedBy = "productionId", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<DamagedProductEntity> damagedProduct;
 	
-	private double margin ;
+	//private double margin ;
+	private double unitCost ;
 
 }

@@ -1,4 +1,7 @@
+/*
 package com.erp.entity;
+
+import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +35,13 @@ public class ProductBatchesStockEntity {
 	private int quantity;
 	@ManyToOne
 	private UnitEntity productionUnit;
+	/*
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private ProductionEntity production;
+	*/
+	
+/*	private Date dateOfProduction;
 
 }
+*/

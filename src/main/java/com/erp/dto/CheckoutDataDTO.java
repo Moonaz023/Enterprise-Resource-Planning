@@ -17,7 +17,9 @@ import lombok.ToString;
 public class CheckoutDataDTO {
 
 	long productId;
+	long unit;
 	private String productName;
+	private String unitName;
 	private double price;
 	int quantity;
 	

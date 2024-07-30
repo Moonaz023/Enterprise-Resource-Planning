@@ -89,8 +89,8 @@ public class StockServiceImp implements StockService {
 		
 	}
 	@Override
-	public void updateStockWhenProductionDeteted(ProductEntity product, int quantity) {
-		StockEntity Stock = stockRepository.findByProduct(product);
+	public void updateStockWhenProductionDeteted(ProductEntity product,UnitEntity unit, int quantity) {
+		StockEntity Stock = stockRepository.findByProductAndProductionUnit(product,unit);
 		Stock.setProductQuantity(Stock.getProductQuantity() - quantity);
 		stockRepository.save(Stock);
 	}

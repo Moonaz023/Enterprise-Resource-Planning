@@ -17,17 +17,20 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.aot.DisabledInAotMode;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {StockServiceImp.class})
 @ExtendWith(SpringExtension.class)
 @DisabledInAotMode
-class StockServiceImpDiffblueTest {
+public class StockServiceImpDiffblueTest {
     @MockBean
     private StockRepository stockRepository;
 
@@ -39,21 +42,21 @@ class StockServiceImpDiffblueTest {
      * {@link StockServiceImp#updateStock(ProductEntity, int, UnitEntity)}
      */
     @Test
-    void testUpdateStock() {
+    public void testUpdateStock() {
         // Arrange
         ProductEntity product = new ProductEntity();
         product.setCategory("Category");
         product.setId(1L);
         product.setName("Name");
-        product.setPrice(10.0d);
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
+        product.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit = new UnitEntity();
         productionUnit.setCf(10.0d);
         productionUnit.setId(1L);
+        productionUnit.setIngredientEntity(new ArrayList<>());
         productionUnit.setName("Name");
-        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit.setProductionEntity(new ArrayList<>());
         productionUnit.setStockEntity(new ArrayList<>());
 
@@ -67,15 +70,15 @@ class StockServiceImpDiffblueTest {
         product2.setCategory("Category");
         product2.setId(1L);
         product2.setName("Name");
-        product2.setPrice(10.0d);
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
+        product2.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit2 = new UnitEntity();
         productionUnit2.setCf(10.0d);
         productionUnit2.setId(1L);
+        productionUnit2.setIngredientEntity(new ArrayList<>());
         productionUnit2.setName("Name");
-        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit2.setProductionEntity(new ArrayList<>());
         productionUnit2.setStockEntity(new ArrayList<>());
 
@@ -92,15 +95,15 @@ class StockServiceImpDiffblueTest {
         product3.setCategory("Category");
         product3.setId(1L);
         product3.setName("Name");
-        product3.setPrice(10.0d);
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
+        product3.setUnitPrice(new ArrayList<>());
 
         UnitEntity unit = new UnitEntity();
         unit.setCf(10.0d);
         unit.setId(1L);
+        unit.setIngredientEntity(new ArrayList<>());
         unit.setName("Name");
-        unit.setProductBatchesStockEntity(new ArrayList<>());
         unit.setProductionEntity(new ArrayList<>());
         unit.setStockEntity(new ArrayList<>());
 
@@ -117,21 +120,21 @@ class StockServiceImpDiffblueTest {
      * {@link StockServiceImp#updateStockQuantity(ProductEntity, int, int)}
      */
     @Test
-    void testUpdateStockQuantity() {
+    public void testUpdateStockQuantity() {
         // Arrange
         ProductEntity product = new ProductEntity();
         product.setCategory("Category");
         product.setId(1L);
         product.setName("Name");
-        product.setPrice(10.0d);
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
+        product.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit = new UnitEntity();
         productionUnit.setCf(10.0d);
         productionUnit.setId(1L);
+        productionUnit.setIngredientEntity(new ArrayList<>());
         productionUnit.setName("Name");
-        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit.setProductionEntity(new ArrayList<>());
         productionUnit.setStockEntity(new ArrayList<>());
 
@@ -145,15 +148,15 @@ class StockServiceImpDiffblueTest {
         product2.setCategory("Category");
         product2.setId(1L);
         product2.setName("Name");
-        product2.setPrice(10.0d);
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
+        product2.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit2 = new UnitEntity();
         productionUnit2.setCf(10.0d);
         productionUnit2.setId(1L);
+        productionUnit2.setIngredientEntity(new ArrayList<>());
         productionUnit2.setName("Name");
-        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit2.setProductionEntity(new ArrayList<>());
         productionUnit2.setStockEntity(new ArrayList<>());
 
@@ -169,9 +172,9 @@ class StockServiceImpDiffblueTest {
         product3.setCategory("Category");
         product3.setId(1L);
         product3.setName("Name");
-        product3.setPrice(10.0d);
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
+        product3.setUnitPrice(new ArrayList<>());
 
         // Act
         stockServiceImp.updateStockQuantity(product3, 1, 1);
@@ -186,21 +189,21 @@ class StockServiceImpDiffblueTest {
      * {@link StockServiceImp#updateStockWhenProductChanged(ProductEntity, ProductEntity, int, int)}
      */
     @Test
-    void testUpdateStockWhenProductChanged() {
+    public void testUpdateStockWhenProductChanged() {
         // Arrange
         ProductEntity product = new ProductEntity();
         product.setCategory("Category");
         product.setId(1L);
         product.setName("Name");
-        product.setPrice(10.0d);
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
+        product.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit = new UnitEntity();
         productionUnit.setCf(10.0d);
         productionUnit.setId(1L);
+        productionUnit.setIngredientEntity(new ArrayList<>());
         productionUnit.setName("Name");
-        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit.setProductionEntity(new ArrayList<>());
         productionUnit.setStockEntity(new ArrayList<>());
 
@@ -214,15 +217,15 @@ class StockServiceImpDiffblueTest {
         product2.setCategory("Category");
         product2.setId(1L);
         product2.setName("Name");
-        product2.setPrice(10.0d);
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
+        product2.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit2 = new UnitEntity();
         productionUnit2.setCf(10.0d);
         productionUnit2.setId(1L);
+        productionUnit2.setIngredientEntity(new ArrayList<>());
         productionUnit2.setName("Name");
-        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit2.setProductionEntity(new ArrayList<>());
         productionUnit2.setStockEntity(new ArrayList<>());
 
@@ -238,17 +241,17 @@ class StockServiceImpDiffblueTest {
         oldProduct.setCategory("Category");
         oldProduct.setId(1L);
         oldProduct.setName("Name");
-        oldProduct.setPrice(10.0d);
         oldProduct.setProductCode("Product Code");
         oldProduct.setProductions(new ArrayList<>());
+        oldProduct.setUnitPrice(new ArrayList<>());
 
         ProductEntity newProduct = new ProductEntity();
         newProduct.setCategory("Category");
         newProduct.setId(1L);
         newProduct.setName("Name");
-        newProduct.setPrice(10.0d);
         newProduct.setProductCode("Product Code");
         newProduct.setProductions(new ArrayList<>());
+        newProduct.setUnitPrice(new ArrayList<>());
 
         // Act
         stockServiceImp.updateStockWhenProductChanged(oldProduct, newProduct, 1, 1);
@@ -260,24 +263,24 @@ class StockServiceImpDiffblueTest {
 
     /**
      * Method under test:
-     * {@link StockServiceImp#updateStockWhenProductionDeteted(ProductEntity, int)}
+     * {@link StockServiceImp#updateStockWhenProductionDeteted(ProductEntity, UnitEntity, int)}
      */
     @Test
-    void testUpdateStockWhenProductionDeteted() {
+    public void testUpdateStockWhenProductionDeteted() {
         // Arrange
         ProductEntity product = new ProductEntity();
         product.setCategory("Category");
         product.setId(1L);
         product.setName("Name");
-        product.setPrice(10.0d);
         product.setProductCode("Product Code");
         product.setProductions(new ArrayList<>());
+        product.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit = new UnitEntity();
         productionUnit.setCf(10.0d);
         productionUnit.setId(1L);
+        productionUnit.setIngredientEntity(new ArrayList<>());
         productionUnit.setName("Name");
-        productionUnit.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit.setProductionEntity(new ArrayList<>());
         productionUnit.setStockEntity(new ArrayList<>());
 
@@ -291,15 +294,15 @@ class StockServiceImpDiffblueTest {
         product2.setCategory("Category");
         product2.setId(1L);
         product2.setName("Name");
-        product2.setPrice(10.0d);
         product2.setProductCode("Product Code");
         product2.setProductions(new ArrayList<>());
+        product2.setUnitPrice(new ArrayList<>());
 
         UnitEntity productionUnit2 = new UnitEntity();
         productionUnit2.setCf(10.0d);
         productionUnit2.setId(1L);
+        productionUnit2.setIngredientEntity(new ArrayList<>());
         productionUnit2.setName("Name");
-        productionUnit2.setProductBatchesStockEntity(new ArrayList<>());
         productionUnit2.setProductionEntity(new ArrayList<>());
         productionUnit2.setStockEntity(new ArrayList<>());
 
@@ -309,29 +312,39 @@ class StockServiceImpDiffblueTest {
         stockEntity2.setProductionUnit(productionUnit2);
         stockEntity2.setStock_id(1L);
         when(stockRepository.save(Mockito.<StockEntity>any())).thenReturn(stockEntity2);
-        when(stockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(stockEntity);
+        when(stockRepository.findByProductAndProductionUnit(Mockito.<ProductEntity>any(), Mockito.<UnitEntity>any()))
+                .thenReturn(stockEntity);
 
         ProductEntity product3 = new ProductEntity();
         product3.setCategory("Category");
         product3.setId(1L);
         product3.setName("Name");
-        product3.setPrice(10.0d);
         product3.setProductCode("Product Code");
         product3.setProductions(new ArrayList<>());
+        product3.setUnitPrice(new ArrayList<>());
+
+        UnitEntity unit = new UnitEntity();
+        unit.setCf(10.0d);
+        unit.setId(1L);
+        unit.setIngredientEntity(new ArrayList<>());
+        unit.setName("Name");
+        unit.setProductionEntity(new ArrayList<>());
+        unit.setStockEntity(new ArrayList<>());
 
         // Act
-        stockServiceImp.updateStockWhenProductionDeteted(product3, 1);
+        stockServiceImp.updateStockWhenProductionDeteted(product3, unit, 1);
 
         // Assert
-        verify(stockRepository).findByProduct(isA(ProductEntity.class));
+        verify(stockRepository).findByProductAndProductionUnit(isA(ProductEntity.class), isA(UnitEntity.class));
         verify(stockRepository).save(isA(StockEntity.class));
     }
 
+    
     /**
      * Method under test: {@link StockServiceImp#getAllProductsStock()}
      */
     @Test
-    void testGetAllProductsStock() {
+    public void testGetAllProductsStock() {
         // Arrange
         ArrayList<StockEntity> stockEntityList = new ArrayList<>();
         when(stockRepository.findAll()).thenReturn(stockEntityList);

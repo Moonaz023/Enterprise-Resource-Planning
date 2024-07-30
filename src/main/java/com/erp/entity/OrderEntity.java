@@ -30,6 +30,7 @@ public class OrderEntity {
     @JoinColumn(name = "distributor_id", nullable = false)
     private DistributorEntity distributor_id;
 	private long[] product;
+	private long[] unit;
 	private int[] productQuantity;
 	private String orderDetails;
 	

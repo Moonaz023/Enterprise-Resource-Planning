@@ -22,7 +22,7 @@ function getAllStockRecords() {
                     '<tr class="tr">' +
                     '<td>' + stock[i].product.productCode + '</td>' +
                     '<td>' + stock[i].product.name + '</td>' +
-                    '<td>' + stock[i].productQuantity + '</td>' +
+                    '<td>' + stock[i].productQuantity+' '+ stock[i].productionUnit.name+ '</td>' +
                     '</tr>'
                 );
             }

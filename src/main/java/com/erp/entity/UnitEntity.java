@@ -37,9 +37,11 @@ public class UnitEntity {
 	@OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<IngredientEntity> ingredientEntity;
+	/*
 	@OneToMany(mappedBy = "productionUnit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<ProductBatchesStockEntity> productBatchesStockEntity;
+	*/
 
 	@OneToMany(mappedBy = "productionUnit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore

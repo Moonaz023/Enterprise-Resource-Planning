@@ -1,5 +1,6 @@
 package com.erp.service;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,16 +19,18 @@ import static org.mockito.Mockito.when;
 import com.erp.dto.CheckoutDataDTO;
 import com.erp.dto.CheckoutPaymentDTO;
 import com.erp.dto.CheckoutValidityResultDTO;
+import com.erp.dto.SellingUnitPriceDTO;
 import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.SalesReportEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
-import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.SalesReportRepository;
 import com.erp.repository.StockRepository;
+import com.erp.repository.UnitRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {OrderServiceImp.class})
 @ExtendWith(SpringExtension.class)
 @DisabledInAotMode
-class OrderServiceImpDiffblueTest {
+public class OrderServiceImpDiffblueTest {
     @MockBean
     private DistributorRepository distributorRepository;
 
@@ -56,9 +59,6 @@ class OrderServiceImpDiffblueTest {
     private OrderServiceImp orderServiceImp;
 
     @MockBean
-    private ProductBatchesStockRepository productBatchesStockRepository;
-
-    @MockBean
     private ProductRepository productRepository;
 
     @MockBean
@@ -67,11 +67,14 @@ class OrderServiceImpDiffblueTest {
     @MockBean
     private StockRepository stockRepository;
 
+    @MockBean
+    private UnitRepository unitRepository;
+
     /**
      * Method under test: {@link OrderServiceImp#addOrder(OrderEntity)}
      */
     @Test
-    void testAddOrder() {
+    public void testAddOrder() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -88,8 +91,10 @@ class OrderServiceImpDiffblueTest {
         orderEntity.setOrderDetails("Order Details");
         orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
         orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
+        orderEntity.setUnit(new long[]{1L, -1L, 1L, -1L});
         when(orderRepository.save(Mockito.<OrderEntity>any())).thenReturn(orderEntity);
         when(productRepository.findProductNameById(Mockito.<Long>any())).thenReturn("42");
+        when(unitRepository.findUnitNameById(Mockito.<Long>any())).thenReturn("42");
 
         DistributorEntity distributor_id2 = new DistributorEntity();
         distributor_id2.setAddress("42 Main St");
@@ -106,14 +111,16 @@ class OrderServiceImpDiffblueTest {
         order.setOrderDetails("Order Details");
         order.setProduct(new long[]{1L, -1L, 1L, -1L});
         order.setProductQuantity(new int[]{1, -1, 1, -1});
+        order.setUnit(new long[]{1L, -1L, 1L, -1L});
 
         // Act
         String actualAddOrderResult = orderServiceImp.addOrder(order);
 
         // Assert
         verify(productRepository, atLeast(1)).findProductNameById(Mockito.<Long>any());
+        verify(unitRepository, atLeast(1)).findUnitNameById(Mockito.<Long>any());
         verify(orderRepository).save(isA(OrderEntity.class));
-        assertEquals("42:1, 42:-1, 42:1, 42:-1", order.getOrderDetails());
+        assertEquals("42:1 42, 42:-1 42, 42:1 42, 42:-1 42", order.getOrderDetails());
         assertEquals("Order received successfully", actualAddOrderResult);
     }
 
@@ -121,7 +128,7 @@ class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#addOrder(OrderEntity)}
      */
     @Test
-    void testAddOrder2() {
+    public void testAddOrder2() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -138,8 +145,10 @@ class OrderServiceImpDiffblueTest {
         orderEntity.setOrderDetails("Order Details");
         orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
         orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
+        orderEntity.setUnit(new long[]{1L, -1L, 1L, -1L});
         when(orderRepository.save(Mockito.<OrderEntity>any())).thenReturn(orderEntity);
         when(productRepository.findProductNameById(Mockito.<Long>any())).thenReturn(null);
+        when(unitRepository.findUnitNameById(Mockito.<Long>any())).thenReturn("42");
 
         DistributorEntity distributor_id2 = new DistributorEntity();
         distributor_id2.setAddress("42 Main St");
@@ -156,12 +165,14 @@ class OrderServiceImpDiffblueTest {
         order.setOrderDetails("Order Details");
         order.setProduct(new long[]{1L, -1L, 1L, -1L});
         order.setProductQuantity(new int[]{1, -1, 1, -1});
+        order.setUnit(new long[]{1L, -1L, 1L, -1L});
 
         // Act
         String actualAddOrderResult = orderServiceImp.addOrder(order);
 
         // Assert
         verify(productRepository, atLeast(1)).findProductNameById(Mockito.<Long>any());
+        verify(unitRepository, atLeast(1)).findUnitNameById(eq(1L));
         verify(orderRepository).save(isA(OrderEntity.class));
         assertEquals("", order.getOrderDetails());
         assertEquals("Order received successfully", actualAddOrderResult);
@@ -171,7 +182,7 @@ class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#getAllOrder()}
      */
     @Test
-    void testGetAllOrder() {
+    public void testGetAllOrder() {
         // Arrange
         ArrayList<OrderEntity> orderEntityList = new ArrayList<>();
         when(orderRepository.findAll()).thenReturn(orderEntityList);
@@ -189,75 +200,7 @@ class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
      */
     @Test
-    void testCheckOutValidityTest() {
-        // Arrange
-        DistributorEntity distributor_id = new DistributorEntity();
-        distributor_id.setAddress("42 Main St");
-        distributor_id.setEmail("jane.doe@example.org");
-        distributor_id.setId(1L);
-        distributor_id.setName("Name");
-        distributor_id.setPhone("6625550144");
-        distributor_id.setTotal_order(1L);
-
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setDate("2020-03-01");
-        orderEntity.setDistributor_id(distributor_id);
-        orderEntity.setId(1L);
-        orderEntity.setOrderDetails("Order Details");
-        orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
-        orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
-        Optional<OrderEntity> ofResult = Optional.of(orderEntity);
-        when(orderRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setCategory("Category");
-        productEntity.setId(1L);
-        productEntity.setName("Name");
-        productEntity.setPrice(10.0d);
-        productEntity.setProductCode("Product Code");
-        productEntity.setProductions(new ArrayList<>());
-        Optional<ProductEntity> ofResult2 = Optional.of(productEntity);
-        when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult2);
-        when(stockRepository.findProductQuantityById(Mockito.<Long>any())).thenReturn(1);
-
-        // Act
-        CheckoutValidityResultDTO actualCheckOutValidityTestResult = orderServiceImp.CheckOutValidityTest(1L);
-
-        // Assert
-        verify(stockRepository, atLeast(1)).findProductQuantityById(Mockito.<Long>any());
-        verify(productRepository, atLeast(1)).findById(Mockito.<Long>any());
-        verify(orderRepository).findById(eq(1L));
-        List<CheckoutDataDTO> details = actualCheckOutValidityTestResult.getDetails();
-        assertEquals(4, details.size());
-        CheckoutDataDTO getResult = details.get(0);
-        assertEquals("Name", getResult.getProductName());
-        CheckoutDataDTO getResult2 = details.get(1);
-        assertEquals("Name", getResult2.getProductName());
-        CheckoutDataDTO getResult3 = details.get(2);
-        assertEquals("Name", getResult3.getProductName());
-        CheckoutDataDTO getResult4 = details.get(3);
-        assertEquals("Name", getResult4.getProductName());
-        assertEquals(-1, getResult2.getQuantity());
-        assertEquals(-1, getResult4.getQuantity());
-        assertEquals(-10.0d, getResult2.getPrice());
-        assertEquals(-10.0d, getResult4.getPrice());
-        assertEquals(-1L, getResult2.getProductId());
-        assertEquals(-1L, getResult4.getProductId());
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
-        assertEquals(1, getResult.getQuantity());
-        assertEquals(1, getResult3.getQuantity());
-        assertEquals(10.0d, getResult.getPrice());
-        assertEquals(10.0d, getResult3.getPrice());
-        assertEquals(1L, getResult.getProductId());
-        assertEquals(1L, getResult3.getProductId());
-        assertTrue(actualCheckOutValidityTestResult.isSuccess());
-    }
-
-    /**
-     * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
-     */
-    @Test
-    void testCheckOutValidityTest2() {
+    public void testCheckOutValidityTest() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -267,20 +210,23 @@ class OrderServiceImpDiffblueTest {
         distributor_id.setPhone("6625550144");
         distributor_id.setTotal_order(1L);
         OrderEntity orderEntity = mock(OrderEntity.class);
-        when(orderEntity.getProductQuantity()).thenReturn(new int[]{Integer.MIN_VALUE, -1, 1, -1});
-        when(orderEntity.getProduct()).thenReturn(new long[]{1L, -1L, 1L, -1L});
+        when(orderEntity.getProductQuantity()).thenReturn(new int[]{1, -1, 1, -1});
+        when(orderEntity.getProduct()).thenReturn(new long[]{});
+        when(orderEntity.getUnit()).thenReturn(new long[]{1L, -1L, 1L, -1L});
         doNothing().when(orderEntity).setDate(Mockito.<String>any());
         doNothing().when(orderEntity).setDistributor_id(Mockito.<DistributorEntity>any());
         doNothing().when(orderEntity).setId(anyLong());
         doNothing().when(orderEntity).setOrderDetails(Mockito.<String>any());
         doNothing().when(orderEntity).setProduct(Mockito.<long[]>any());
         doNothing().when(orderEntity).setProductQuantity(Mockito.<int[]>any());
+        doNothing().when(orderEntity).setUnit(Mockito.<long[]>any());
         orderEntity.setDate("2020-03-01");
         orderEntity.setDistributor_id(distributor_id);
         orderEntity.setId(1L);
         orderEntity.setOrderDetails("Order Details");
         orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
         orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
+        orderEntity.setUnit(new long[]{1L, -1L, 1L, -1L});
         Optional<OrderEntity> ofResult = Optional.of(orderEntity);
         when(orderRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
 
@@ -288,12 +234,11 @@ class OrderServiceImpDiffblueTest {
         productEntity.setCategory("Category");
         productEntity.setId(1L);
         productEntity.setName("Name");
-        productEntity.setPrice(10.0d);
         productEntity.setProductCode("Product Code");
         productEntity.setProductions(new ArrayList<>());
+        productEntity.setUnitPrice(new ArrayList<>());
         Optional<ProductEntity> ofResult2 = Optional.of(productEntity);
         when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult2);
-        when(stockRepository.findProductQuantityById(Mockito.<Long>any())).thenReturn(1);
 
         // Act
         CheckoutValidityResultDTO actualCheckOutValidityTestResult = orderServiceImp.CheckOutValidityTest(1L);
@@ -301,24 +246,25 @@ class OrderServiceImpDiffblueTest {
         // Assert
         verify(orderEntity).getProduct();
         verify(orderEntity).getProductQuantity();
+        verify(orderEntity).getUnit();
         verify(orderEntity).setDate(eq("2020-03-01"));
         verify(orderEntity).setDistributor_id(isA(DistributorEntity.class));
         verify(orderEntity).setId(eq(1L));
         verify(orderEntity).setOrderDetails(eq("Order Details"));
         verify(orderEntity).setProduct(isA(long[].class));
         verify(orderEntity).setProductQuantity(isA(int[].class));
-        verify(stockRepository).findProductQuantityById(eq(1L));
+        verify(orderEntity).setUnit(isA(long[].class));
         verify(orderRepository).findById(eq(1L));
-        assertNull(actualCheckOutValidityTestResult.getDetails());
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
-        assertFalse(actualCheckOutValidityTestResult.isSuccess());
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
+        assertTrue(actualCheckOutValidityTestResult.isSuccess());
+        assertTrue(actualCheckOutValidityTestResult.getDetails().isEmpty());
     }
 
     /**
      * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
      */
     @Test
-    void testCheckOutValidityTest3() {
+    public void testCheckOutValidityTest2() {
         // Arrange
         Optional<OrderEntity> emptyResult = Optional.empty();
         when(orderRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
@@ -327,9 +273,9 @@ class OrderServiceImpDiffblueTest {
         productEntity.setCategory("Category");
         productEntity.setId(1L);
         productEntity.setName("Name");
-        productEntity.setPrice(10.0d);
         productEntity.setProductCode("Product Code");
         productEntity.setProductions(new ArrayList<>());
+        productEntity.setUnitPrice(new ArrayList<>());
         Optional<ProductEntity> ofResult = Optional.of(productEntity);
         when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
 
@@ -339,7 +285,91 @@ class OrderServiceImpDiffblueTest {
         // Assert
         verify(orderRepository).findById(eq(1L));
         assertNull(actualCheckOutValidityTestResult.getDetails());
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
+        assertFalse(actualCheckOutValidityTestResult.isSuccess());
+    }
+
+    /**
+     * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
+     */
+    @Test
+    public void testCheckOutValidityTest3() {
+        // Arrange
+        DistributorEntity distributor_id = new DistributorEntity();
+        distributor_id.setAddress("42 Main St");
+        distributor_id.setEmail("jane.doe@example.org");
+        distributor_id.setId(1L);
+        distributor_id.setName("Name");
+        distributor_id.setPhone("6625550144");
+        distributor_id.setTotal_order(1L);
+        OrderEntity orderEntity = mock(OrderEntity.class);
+        when(orderEntity.getProductQuantity()).thenReturn(new int[]{1, 4, 1, 4, 1, 4, 1, 4});
+        when(orderEntity.getProduct()).thenReturn(new long[]{1L, -1L, 1L, -1L});
+        when(orderEntity.getUnit()).thenReturn(new long[]{1L, -1L, 1L, -1L});
+        doNothing().when(orderEntity).setDate(Mockito.<String>any());
+        doNothing().when(orderEntity).setDistributor_id(Mockito.<DistributorEntity>any());
+        doNothing().when(orderEntity).setId(anyLong());
+        doNothing().when(orderEntity).setOrderDetails(Mockito.<String>any());
+        doNothing().when(orderEntity).setProduct(Mockito.<long[]>any());
+        doNothing().when(orderEntity).setProductQuantity(Mockito.<int[]>any());
+        doNothing().when(orderEntity).setUnit(Mockito.<long[]>any());
+        orderEntity.setDate("2020-03-01");
+        orderEntity.setDistributor_id(distributor_id);
+        orderEntity.setId(1L);
+        orderEntity.setOrderDetails("Order Details");
+        orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
+        orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
+        orderEntity.setUnit(new long[]{1L, -1L, 1L, -1L});
+        Optional<OrderEntity> ofResult = Optional.of(orderEntity);
+        when(orderRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        UnitEntity unit = new UnitEntity();
+        unit.setCf(10.0d);
+        unit.setId(1L);
+        unit.setIngredientEntity(new ArrayList<>());
+        unit.setName("Name");
+        unit.setProductionEntity(new ArrayList<>());
+        unit.setStockEntity(new ArrayList<>());
+
+        SellingUnitPriceDTO sellingUnitPriceDTO = new SellingUnitPriceDTO();
+        sellingUnitPriceDTO.setPrice(10.0d);
+        sellingUnitPriceDTO.setUnit(unit);
+
+        ArrayList<SellingUnitPriceDTO> unitPrice = new ArrayList<>();
+        unitPrice.add(sellingUnitPriceDTO);
+
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setCategory("Category");
+        productEntity.setId(1L);
+        productEntity.setName("Name");
+        productEntity.setProductCode("Product Code");
+        productEntity.setProductions(new ArrayList<>());
+        productEntity.setUnitPrice(unitPrice);
+        Optional<ProductEntity> ofResult2 = Optional.of(productEntity);
+        when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult2);
+        when(stockRepository.findProductQuantityById(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(1);
+        when(unitRepository.findUnitNameById(Mockito.<Long>any())).thenReturn("42");
+
+        // Act
+        CheckoutValidityResultDTO actualCheckOutValidityTestResult = orderServiceImp.CheckOutValidityTest(1L);
+
+        // Assert
+        verify(orderEntity).getProduct();
+        verify(orderEntity).getProductQuantity();
+        verify(orderEntity).getUnit();
+        verify(orderEntity).setDate(eq("2020-03-01"));
+        verify(orderEntity).setDistributor_id(isA(DistributorEntity.class));
+        verify(orderEntity).setId(eq(1L));
+        verify(orderEntity).setOrderDetails(eq("Order Details"));
+        verify(orderEntity).setProduct(isA(long[].class));
+        verify(orderEntity).setProductQuantity(isA(int[].class));
+        verify(orderEntity).setUnit(isA(long[].class));
+        verify(stockRepository, atLeast(1)).findProductQuantityById(Mockito.<Long>any(), Mockito.<Long>any());
+        verify(unitRepository).findUnitNameById(eq(1L));
+        verify(orderRepository).findById(eq(1L));
+        verify(productRepository).findById(eq(1L));
+        assertNull(actualCheckOutValidityTestResult.getDetails());
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
         assertFalse(actualCheckOutValidityTestResult.isSuccess());
     }
 
@@ -347,7 +377,7 @@ class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#checkoutNow(CheckoutPaymentDTO)}
      */
     @Test
-    void testCheckoutNow() {
+    public void testCheckoutNow() {
         // Arrange
         DistributorEntity distributorEntity = new DistributorEntity();
         distributorEntity.setAddress("42 Main St");
@@ -365,14 +395,24 @@ class OrderServiceImpDiffblueTest {
         distributor_id.setName("Name");
         distributor_id.setPhone("6625550144");
         distributor_id.setTotal_order(1L);
-
-        OrderEntity orderEntity = new OrderEntity();
+        OrderEntity orderEntity = mock(OrderEntity.class);
+        when(orderEntity.getProductQuantity()).thenReturn(new int[]{1, -1, 1, -1});
+        when(orderEntity.getProduct()).thenReturn(new long[]{});
+        when(orderEntity.getUnit()).thenReturn(new long[]{1L, -1L, 1L, -1L});
+        doNothing().when(orderEntity).setDate(Mockito.<String>any());
+        doNothing().when(orderEntity).setDistributor_id(Mockito.<DistributorEntity>any());
+        doNothing().when(orderEntity).setId(anyLong());
+        doNothing().when(orderEntity).setOrderDetails(Mockito.<String>any());
+        doNothing().when(orderEntity).setProduct(Mockito.<long[]>any());
+        doNothing().when(orderEntity).setProductQuantity(Mockito.<int[]>any());
+        doNothing().when(orderEntity).setUnit(Mockito.<long[]>any());
         orderEntity.setDate("2020-03-01");
         orderEntity.setDistributor_id(distributor_id);
         orderEntity.setId(1L);
         orderEntity.setOrderDetails("Order Details");
         orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
         orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
+        orderEntity.setUnit(new long[]{1L, -1L, 1L, -1L});
         Optional<OrderEntity> ofResult = Optional.of(orderEntity);
 
         DistributorEntity distributorEntity2 = new DistributorEntity();
@@ -385,15 +425,14 @@ class OrderServiceImpDiffblueTest {
         doNothing().when(orderRepository).deleteById(Mockito.<Long>any());
         when(orderRepository.findDistributorByOrderId(anyLong())).thenReturn(distributorEntity2);
         when(orderRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        when(productBatchesStockRepository.findByProduct(Mockito.<ProductEntity>any())).thenReturn(new ArrayList<>());
 
         ProductEntity productEntity = new ProductEntity();
         productEntity.setCategory("Category");
         productEntity.setId(1L);
         productEntity.setName("Name");
-        productEntity.setPrice(10.0d);
         productEntity.setProductCode("Product Code");
         productEntity.setProductions(new ArrayList<>());
+        productEntity.setUnitPrice(new ArrayList<>());
         Optional<ProductEntity> ofResult2 = Optional.of(productEntity);
         when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult2);
 
@@ -414,66 +453,6 @@ class OrderServiceImpDiffblueTest {
         salesReportEntity.setItemAndQuantity(new ArrayList<>());
         salesReportEntity.setReceptAmount(10.0d);
         when(salesReportRepository.save(Mockito.<SalesReportEntity>any())).thenReturn(salesReportEntity);
-        doNothing().when(stockRepository).updateProductQuantityById(Mockito.<ProductEntity>any(), anyInt());
-        when(stockRepository.findProductQuantityById(Mockito.<Long>any())).thenReturn(1);
-
-        // Act
-        String actualCheckoutNowResult = orderServiceImp.checkoutNow(new CheckoutPaymentDTO(1L, 10.0d));
-
-        // Assert
-        verify(orderRepository).findDistributorByOrderId(eq(1L));
-        verify(productBatchesStockRepository, atLeast(1)).findByProduct(isA(ProductEntity.class));
-        verify(stockRepository, atLeast(1)).findProductQuantityById(Mockito.<Long>any());
-        verify(stockRepository, atLeast(1)).updateProductQuantityById(isA(ProductEntity.class), anyInt());
-        verify(orderRepository).deleteById(eq(1L));
-        verify(productRepository, atLeast(1)).findById(Mockito.<Long>any());
-        verify(orderRepository).findById(eq(1L));
-        verify(distributorRepository).save(isA(DistributorEntity.class));
-        verify(salesReportRepository).save(isA(SalesReportEntity.class));
-        assertEquals("Checkout successful", actualCheckoutNowResult);
-    }
-
-    /**
-     * Method under test: {@link OrderServiceImp#checkoutNow(CheckoutPaymentDTO)}
-     */
-    @Test
-    void testCheckoutNow2() {
-        // Arrange
-        DistributorEntity distributor_id = new DistributorEntity();
-        distributor_id.setAddress("42 Main St");
-        distributor_id.setEmail("jane.doe@example.org");
-        distributor_id.setId(1L);
-        distributor_id.setName("Name");
-        distributor_id.setPhone("6625550144");
-        distributor_id.setTotal_order(1L);
-        OrderEntity orderEntity = mock(OrderEntity.class);
-        when(orderEntity.getProductQuantity()).thenReturn(new int[]{Integer.MIN_VALUE, -1, 1, -1});
-        when(orderEntity.getProduct()).thenReturn(new long[]{1L, -1L, 1L, -1L});
-        doNothing().when(orderEntity).setDate(Mockito.<String>any());
-        doNothing().when(orderEntity).setDistributor_id(Mockito.<DistributorEntity>any());
-        doNothing().when(orderEntity).setId(anyLong());
-        doNothing().when(orderEntity).setOrderDetails(Mockito.<String>any());
-        doNothing().when(orderEntity).setProduct(Mockito.<long[]>any());
-        doNothing().when(orderEntity).setProductQuantity(Mockito.<int[]>any());
-        orderEntity.setDate("2020-03-01");
-        orderEntity.setDistributor_id(distributor_id);
-        orderEntity.setId(1L);
-        orderEntity.setOrderDetails("Order Details");
-        orderEntity.setProduct(new long[]{1L, -1L, 1L, -1L});
-        orderEntity.setProductQuantity(new int[]{1, -1, 1, -1});
-        Optional<OrderEntity> ofResult = Optional.of(orderEntity);
-        when(orderRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setCategory("Category");
-        productEntity.setId(1L);
-        productEntity.setName("Name");
-        productEntity.setPrice(10.0d);
-        productEntity.setProductCode("Product Code");
-        productEntity.setProductions(new ArrayList<>());
-        Optional<ProductEntity> ofResult2 = Optional.of(productEntity);
-        when(productRepository.findById(Mockito.<Long>any())).thenReturn(ofResult2);
-        when(stockRepository.findProductQuantityById(Mockito.<Long>any())).thenReturn(1);
 
         // Act
         String actualCheckoutNowResult = orderServiceImp.checkoutNow(new CheckoutPaymentDTO(1L, 10.0d));
@@ -481,14 +460,19 @@ class OrderServiceImpDiffblueTest {
         // Assert
         verify(orderEntity).getProduct();
         verify(orderEntity).getProductQuantity();
+        verify(orderEntity).getUnit();
         verify(orderEntity).setDate(eq("2020-03-01"));
         verify(orderEntity).setDistributor_id(isA(DistributorEntity.class));
         verify(orderEntity).setId(eq(1L));
         verify(orderEntity).setOrderDetails(eq("Order Details"));
         verify(orderEntity).setProduct(isA(long[].class));
         verify(orderEntity).setProductQuantity(isA(int[].class));
-        verify(stockRepository).findProductQuantityById(eq(1L));
+        verify(orderEntity).setUnit(isA(long[].class));
+        verify(orderRepository).findDistributorByOrderId(eq(1L));
+        verify(orderRepository).deleteById(eq(1L));
         verify(orderRepository).findById(eq(1L));
-        assertEquals("not enough item", actualCheckoutNowResult);
+        verify(distributorRepository).save(isA(DistributorEntity.class));
+        verify(salesReportRepository).save(isA(SalesReportEntity.class));
+        assertEquals("Checkout successful", actualCheckoutNowResult);
     }
 }

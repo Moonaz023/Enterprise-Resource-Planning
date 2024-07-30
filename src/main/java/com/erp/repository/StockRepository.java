@@ -17,13 +17,15 @@ public interface StockRepository extends JpaRepository<StockEntity, Long>  {
 	
 	StockEntity findByProductAndProductionUnit(ProductEntity product, UnitEntity unit);
 	
-	@Query("SELECT s.productQuantity FROM StockEntity s WHERE s.product.id = :productId")
-    int findProductQuantityById(@Param("productId") Long productId);
+	@Query("SELECT s.productQuantity FROM StockEntity s WHERE s.product.id = :productId and s.productionUnit.id =:unitId")
+    Integer findProductQuantityById(@Param("productId") Long productId,@Param("unitId") Long unitId);
 	
 	@Modifying
     @Transactional
-    @Query("UPDATE StockEntity s SET s.productQuantity = :stock WHERE s.product = :product")
-	void updateProductQuantityById(@Param("product") ProductEntity product, @Param("stock") int stock);
+    @Query("UPDATE StockEntity s SET s.productQuantity = :stock WHERE s.product = :product and s.productionUnit.id =:unit")
+	void updateProductQuantityById(@Param("product") ProductEntity product,@Param("unit") Long unit, @Param("stock") int stock);
+
+	//StockEntity findByProductAndUnit(ProductEntity product, UnitEntity unit);
 	
 
 }

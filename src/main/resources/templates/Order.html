@@ -59,12 +59,16 @@
 						<div id="productsContainer" class="form-group">
 							<label for="product">Products:</label><br>
 
-							<select class="productInput halfinput" id="productInput" name="product" required>
+							<select class="productInput form-control " id="productInput" name="product" required>
 								<option value="">Select Type</option>
 							</select>
 
-							<input type="text" class="productQuantity halfinput" name="productQuantity"
+							<input type="text" class="productQuantity halfinput " name="productQuantity"
 								placeholder="Product Quantity">
+								
+							<select class="productInput halfinput " id="unitInput" name="unit" required>
+								<option value="">Select Unit</option>
+							</select>
 
 							<div id="productsContainerDynamic" class="form-group"></div>
 						</div>

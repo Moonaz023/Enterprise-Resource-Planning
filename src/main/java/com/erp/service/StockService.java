@@ -15,8 +15,10 @@ public interface StockService {
 	void updateStockWhenProductChanged(ProductEntity oldProduct, ProductEntity newProduct, int newQuantity,
 			int oldQuantity);
 
-	void updateStockWhenProductionDeteted(ProductEntity product, int quantity);
+	//void updateStockWhenProductionDeteted(ProductEntity product, int quantity);
 
 	List<StockEntity> getAllProductsStock();
+
+	void updateStockWhenProductionDeteted(ProductEntity product, UnitEntity unit, int quantity);
 
 }

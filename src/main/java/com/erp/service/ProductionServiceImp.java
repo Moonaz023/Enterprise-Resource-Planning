@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.IngredientBatchesStockEntity;
-import com.erp.entity.ProductBatchesStockEntity;
+//import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
-import com.erp.repository.ProductBatchesStockRepository;
+//import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductionRepository;
 import java.lang.String;
 
@@ -26,8 +26,8 @@ public class ProductionServiceImp implements ProductionService {
 	private StockService stockService;
 	@Autowired
 	private IngredientStockService ingredientStockService;
-	@Autowired
-	private ProductBatchesStockRepository productBatchesStockRepository;
+	//@Autowired
+	//private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
 	@Transactional
@@ -41,21 +41,23 @@ public class ProductionServiceImp implements ProductionService {
 					totalCost += ingredientStockService.modifystock_purchagedlt(recipeData.getIngredient(),
 							recipeData.getIngredientQuantity());
 				}
-				production.setMargin(production.getProduct().getPrice()-(totalCost/production.getProductionQuantity()));
+				//production.setMargin(production.getProduct().getPrice()-(totalCost/production.getProductionQuantity()));
+				production.setUnitCost(totalCost/production.getProductionQuantity());
 				ProductionEntity savedProduction = productionRepository.save(production);
 
 				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity(),savedProduction.getProductionUnit());
 				System.out.println("Total Cost=" + totalCost);
 
-				ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
+				/*ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
 				productBatchesStock.setCostPerUnit(totalCost / production.getProductionQuantity());
 				productBatchesStock.setProduct(production.getProduct());
-				productBatchesStock.setProduction(savedProduction);
+				//productBatchesStock.setProduction(savedProduction);
+				productBatchesStock.setDateOfProduction(production.getDateOfProduction());
 				productBatchesStock.setQuantity(savedProduction.getProductionQuantity());
 				
 				productBatchesStock.setProductionUnit(production.getProductionUnit());
 
-				productBatchesStockRepository.save(productBatchesStock);
+				productBatchesStockRepository.save(productBatchesStock);*/
 
 				return "ok";
 			} catch (Exception e) {
@@ -114,7 +116,15 @@ public class ProductionServiceImp implements ProductionService {
 
 			ProductEntity Product = production.getProduct();
 			int Quantity = production.getProductionQuantity();
-			stockService.updateStockWhenProductionDeteted(Product, Quantity);
+			// work--------------------
+			// work--------------------
+			// work--------------------
+			// work--------------------
+			// work--------------------
+			// work--------------------
+			// work--------------------
+			
+			//stockService.updateStockWhenProductionDeteted(Product, Quantity);
 			
 			//Delete connection with ingredient also
 		}

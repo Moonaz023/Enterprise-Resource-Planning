@@ -2,7 +2,10 @@ package com.erp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +13,20 @@ import com.erp.dto.CheckoutDataDTO;
 import com.erp.dto.CheckoutPaymentDTO;
 import com.erp.dto.CheckoutValidityResultDTO;
 import com.erp.dto.ItemAndQuantityDTO;
+import com.erp.dto.SellingUnitPriceDTO;
 import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
-import com.erp.entity.ProductBatchesStockEntity;
+//import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.SalesReportEntity;
+import com.erp.entity.UnitEntity;
 import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
-import com.erp.repository.ProductBatchesStockRepository;
+//import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.SalesReportRepository;
 import com.erp.repository.StockRepository;
+import com.erp.repository.UnitRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -40,18 +46,22 @@ public class OrderServiceImp implements OrderService {
 	@Autowired
 	private SalesReportRepository salesReportRepository;
 	@Autowired
-	private ProductBatchesStockRepository productBatchesStockRepository;
+	private UnitRepository unitRepository;
+	//@Autowired
+	//private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
 	public String addOrder(OrderEntity order) {
 		int i = 0;
 		long[] products = order.getProduct();
 		int[] quantity = order.getProductQuantity();
+		long[] unit = order.getUnit();
 		StringBuilder orderDetailsBuilder = new StringBuilder();
 		for (long productId : products) {
 			String productName = productRepository.findProductNameById(productId);
+			String unitName = unitRepository.findUnitNameById(unit[i]);
 			if (productName != null) {
-				orderDetailsBuilder.append(productName).append(":" + quantity[i++]).append(", ");
+				orderDetailsBuilder.append(productName).append(":" + quantity[i++]).append(" " + unitName).append(", ");
 			}
 		}
 		String orderDetails = orderDetailsBuilder.toString();
@@ -83,11 +93,14 @@ public class OrderServiceImp implements OrderService {
 			OrderEntity order = optionalOrder.get();
 			long[] products = order.getProduct();
 			int[] quantities = order.getProductQuantity();
+			long[] unit=order.getUnit();
 			int i = 0;
 			List<CheckoutDataDTO> Checkoutdetails = new ArrayList<>();
 			;
 			for (long productId : products) {
-				int stock = stockRepository.findProductQuantityById(productId);
+				Integer stock = stockRepository.findProductQuantityById(productId,unit[i]);
+				if( stock == null)
+					stock=0;
 				if (stock - quantities[i] < 0) {
 					checkoutValidityResult.setSuccess(false);
 					checkoutValidityResult.setTotalPrice(0);
@@ -97,10 +110,21 @@ public class OrderServiceImp implements OrderService {
 
 				optionalOrderedProduct = productRepository.findById(productId);
 				ProductEntity orderedProduct = optionalOrderedProduct.get();
-				price = orderedProduct.getPrice();
+				//price = orderedProduct.getPrice();
+				List<SellingUnitPriceDTO> unitWisePrice = orderedProduct.getUnitPrice();
+				Map<Long, Double> unitPriceMap = unitWisePrice.stream()
+					    .collect(Collectors.toMap(
+					    		 it -> it.getUnit().getId(),
+					        SellingUnitPriceDTO::getPrice
+					    ));
+				
+				price = unitPriceMap.get(unit[i]);
 				total = total + (quantities[i] * price);
 				CheckoutDataDTO checkoutData = new CheckoutDataDTO();
 				checkoutData.setProductId(productId);
+				checkoutData.setUnit(unit[i]);
+				String unitName = unitRepository.findUnitNameById(unit[i]);
+				checkoutData.setUnitName(unitName);
 				checkoutData.setPrice(quantities[i] * price);
 				checkoutData.setQuantity(quantities[i]);
 				checkoutData.setProductName(orderedProduct.getName());
@@ -132,24 +156,30 @@ public class OrderServiceImp implements OrderService {
 		StringBuilder orderDetailsBuilder = new StringBuilder();
 		List<CheckoutDataDTO> details = validityDTO.getDetails();
 		List<ItemAndQuantityDTO> itemAndQuantityList =  new ArrayList<>();;
+		
 		for (CheckoutDataDTO order : details) {
-			int stock = stockRepository.findProductQuantityById(order.getProductId());
+
+			Integer stock = stockRepository.findProductQuantityById(order.getProductId(),order.getUnit());
+			if( stock == null)
+				stock=0;
+			
 			stock = stock - order.getQuantity();
 			Optional<ProductEntity> Optional_product = productRepository.findById(order.getProductId());
 			ProductEntity product = Optional_product.get();
-			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(", ");
+			String unitName = unitRepository.findUnitNameById(order.getUnit());
+			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(" " + unitName).append(", ");
 			
 			ItemAndQuantityDTO itemAndQuantity=new ItemAndQuantityDTO();
 			itemAndQuantity.setProduct(product);
 			itemAndQuantity.setProductQuantity(order.getQuantity());
 			itemAndQuantityList.add(itemAndQuantity);
-			stockRepository.updateProductQuantityById(product, stock);
+			stockRepository.updateProductQuantityById(product,order.getUnit(), stock);
 
-			List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProduct(product);
+			//List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProduct(product);
 
-			int remaing = order.getQuantity();
+			//int remaing = order.getQuantity();
 
-			for (ProductBatchesStockEntity it : productBatchesStock) {
+			/*for (ProductBatchesStockEntity it : productBatchesStock) {
 				if (it.getQuantity() >= remaing) {
 					it.setQuantity(it.getQuantity() - remaing);
 
@@ -167,7 +197,7 @@ public class OrderServiceImp implements OrderService {
 				if (remaing == 0)
 					break;
 
-			}
+			}*/
 
 		}
 		salesReport.setItemAndQuantity(itemAndQuantityList);

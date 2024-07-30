@@ -226,6 +226,7 @@ function gatherFormData() {
         let Sellingprice = quantityInputs[i].value;
 
         formData += `&unitPrice[${i}].unit.id=${unitId}&unitPrice[${i}].price=${Sellingprice}`;
+        
     }
 console.log(formData);
     return formData;
