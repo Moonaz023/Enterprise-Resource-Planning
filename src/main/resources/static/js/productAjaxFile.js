@@ -48,8 +48,8 @@ function getAllRecords() {
 					'<td>' + response[i].productCode + '</td>' +
 					'<td>' + response[i].name + '</td>' +
 					'<td>' + response[i].category + '</td>' +
-					'<td>' + response[i].price + '</td>' +
-					//                    '<td>' + response[i].discount + '</td>' +
+					//  '<td>' + response[i].price + '</td>' +
+					//  '<td>' + response[i].discount + '</td>' +
 
 					'<td><a href="#" onclick="editRecord(' + data[i].id + ')">Edit</a></td>' +
 					'<td><a href="#" onclick="deleteRecord(' + response[i].id + ')">Delete</a></td>' +

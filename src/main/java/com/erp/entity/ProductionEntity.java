@@ -50,7 +50,7 @@ public class ProductionEntity {
 	@JsonIgnore
 	private List<ProductBatchesStockEntity> productBatchesStockEntity;*/
 	
-	@OneToMany(mappedBy = "productionId", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "productionId", cascade = CascadeType.ALL)//, orphanRemoval = true
 	@JsonIgnore
 	private List<DamagedProductEntity> damagedProduct;
 	

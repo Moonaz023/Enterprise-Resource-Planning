@@ -1,4 +1,4 @@
-/*package com.erp.repository;
+package com.erp.repository;
 
 import java.util.List;
 
@@ -9,19 +9,20 @@ import org.springframework.stereotype.Repository;
 
 import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
-import com.erp.entity.ProductionEntity;
+import com.erp.entity.UnitEntity;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 public interface ProductBatchesStockRepository extends JpaRepository<ProductBatchesStockEntity, Long> {
 
-	List<ProductBatchesStockEntity> findByProduct(ProductEntity product);
+	List<ProductBatchesStockEntity> findByProductAndProductionUnit(ProductEntity product, UnitEntity unit);
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE ProductBatchesStockEntity s SET s.quantity = s.quantity - :quantity WHERE s.production = :productionId")
-	void modifyStockByProduction(ProductionEntity productionId, int quantity);
+	@Query("UPDATE ProductBatchesStockEntity s SET s.quantity = s.quantity - :quantity WHERE s.referenceKey = :referenceKey")
+	void modifyStockByProduction(String referenceKey, int quantity);
+
+	ProductBatchesStockEntity findByReferenceKey(String string);
 
 }
-*/

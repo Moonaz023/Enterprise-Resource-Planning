@@ -34,10 +34,13 @@ function editRecord(id) {
             <input type="hidden" id="id" name="id" value="${record.id}"><br>
             <label for="editProduct">Product</label>
             <select id="editProduct" name="product">${optionsHtml}</select><br>
+            <label for="editProductionUnit">Unit</label>
+            <select id="editProductionUnit" name="productionUnit"></select><br>
             <label for="editdateOfProduction">Production Date</label>
             <input type="text" id="editdateOfProduction" name="dateOfProduction" value="${record.dateOfProduction}"><br>
             <label for="editProductionQuantity">Production Quantity</label>
             <input type="text" id="editProductionQuantity" name="productionQuantity" value="${record.productionQuantity}"><br>
+            
             <button type="button" id="update" class="btn btn-success">Save</button>
             <button type="button" id="cancel" class="btn btn-primary">Cancel</button>
         </form>
@@ -51,7 +54,42 @@ function editRecord(id) {
 
 	// Set the selected product in the dropdown
 	$("#editProduct").val(record.product.id);
+	// Fetch and set the production units based on the selected product
+	fetchAndSetUnits(record.product.id, record.productionUnit.id);
 
+	// Attach change event to product dropdown in edit form
+	$("#editProduct").change(function() {
+		var selectedProductId = $(this).val();
+		fetchAndSetUnits(selectedProductId);
+	});
+
+	// Function to fetch and set units in the edit form
+	function fetchAndSetUnits(productId, selectedUnitId) {
+		if (productId) {
+			$.ajax({
+				type: "GET",
+				url: "/getProductById?id=" + productId,
+				success: function(response) {
+					var units = response.unitPrice;
+					$('#editProductionUnit').empty();
+					$('#editProductionUnit').append('<option value="">Select Unit</option>');
+					for (var i = 0; i < units.length; i++) {
+						$('#editProductionUnit').append('<option value="' + units[i].unit.id + '">' + units[i].unit.name + '</option>');
+					}
+					if (selectedUnitId) {
+						$("#editProductionUnit").val(selectedUnitId);
+					}
+				},
+				error: function(err) {
+					alert("Error: " + JSON.stringify(err));
+					console.error("Error:", err);
+				}
+			});
+		} else {
+			$('#editProductionUnit').empty();
+			$('#editProductionUnit').append('<option value="">Select Unit</option>');
+		}
+	}
 	// Attach click event for the update button
 	$("#update").click(function(event) {
 		// Get the form associated with the clicked button

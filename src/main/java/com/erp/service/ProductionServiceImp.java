@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.erp.dto.RecipeDataDOT;
 import com.erp.entity.IngredientBatchesStockEntity;
+import com.erp.entity.ProductBatchesStockEntity;
 //import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.ProductionEntity;
+import com.erp.repository.ProductBatchesStockRepository;
 //import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductionRepository;
 import java.lang.String;
@@ -26,8 +28,8 @@ public class ProductionServiceImp implements ProductionService {
 	private StockService stockService;
 	@Autowired
 	private IngredientStockService ingredientStockService;
-	//@Autowired
-	//private ProductBatchesStockRepository productBatchesStockRepository;
+	@Autowired
+	private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
 	@Transactional
@@ -48,16 +50,18 @@ public class ProductionServiceImp implements ProductionService {
 				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity(),savedProduction.getProductionUnit());
 				System.out.println("Total Cost=" + totalCost);
 
-				/*ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
+				/*Batch of Product*/
+				
+				ProductBatchesStockEntity productBatchesStock = new ProductBatchesStockEntity();
 				productBatchesStock.setCostPerUnit(totalCost / production.getProductionQuantity());
 				productBatchesStock.setProduct(production.getProduct());
-				//productBatchesStock.setProduction(savedProduction);
-				productBatchesStock.setDateOfProduction(production.getDateOfProduction());
+				productBatchesStock.setProductionUnit(savedProduction.getProductionUnit());
+				productBatchesStock.setReferenceKey("Production-"+String.valueOf(savedProduction.getId()));
 				productBatchesStock.setQuantity(savedProduction.getProductionQuantity());
 				
 				productBatchesStock.setProductionUnit(production.getProductionUnit());
 
-				productBatchesStockRepository.save(productBatchesStock);*/
+				productBatchesStockRepository.save(productBatchesStock);
 
 				return "ok";
 			} catch (Exception e) {
@@ -81,7 +85,7 @@ public class ProductionServiceImp implements ProductionService {
 		return productOptional.orElse(null);
 	}
 
-	@Override
+	@Override//need new test 1
 	public void updateProduction(ProductionEntity updatedProduction) {
 		Optional<ProductionEntity> oldProductionOptional = productionRepository.findById(updatedProduction.getId());
 
@@ -95,12 +99,18 @@ public class ProductionServiceImp implements ProductionService {
 			ProductEntity newProduct = updatedProduction.getProduct();
 
 			ProductionEntity savedProduction = productionRepository.save(updatedProduction);
+			ProductBatchesStockEntity batch = productBatchesStockRepository.findByReferenceKey("Production-"+String.valueOf(savedProduction.getId()));
+			batch.setQuantity(newQuantity);
+			batch.setProduct(newProduct);
+			batch.setProductionUnit(updatedProduction.getProductionUnit());
+			batch.setCostPerUnit(updatedProduction.getUnitCost());
+			productBatchesStockRepository.save(batch);
 
-			if (oldProduct.equals(newProduct) && oldQuantity != newQuantity) {
+			if (oldProduct.equals(newProduct) && oldProduction.getProductionUnit().equals(updatedProduction.getProductionUnit()) && oldQuantity != newQuantity) {
 
-				stockService.updateStockQuantity(savedProduction.getProduct(), newQuantity, oldQuantity);
-			} else if (!oldProduct.equals(newProduct)) {
-				stockService.updateStockWhenProductChanged(oldProduct, newProduct, newQuantity, oldQuantity);
+				stockService.updateStockQuantity(savedProduction.getProduct(),savedProduction.getProductionUnit(), newQuantity, oldQuantity);
+			} else if (!oldProduct.equals(newProduct) || !oldProduction.getProductionUnit().equals(updatedProduction.getProductionUnit())) {
+				stockService.updateStockWhenProductChanged(oldProduct,oldProduction.getProductionUnit(), newProduct,savedProduction.getProductionUnit(), newQuantity, oldQuantity);
 			}
 		} else {
 

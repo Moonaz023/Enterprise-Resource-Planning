@@ -1,7 +1,7 @@
 package com.erp.service;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
@@ -15,19 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.aot.DisabledInAotMode;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {ProductServiceImp.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @DisabledInAotMode
-public class ProductServiceImpDiffblueTest {
+class ProductServiceImpDiffblueTest {
     @MockBean
     private ProductRepository productRepository;
 
@@ -38,7 +38,7 @@ public class ProductServiceImpDiffblueTest {
      * Method under test: {@link ProductServiceImp#saveProduct(ProductEntity)}
      */
     @Test
-    public void testSaveProduct() {
+    void testSaveProduct() {
         // Arrange
         ProductEntity productEntity = new ProductEntity();
         productEntity.setCategory("Category");
@@ -68,7 +68,7 @@ public class ProductServiceImpDiffblueTest {
      * Method under test: {@link ProductServiceImp#getAllproduct()}
      */
     @Test
-    public void testGetAllproduct() {
+    void testGetAllproduct() {
         // Arrange
         ArrayList<ProductEntity> productEntityList = new ArrayList<>();
         when(productRepository.findAll()).thenReturn(productEntityList);
@@ -86,7 +86,7 @@ public class ProductServiceImpDiffblueTest {
      * Method under test: {@link ProductServiceImp#getProductById(long)}
      */
     @Test
-    public void testGetProductById() {
+    void testGetProductById() {
         // Arrange
         ProductEntity productEntity = new ProductEntity();
         productEntity.setCategory("Category");
@@ -110,7 +110,7 @@ public class ProductServiceImpDiffblueTest {
      * Method under test: {@link ProductServiceImp#updateProduct(ProductEntity)}
      */
     @Test
-    public void testUpdateProduct() {
+    void testUpdateProduct() {
         // Arrange
         ProductEntity productEntity = new ProductEntity();
         productEntity.setCategory("Category");
@@ -140,7 +140,7 @@ public class ProductServiceImpDiffblueTest {
      * Method under test: {@link ProductServiceImp#deleteProduct(long)}
      */
     @Test
-    public void testDeleteProduct() {
+    void testDeleteProduct() {
         // Arrange
         doNothing().when(productRepository).deleteById(Mockito.<Long>any());
 

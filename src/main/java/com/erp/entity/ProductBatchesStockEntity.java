@@ -1,4 +1,3 @@
-/*
 package com.erp.entity;
 
 import java.sql.Date;
@@ -31,17 +30,17 @@ public class ProductBatchesStockEntity {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private ProductEntity product;
-	private double costPerUnit;
-	private int quantity;
 	@ManyToOne
 	private UnitEntity productionUnit;
+	private double costPerUnit;
+	private int quantity;
+	private String referenceKey;	
+	
 	/*
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private ProductionEntity production;
 	*/
-	
-/*	private Date dateOfProduction;
+
 
 }
-*/

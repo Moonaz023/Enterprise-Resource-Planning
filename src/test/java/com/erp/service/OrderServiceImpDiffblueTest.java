@@ -1,6 +1,5 @@
 package com.erp.service;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -8,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
@@ -16,7 +14,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.erp.dto.CheckoutDataDTO;
 import com.erp.dto.CheckoutPaymentDTO;
 import com.erp.dto.CheckoutValidityResultDTO;
 import com.erp.dto.SellingUnitPriceDTO;
@@ -27,6 +24,7 @@ import com.erp.entity.SalesReportEntity;
 import com.erp.entity.UnitEntity;
 import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
+import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.SalesReportRepository;
 import com.erp.repository.StockRepository;
@@ -48,7 +46,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {OrderServiceImp.class})
 @ExtendWith(SpringExtension.class)
 @DisabledInAotMode
-public class OrderServiceImpDiffblueTest {
+class OrderServiceImpDiffblueTest {
     @MockBean
     private DistributorRepository distributorRepository;
 
@@ -57,6 +55,9 @@ public class OrderServiceImpDiffblueTest {
 
     @Autowired
     private OrderServiceImp orderServiceImp;
+
+    @MockBean
+    private ProductBatchesStockRepository productBatchesStockRepository;
 
     @MockBean
     private ProductRepository productRepository;
@@ -74,7 +75,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#addOrder(OrderEntity)}
      */
     @Test
-    public void testAddOrder() {
+    void testAddOrder() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -128,7 +129,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#addOrder(OrderEntity)}
      */
     @Test
-    public void testAddOrder2() {
+    void testAddOrder2() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -182,7 +183,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#getAllOrder()}
      */
     @Test
-    public void testGetAllOrder() {
+    void testGetAllOrder() {
         // Arrange
         ArrayList<OrderEntity> orderEntityList = new ArrayList<>();
         when(orderRepository.findAll()).thenReturn(orderEntityList);
@@ -200,7 +201,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
      */
     @Test
-    public void testCheckOutValidityTest() {
+    void testCheckOutValidityTest() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -255,7 +256,7 @@ public class OrderServiceImpDiffblueTest {
         verify(orderEntity).setProductQuantity(isA(int[].class));
         verify(orderEntity).setUnit(isA(long[].class));
         verify(orderRepository).findById(eq(1L));
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
         assertTrue(actualCheckOutValidityTestResult.isSuccess());
         assertTrue(actualCheckOutValidityTestResult.getDetails().isEmpty());
     }
@@ -264,7 +265,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
      */
     @Test
-    public void testCheckOutValidityTest2() {
+    void testCheckOutValidityTest2() {
         // Arrange
         Optional<OrderEntity> emptyResult = Optional.empty();
         when(orderRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
@@ -285,7 +286,7 @@ public class OrderServiceImpDiffblueTest {
         // Assert
         verify(orderRepository).findById(eq(1L));
         assertNull(actualCheckOutValidityTestResult.getDetails());
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
         assertFalse(actualCheckOutValidityTestResult.isSuccess());
     }
 
@@ -293,7 +294,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#CheckOutValidityTest(long)}
      */
     @Test
-    public void testCheckOutValidityTest3() {
+    void testCheckOutValidityTest3() {
         // Arrange
         DistributorEntity distributor_id = new DistributorEntity();
         distributor_id.setAddress("42 Main St");
@@ -328,6 +329,7 @@ public class OrderServiceImpDiffblueTest {
         unit.setId(1L);
         unit.setIngredientEntity(new ArrayList<>());
         unit.setName("Name");
+        unit.setProductBatchesStockEntity(new ArrayList<>());
         unit.setProductionEntity(new ArrayList<>());
         unit.setStockEntity(new ArrayList<>());
 
@@ -369,7 +371,7 @@ public class OrderServiceImpDiffblueTest {
         verify(orderRepository).findById(eq(1L));
         verify(productRepository).findById(eq(1L));
         assertNull(actualCheckOutValidityTestResult.getDetails());
-        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice(), 0.0);
+        assertEquals(0.0d, actualCheckOutValidityTestResult.getTotalPrice());
         assertFalse(actualCheckOutValidityTestResult.isSuccess());
     }
 
@@ -377,7 +379,7 @@ public class OrderServiceImpDiffblueTest {
      * Method under test: {@link OrderServiceImp#checkoutNow(CheckoutPaymentDTO)}
      */
     @Test
-    public void testCheckoutNow() {
+    void testCheckoutNow() {
         // Arrange
         DistributorEntity distributorEntity = new DistributorEntity();
         distributorEntity.setAddress("42 Main St");

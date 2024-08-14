@@ -38,9 +38,9 @@ public class StockServiceImp implements StockService {
     
 		
 	}
-	@Override
-	public void updateStockQuantity(ProductEntity product, int productionQuantity, int productionQuantity2) {
-		StockEntity stock = stockRepository.findByProduct(product);
+	@Override//need test 2
+	public void updateStockQuantity(ProductEntity product,UnitEntity unit, int productionQuantity, int productionQuantity2) {
+		StockEntity stock = stockRepository.findByProductAndProductionUnit(product,unit);
 
         if (stock == null) {
             
@@ -56,15 +56,16 @@ public class StockServiceImp implements StockService {
         stockRepository.save(stock);
 		
 	}
-	@Override
-	public void updateStockWhenProductChanged(ProductEntity oldProduct, ProductEntity newProduct, int newQuantity,
+	@Override//test need 3
+	public void updateStockWhenProductChanged(ProductEntity oldProduct,UnitEntity oldUnit,  ProductEntity newProduct,UnitEntity newUnit, int newQuantity,
 			int oldQuantity) {
-		StockEntity oldStock = stockRepository.findByProduct(oldProduct);
+		StockEntity oldStock = stockRepository.findByProductAndProductionUnit(oldProduct,oldUnit);
 
         if (oldStock == null) {
             
         	oldStock = new StockEntity();
         	oldStock.setProduct(oldProduct);
+        	oldStock.setProductionUnit(oldUnit);
         	oldStock.setProductQuantity(oldQuantity);
         } else {
             
@@ -72,12 +73,13 @@ public class StockServiceImp implements StockService {
         }
         stockRepository.save(oldStock);
         
-        StockEntity newStock = stockRepository.findByProduct(newProduct);
+        StockEntity newStock = stockRepository.findByProductAndProductionUnit(newProduct,newUnit);
 
         if (newStock == null) {
             
         	newStock = new StockEntity();
         	newStock.setProduct(newProduct);
+        	newStock.setProductionUnit(newUnit);
         	newStock.setProductQuantity(newQuantity);
         } else {
             

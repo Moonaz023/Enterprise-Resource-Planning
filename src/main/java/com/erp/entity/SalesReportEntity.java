@@ -35,6 +35,7 @@ public class SalesReportEntity {
 	private String details;
 	private double receptAmount;
 	private double due;
+	private double cost;
 	@ManyToOne
     @JoinColumn(name = "distributor_id", nullable = false)
     private DistributorEntity distributor;

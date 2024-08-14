@@ -16,13 +16,13 @@ import com.erp.dto.ItemAndQuantityDTO;
 import com.erp.dto.SellingUnitPriceDTO;
 import com.erp.entity.DistributorEntity;
 import com.erp.entity.OrderEntity;
-//import com.erp.entity.ProductBatchesStockEntity;
+import com.erp.entity.ProductBatchesStockEntity;
 import com.erp.entity.ProductEntity;
 import com.erp.entity.SalesReportEntity;
 import com.erp.entity.UnitEntity;
 import com.erp.repository.DistributorRepository;
 import com.erp.repository.OrderRepository;
-//import com.erp.repository.ProductBatchesStockRepository;
+import com.erp.repository.ProductBatchesStockRepository;
 import com.erp.repository.ProductRepository;
 import com.erp.repository.SalesReportRepository;
 import com.erp.repository.StockRepository;
@@ -47,8 +47,8 @@ public class OrderServiceImp implements OrderService {
 	private SalesReportRepository salesReportRepository;
 	@Autowired
 	private UnitRepository unitRepository;
-	//@Autowired
-	//private ProductBatchesStockRepository productBatchesStockRepository;
+	@Autowired
+	private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
 	public String addOrder(OrderEntity order) {
@@ -147,6 +147,7 @@ public class OrderServiceImp implements OrderService {
 	@Override
 	@Transactional
 	public String checkoutNow(CheckoutPaymentDTO checkoutPayment) {
+		double cost=0;
 		CheckoutValidityResultDTO validityDTO = CheckOutValidityTest(checkoutPayment.getOrderId());
 		boolean validity = validityDTO.isSuccess();
 		if (validity == false) {
@@ -174,19 +175,26 @@ public class OrderServiceImp implements OrderService {
 			itemAndQuantity.setProductQuantity(order.getQuantity());
 			itemAndQuantityList.add(itemAndQuantity);
 			stockRepository.updateProductQuantityById(product,order.getUnit(), stock);
+			
+			
+			
+			//Batch of Product
+			
+			Optional<UnitEntity> unitEntityOpt= unitRepository.findById(order.getUnit());
+			UnitEntity unitEntity=unitEntityOpt.get();
 
-			//List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProduct(product);
+			List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProductAndProductionUnit(product,unitEntity);
 
-			//int remaing = order.getQuantity();
-
-			/*for (ProductBatchesStockEntity it : productBatchesStock) {
+			int remaing = order.getQuantity();
+			
+			for (ProductBatchesStockEntity it : productBatchesStock) {
 				if (it.getQuantity() >= remaing) {
 					it.setQuantity(it.getQuantity() - remaing);
-
+					cost += it.getCostPerUnit()*remaing;
 					remaing = 0;
 				} else {
 					remaing -= it.getQuantity();
-
+					cost += it.getQuantity()*it.getCostPerUnit();
 					it.setQuantity(0);
 				}
 				if (it.getQuantity() == 0) {
@@ -197,7 +205,7 @@ public class OrderServiceImp implements OrderService {
 				if (remaing == 0)
 					break;
 
-			}*/
+			}
 
 		}
 		salesReport.setItemAndQuantity(itemAndQuantityList);
@@ -205,7 +213,7 @@ public class OrderServiceImp implements OrderService {
 		if (orderDetails.endsWith(", ")) {
 			orderDetails = orderDetails.substring(0, orderDetails.length() - 2);
 		}
-
+		salesReport.setCost(cost);
 		DistributorEntity distributor = orderRepository.findDistributorByOrderId(checkoutPayment.getOrderId());
 		distributor.setTotal_order(distributor.getTotal_order() + 1);
 		distributorRepository.save(distributor);
@@ -218,6 +226,7 @@ public class OrderServiceImp implements OrderService {
 		todayStringBuilder.append(today);
 		String todayString = todayStringBuilder.toString();
 		salesReport.setDate(todayString);
+		
 		salesReportRepository.save(salesReport);
 		orderRepository.deleteById(checkoutPayment.getOrderId());
 

@@ -10,9 +10,9 @@ public interface StockService {
 
 	void updateStock(ProductEntity product, int productionQuantity,UnitEntity unit);
 
-	void updateStockQuantity(ProductEntity product, int productionQuantity, int productionQuantity2);
+	void updateStockQuantity(ProductEntity product,UnitEntity unit, int productionQuantity, int productionQuantity2);
 
-	void updateStockWhenProductChanged(ProductEntity oldProduct, ProductEntity newProduct, int newQuantity,
+	void updateStockWhenProductChanged(ProductEntity oldProduct,UnitEntity oldUnit,  ProductEntity newProduct,UnitEntity newUnit, int newQuantity,
 			int oldQuantity);
 
 	//void updateStockWhenProductionDeteted(ProductEntity product, int quantity);
