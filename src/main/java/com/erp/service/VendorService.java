@@ -2,6 +2,8 @@ package com.erp.service;
 
 import java.util.List;
 
+import com.erp.dto.DistributorHistoryDTO;
+import com.erp.dto.VendorHistoryDTO;
 import com.erp.entity.VendorEntity;
 
 public interface VendorService {
@@ -13,5 +15,7 @@ public interface VendorService {
 	void deleteVendor(long id);
 
 	void updateVendor(VendorEntity updatedVendor);
+
+	VendorHistoryDTO vendorProfile(Long id);
 
 }

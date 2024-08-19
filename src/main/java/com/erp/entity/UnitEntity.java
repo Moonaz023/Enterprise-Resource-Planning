@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +33,7 @@ public class UnitEntity {
 	@OneToMany(mappedBy = "productionUnit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<ProductionEntity> productionEntity;
+	
 	@OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<IngredientEntity> ingredientEntity;

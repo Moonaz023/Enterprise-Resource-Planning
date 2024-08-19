@@ -2,7 +2,6 @@ package com.erp.entity;
 
 import java.util.List;
 
-import com.erp.dto.RecipeDataDOT;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,16 +34,18 @@ public class IngredientEntity {
 	@ManyToOne
 	private UnitEntity unit;
 	
-	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-	//@JsonManagedReference
-	 @JsonIgnore
+	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)//@JsonManagedReference
+	@JsonIgnore
     private List<IngredientBatchesStockEntity> ingredientBatchesStock;
+	
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
     private List<PurchaseIngredientEntity> purchaseIngredientEntity;
+	
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
     private List<IngredientStockEntity> ingredientStockEntity;
+	
 //	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
 //	@JsonIgnore
 //	private List<RecipeDataDOT> recipeDataDOTs;

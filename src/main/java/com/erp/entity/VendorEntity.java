@@ -1,9 +1,15 @@
 package com.erp.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,4 +34,9 @@ public class VendorEntity {
 	private String address;
 	private String phone;
 	private String email;
+	
+	
+	@OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+    private List<PurchaseIngredientEntity> purchaseIngredientEntity;
 }

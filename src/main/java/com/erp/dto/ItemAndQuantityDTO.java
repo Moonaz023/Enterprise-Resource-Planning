@@ -2,6 +2,7 @@ package com.erp.dto;
 
 
 import com.erp.entity.ProductEntity;
+import com.erp.entity.UnitEntity;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.ManyToOne;
@@ -22,5 +23,7 @@ public class ItemAndQuantityDTO {
 
 	@ManyToOne
 	private ProductEntity product;
+	@ManyToOne
+	private UnitEntity unit;
 	private int  productQuantity;
 }

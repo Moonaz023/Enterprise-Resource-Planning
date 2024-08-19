@@ -1,11 +1,7 @@
 package com.erp.dto;
-
 import java.util.Map;
 import java.util.AbstractMap.SimpleEntry;
-
-import com.erp.entity.DistributorEntity;
-import com.erp.entity.ProductEntity;
-import com.erp.entity.UnitEntity;
+import com.erp.entity.VendorEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +16,12 @@ import lombok.ToString;
 @ToString
 
 @Builder
-public class DistributorHistoryDTO {
+public class VendorHistoryDTO {
 	
-	private DistributorEntity distributor;
-	private Map<SimpleEntry<ProductEntity, UnitEntity>, Integer> productSale;
+	private VendorEntity vendor;
+	private Map<SimpleEntry<String, String>, Double> productBuy;
 	private double totalPaid;
 	private double totalDue;
 
 }
+

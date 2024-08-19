@@ -44,7 +44,7 @@ function getVendors() {
 				$("#Vendor_result").append(
 					'<tr class="tr">' +
 					
-					'<td>' + vendor_response[i].name + '</td>' +
+					'<td><a href="VendorProfile/' + vendor_response[i].id + '" >' + vendor_response[i].name + '</a></td>' +
 					'<td>' + vendor_response[i].address + '</td>' +
 					'<td>' + vendor_response[i].phone + '</td>' +
 					'<td>' + vendor_response[i].email + '</td>' +

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Distributor's Profile</title>
+	<title>Vendor's Profile</title>
 	<link rel="stylesheet" th:href="@{/css/styles.css}" />
 	<link rel="stylesheet" th:href="@{/css/editForm.css}" />
 	<link rel="stylesheet" th:href="@{/css/distributorProfile.css}" />
@@ -46,16 +46,14 @@
 			<div class="profile-container">
 
 				<div class="profile-details">
-					<h2 th:text="${distributorHistory.distributor.name}">Distributor Name</h2>
+					<h2 th:text="${distributorHistory.vendor.name}">Distributor Name</h2>
 					
-					<p><strong>Address:</strong> <span th:text="${distributorHistory.distributor.address}">Distributor
+					<p><strong>Address:</strong> <span th:text="${distributorHistory.vendor.address}">Distributor
 							Address</span></p>
-					<p><strong>Phone:</strong> <span th:text="${distributorHistory.distributor.phone}">Distributor
+					<p><strong>Phone:</strong> <span th:text="${distributorHistory.vendor.phone}">Distributor
 							Phone</span></p>
-					<p><strong>Email:</strong> <span th:text="${distributorHistory.distributor.email}">Distributor
+					<p><strong>Email:</strong> <span th:text="${distributorHistory.vendor.email}">Distributor
 							Email</span></p>
-					<p><strong>Total Orders:</strong> <span
-							th:text="${distributorHistory.distributor.total_order}">Total Orders</span></p>
 
 				</div>
 				<div class="profile-pic">
@@ -66,10 +64,11 @@
 			<div class="product-sales">
 				<h2>Product Sales</h2>
 				<ul>
-					<li th:each="entry : ${distributorHistory.productSale}">
-						<strong>Product:</strong> <span th:text="${entry.key.key.name}">Product Name</span> <br>
+					<li th:each="entry : ${distributorHistory.productBuy}">
 						
-						<strong>Quantity Sold:</strong> <span th:text="${entry.value}">Quantity Sold</span> <span th:text="${entry.key.value.name}">Unit Name</span>
+						<strong>Product:</strong> <span th:text="${entry.key.key}">Product Name</span> <br>
+						<strong>Quantity Sold:</strong> <span th:text="${entry.value}">Quantity Sold</span> <span th:text="${entry.key.value}">Unit Name</span>
+					
 					</li>
 				</ul>
 			</div>

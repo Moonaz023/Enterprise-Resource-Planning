@@ -31,7 +31,6 @@ import com.erp.repository.UnitRepository;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -93,14 +92,14 @@ public class OrderServiceImp implements OrderService {
 			OrderEntity order = optionalOrder.get();
 			long[] products = order.getProduct();
 			int[] quantities = order.getProductQuantity();
-			long[] unit=order.getUnit();
+			long[] unit = order.getUnit();
 			int i = 0;
 			List<CheckoutDataDTO> Checkoutdetails = new ArrayList<>();
 			;
 			for (long productId : products) {
-				Integer stock = stockRepository.findProductQuantityById(productId,unit[i]);
-				if( stock == null)
-					stock=0;
+				Integer stock = stockRepository.findProductQuantityById(productId, unit[i]);
+				if (stock == null)
+					stock = 0;
 				if (stock - quantities[i] < 0) {
 					checkoutValidityResult.setSuccess(false);
 					checkoutValidityResult.setTotalPrice(0);
@@ -110,14 +109,11 @@ public class OrderServiceImp implements OrderService {
 
 				optionalOrderedProduct = productRepository.findById(productId);
 				ProductEntity orderedProduct = optionalOrderedProduct.get();
-				//price = orderedProduct.getPrice();
+				// price = orderedProduct.getPrice();
 				List<SellingUnitPriceDTO> unitWisePrice = orderedProduct.getUnitPrice();
 				Map<Long, Double> unitPriceMap = unitWisePrice.stream()
-					    .collect(Collectors.toMap(
-					    		 it -> it.getUnit().getId(),
-					        SellingUnitPriceDTO::getPrice
-					    ));
-				
+						.collect(Collectors.toMap(it -> it.getUnit().getId(), SellingUnitPriceDTO::getPrice));
+
 				price = unitPriceMap.get(unit[i]);
 				total = total + (quantities[i] * price);
 				CheckoutDataDTO checkoutData = new CheckoutDataDTO();
@@ -147,7 +143,7 @@ public class OrderServiceImp implements OrderService {
 	@Override
 	@Transactional
 	public String checkoutNow(CheckoutPaymentDTO checkoutPayment) {
-		double cost=0;
+		double cost = 0;
 		CheckoutValidityResultDTO validityDTO = CheckOutValidityTest(checkoutPayment.getOrderId());
 		boolean validity = validityDTO.isSuccess();
 		if (validity == false) {
@@ -156,45 +152,53 @@ public class OrderServiceImp implements OrderService {
 		SalesReportEntity salesReport = new SalesReportEntity();
 		StringBuilder orderDetailsBuilder = new StringBuilder();
 		List<CheckoutDataDTO> details = validityDTO.getDetails();
-		List<ItemAndQuantityDTO> itemAndQuantityList =  new ArrayList<>();;
-		
+		List<ItemAndQuantityDTO> itemAndQuantityList = new ArrayList<>();
+		;
+
 		for (CheckoutDataDTO order : details) {
 
-			Integer stock = stockRepository.findProductQuantityById(order.getProductId(),order.getUnit());
-			if( stock == null)
-				stock=0;
-			
+			Integer stock = stockRepository.findProductQuantityById(order.getProductId(), order.getUnit());
+			if (stock == null)
+				stock = 0;
+
 			stock = stock - order.getQuantity();
 			Optional<ProductEntity> Optional_product = productRepository.findById(order.getProductId());
 			ProductEntity product = Optional_product.get();
 			String unitName = unitRepository.findUnitNameById(order.getUnit());
-			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(" " + unitName).append(", ");
-			
-			ItemAndQuantityDTO itemAndQuantity=new ItemAndQuantityDTO();
+			orderDetailsBuilder.append(product.getName()).append(":" + order.getQuantity()).append(" " + unitName)
+					.append(", ");
+
+			ItemAndQuantityDTO itemAndQuantity = new ItemAndQuantityDTO();
 			itemAndQuantity.setProduct(product);
+
+			Optional<UnitEntity> unitEntityOpt = unitRepository.findById(order.getUnit());
+			UnitEntity unitEntity = unitEntityOpt.get();
+
+			// ============================================================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.TEST
+
+			itemAndQuantity.setUnit(unitEntity);
+
+			// ============================================================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.TEST
+
 			itemAndQuantity.setProductQuantity(order.getQuantity());
 			itemAndQuantityList.add(itemAndQuantity);
-			stockRepository.updateProductQuantityById(product,order.getUnit(), stock);
-			
-			
-			
-			//Batch of Product
-			
-			Optional<UnitEntity> unitEntityOpt= unitRepository.findById(order.getUnit());
-			UnitEntity unitEntity=unitEntityOpt.get();
+			stockRepository.updateProductQuantityById(product, order.getUnit(), stock);
 
-			List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository.findByProductAndProductionUnit(product,unitEntity);
+			// Batch of Product
+
+			List<ProductBatchesStockEntity> productBatchesStock = productBatchesStockRepository
+					.findByProductAndProductionUnit(product, unitEntity);
 
 			int remaing = order.getQuantity();
-			
+
 			for (ProductBatchesStockEntity it : productBatchesStock) {
 				if (it.getQuantity() >= remaing) {
 					it.setQuantity(it.getQuantity() - remaing);
-					cost += it.getCostPerUnit()*remaing;
+					cost += it.getCostPerUnit() * remaing;
 					remaing = 0;
 				} else {
 					remaing -= it.getQuantity();
-					cost += it.getQuantity()*it.getCostPerUnit();
+					cost += it.getQuantity() * it.getCostPerUnit();
 					it.setQuantity(0);
 				}
 				if (it.getQuantity() == 0) {
@@ -226,7 +230,7 @@ public class OrderServiceImp implements OrderService {
 		todayStringBuilder.append(today);
 		String todayString = todayStringBuilder.toString();
 		salesReport.setDate(todayString);
-		
+
 		salesReportRepository.save(salesReport);
 		orderRepository.deleteById(checkoutPayment.getOrderId());
 

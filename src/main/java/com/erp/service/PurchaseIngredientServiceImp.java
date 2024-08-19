@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.erp.dto.ReceivableDTO;
 import com.erp.entity.IngredientEntity;
 import com.erp.entity.PurchaseIngredientEntity;
 import com.erp.repository.PurchaseIngredientRepository;
@@ -52,6 +53,16 @@ public class PurchaseIngredientServiceImp implements PurchaseIngredientService {
 		ingredientStockService.modifystock_purchagedlt(ingredient,quantity);
 		purchaseIngredientRepository.save(purchasedIngredient);
 		ingredientStockService.saveIngredientStock(purchasedIngredient);
+		
+	}
+	@Override
+	public List<PurchaseIngredientEntity> getAllPurchageDue() {
+		
+		return purchaseIngredientRepository.getAllPurchageDue();
+	}
+	@Override
+	public void updateDue(ReceivableDTO receivableData) {
+		purchaseIngredientRepository.updateDue(receivableData.getId(),receivableData.getRecept());
 		
 	}
 
