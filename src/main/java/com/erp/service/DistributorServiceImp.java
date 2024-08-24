@@ -22,20 +22,21 @@ import jakarta.persistence.EntityNotFoundException;
 public class DistributorServiceImp implements DistributorService {
 	@Autowired
 	private DistributorRepository distributorRepository;
-
+	
 	@Autowired
 	private SalesReportService salesReportService;
 
 	@Override
-	public void saveDistributor(DistributorEntity distributor) {
+	public void saveDistributor(DistributorEntity distributor,long tenantId) {
 		distributor.setTotal_order(0);
+		distributor.setTenantId(tenantId);
 		distributorRepository.save(distributor);
 
 	}
 
 	@Override
-	public List<DistributorEntity> getAlldistributor() {
-		return distributorRepository.findAll();
+	public List<DistributorEntity> getAlldistributor(long tenantId) {
+		return distributorRepository.findByTenantId(tenantId);
 	}
 
 	@Override
@@ -45,8 +46,9 @@ public class DistributorServiceImp implements DistributorService {
 	}
 
 	@Override
-	public void updateDistributor(DistributorEntity updatedDistributor) {
+	public void updateDistributor(DistributorEntity updatedDistributor,long tenantId) {
 		updatedDistributor.setTotal_order(updatedDistributor.getTotal_order());
+		updatedDistributor.setTenantId(tenantId);
 		distributorRepository.save(updatedDistributor);
 
 	}

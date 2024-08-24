@@ -10,7 +10,7 @@ $(document).ready(function() {
 		// Make the AJAX request
 		$.ajax({
 			type: "POST",
-			url: "/addIngredient",
+			url: "/admin/addIngredient",
 			data: form.serialize(),
 			success: function(result) {
 				getAllIngredients();
@@ -26,7 +26,7 @@ $(document).ready(function() {
 function getUnits() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllUnits",
+		url: "/admin/getAllUnits",
 		success: function(respons_unit) {
 
 			unitlist = respons_unit;
@@ -51,7 +51,7 @@ var allIngredientsdata = "";
 function getAllIngredients() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllIngredients",
+		url: "/admin/getAllIngredients",
 		success: function(response) {
 			console.log(response);
 			allIngredientsdata = response;
@@ -84,7 +84,7 @@ function getAllIngredients() {
 function deleteIngredientRecord(id) {
 	$.ajax({
 		type: "DELETE",
-		url: "/deleteIngredient?id=" + id,
+		url: "/admin/deleteIngredient?id=" + id,
 		success: function(result) {
 
 			getAllIngredients();
@@ -134,7 +134,7 @@ function editIngredientRecord(id) {
 		console.log(editForm.serialize())
 		$.ajax({
 			type: "POST",
-			url: "/updateIngredient",
+			url: "/admin/updateIngredient",
 			data: editForm.serialize(),
 			success: function(result) {
 				// Handle success, e.g., update the UI

@@ -25,14 +25,15 @@ public class VendorServiceImp implements VendorService {
 	private PurchaseIngredientRepository purchaseIngredientRepository;
 
 	@Override
-	public void saveVendor(VendorEntity vendor) {
+	public void saveVendor(VendorEntity vendor,long tenantId) {
+		vendor.setTenantId(tenantId);
 		vendorRepository.save(vendor);
 		
 	}
 
 	@Override
-	public List<VendorEntity> getAllVendor() {
-		return vendorRepository.findAll();
+	public List<VendorEntity> getAllVendor(long tenantId) {
+		return vendorRepository.findByTenantId(tenantId);
 		 
 	}
 
@@ -43,7 +44,8 @@ public class VendorServiceImp implements VendorService {
 	}
 
 	@Override
-	public void updateVendor(VendorEntity updatedVendor) {
+	public void updateVendor(VendorEntity updatedVendor,long tenantId) {
+		updatedVendor.setTenantId(tenantId);
 		vendorRepository.save(updatedVendor);
 		
 	}

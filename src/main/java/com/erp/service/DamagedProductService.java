@@ -6,8 +6,8 @@ import com.erp.entity.DamagedProductEntity;
 
 public interface DamagedProductService {
 
-	void save(DamagedProductEntity damagedProduct);
+	void save(DamagedProductEntity damagedProduct,long tenantId);
 
-	List<DamagedProductEntity> findAll();
+	List<DamagedProductEntity> findAll(long tenantId);
 
 }

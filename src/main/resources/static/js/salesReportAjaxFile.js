@@ -8,7 +8,7 @@ var sales = "";
 function getAllSalesRecords() {
     $.ajax({
         type: "GET",
-        url: "/getAllSales", 
+        url: "/admin/getAllSales", 
         success: function (sales) {
             console.log(sales); 
             salesdata = sales;

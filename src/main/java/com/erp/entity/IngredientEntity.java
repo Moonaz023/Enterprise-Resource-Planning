@@ -34,6 +34,8 @@ public class IngredientEntity {
 	@ManyToOne
 	private UnitEntity unit;
 	
+	private long tenantId;
+	
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)//@JsonManagedReference
 	@JsonIgnore
     private List<IngredientBatchesStockEntity> ingredientBatchesStock;

@@ -28,7 +28,7 @@ var distributor = "";
 function getDistributors() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllDistributors", // Replace with your actual endpoint
+		url: "/admin/getAllDistributors", // Replace with your actual endpoint
 		success: function(distributor_response) {
 			console.log(distributor_response); // Add this line
 			distributor = distributor_response;

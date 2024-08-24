@@ -24,7 +24,7 @@ public class IngredientStockServiceImp implements  IngredientStockService{
 	private IngredientBatchesStockRepository ingredientBatchesStockRepository;
 
 	@Override
-	public void saveIngredientStock(PurchaseIngredientEntity purchasedIngredient) {
+	public void saveIngredientStock(PurchaseIngredientEntity purchasedIngredient,long tenantId) {
 		IngredientStockEntity ingredientStock = ingredientStockRepository.findByIngredient(purchasedIngredient.getIngredient());
 		IngredientBatchesStockEntity ingredientBatchesStock = new IngredientBatchesStockEntity();
 		ingredientBatchesStock.setIngredient(purchasedIngredient.getIngredient());
@@ -40,7 +40,9 @@ public class IngredientStockServiceImp implements  IngredientStockService{
         	ingredientStock.setIngredientQuantity(ingredientStock.getIngredientQuantity() + purchasedIngredient.getQuantity());
    
         }
-
+        
+        ingredientBatchesStock.setTenantId(tenantId);
+        ingredientStock.setTenantId(tenantId);
         ingredientBatchesStockRepository.save(ingredientBatchesStock);
         ingredientStockRepository.save(ingredientStock);
 		
@@ -81,9 +83,9 @@ public class IngredientStockServiceImp implements  IngredientStockService{
 	}
 
 	@Override
-	public List<IngredientStockEntity> getAllIngredientsStock() {
+	public List<IngredientStockEntity> getAllIngredientsStock(long tenantId) {
 		
-		return ingredientStockRepository.findAll();
+		return ingredientStockRepository.findByTenantId(tenantId);
 	}
 
 	@Override

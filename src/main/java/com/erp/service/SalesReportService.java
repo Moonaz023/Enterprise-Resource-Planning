@@ -8,9 +8,9 @@ import com.erp.entity.SalesReportEntity;
 
 public interface SalesReportService {
 
-	List<SalesReportEntity> getAllSales();
+	List<SalesReportEntity> getAllSales(long tenantId);
 	List<SalesReportEntity> getSalesReportByDistributor(DistributorEntity distributor);
-	List<SalesReportEntity> getAllSalesDue();
+	List<SalesReportEntity> getAllSalesDue(long tenantId);
 	void updateDue(ReceivableDTO receivableData);
 	
 	

@@ -21,11 +21,11 @@ public class ProfitAnalysisServiceImp implements ProfitAnalysisService {
 	private PurchaseIngredientRepository purchaseIngredientRepository;
 
 	@Override
-	public GrossProfitDTO getLifetimeProfitData() {
+	public GrossProfitDTO getLifetimeProfitData(long tenantId) {
 		double Sales = 0;
 		double COGS = 0;
 		double GP = 0;
-		List<SalesReportEntity> allSelSales = salesReportRepository.findAll();
+		List<SalesReportEntity> allSelSales = salesReportRepository.findByTenantId(tenantId);
 
 		for (SalesReportEntity it : allSelSales) {
 			Sales += it.getDue() + it.getReceptAmount();
@@ -42,12 +42,12 @@ public class ProfitAnalysisServiceImp implements ProfitAnalysisService {
 	}
 
 	@Override
-	public GrossProfitDTO getFilteredProfitData(FilterByDate date) {
+	public GrossProfitDTO getFilteredProfitData(FilterByDate date,long tenantId) {
 		double Sales = 0;
 		double COGS = 0;
 		double GP = 0;
 		List<SalesReportEntity> allSelSales = salesReportRepository.findByDateRange(date.getStartDate(),
-				date.getEndDate());
+				date.getEndDate(), tenantId);
 
 		for (SalesReportEntity it : allSelSales) {
 			Sales += it.getDue() + it.getReceptAmount();
@@ -64,13 +64,13 @@ public class ProfitAnalysisServiceImp implements ProfitAnalysisService {
 	}
 
 	@Override
-	public OperatingProfitDTO getOperatingProfit() {
-		GrossProfitDTO grossProfitData = getLifetimeProfitData();
+	public OperatingProfitDTO getOperatingProfit(long tenantId) {
+		GrossProfitDTO grossProfitData = getLifetimeProfitData(tenantId);
 		double totalExpence = grossProfitData.getCOGS();
 		OperatingProfitDTO operatingProfitobj = new OperatingProfitDTO();
 		operatingProfitobj.setGrossProfit(grossProfitData.getGP());
 
-		Double purchaseIngredientCost = purchaseIngredientRepository.findTotalCost();
+		Double purchaseIngredientCost = purchaseIngredientRepository.findTotalCost(tenantId);
 		if(purchaseIngredientCost==null)
 			purchaseIngredientCost=0.0;
 		totalExpence += purchaseIngredientCost;
@@ -84,8 +84,8 @@ public class ProfitAnalysisServiceImp implements ProfitAnalysisService {
 	}
 
 	@Override
-	public OperatingProfitDTO getOperatingProfit(FilterByDate date) {
-		GrossProfitDTO grossProfitData = getFilteredProfitData(date);
+	public OperatingProfitDTO getOperatingProfit(FilterByDate date,long tenantId) {
+		GrossProfitDTO grossProfitData = getFilteredProfitData(date,tenantId);
 		double totalExpence = grossProfitData.getCOGS();
 		OperatingProfitDTO operatingProfitobj = new OperatingProfitDTO();
 		operatingProfitobj.setGrossProfit(grossProfitData.getGP());
@@ -93,7 +93,7 @@ public class ProfitAnalysisServiceImp implements ProfitAnalysisService {
 		Date startDate = Date.valueOf(date.getStartDate());
 		Date endDate = Date.valueOf(date.getEndDate());
 
-		Double purchaseIngredientCost = purchaseIngredientRepository.findByDateRange(startDate, endDate);
+		Double purchaseIngredientCost = purchaseIngredientRepository.findByDateRange(startDate, endDate,tenantId);
 		if (purchaseIngredientCost == null)
 			purchaseIngredientCost = 0.0;
 		totalExpence += purchaseIngredientCost;

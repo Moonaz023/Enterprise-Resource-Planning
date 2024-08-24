@@ -34,7 +34,7 @@ import java.time.LocalDate;
 
 @Service
 public class OrderServiceImp implements OrderService {
-	@Autowired
+	@Autowired   
 	public OrderRepository orderRepository;
 	@Autowired
 	private ProductRepository productRepository;
@@ -50,7 +50,7 @@ public class OrderServiceImp implements OrderService {
 	private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
-	public String addOrder(OrderEntity order) {
+	public String addOrder(OrderEntity order,long tenantId) {
 		int i = 0;
 		long[] products = order.getProduct();
 		int[] quantity = order.getProductQuantity();
@@ -70,15 +70,16 @@ public class OrderServiceImp implements OrderService {
 		order.setOrderDetails(orderDetails);
 		System.out.println("Order Details: " + orderDetails);
 
+		order.setTenantId(tenantId);
 		orderRepository.save(order);
 		return "Order received successfully";
 
 	}
 
 	@Override
-	public List<OrderEntity> getAllOrder() {
+	public List<OrderEntity> getAllOrder(long tenantId) {
 
-		return orderRepository.findAll();
+		return orderRepository.findByTenantId(tenantId);
 	}
 
 	@Override
@@ -142,14 +143,14 @@ public class OrderServiceImp implements OrderService {
 
 	@Override
 	@Transactional
-	public String checkoutNow(CheckoutPaymentDTO checkoutPayment) {
+	public String checkoutNow(CheckoutPaymentDTO checkoutPayment,long tenantId) {
 		double cost = 0;
 		CheckoutValidityResultDTO validityDTO = CheckOutValidityTest(checkoutPayment.getOrderId());
 		boolean validity = validityDTO.isSuccess();
 		if (validity == false) {
 			return "not enough item";
 		}
-		SalesReportEntity salesReport = new SalesReportEntity();
+		SalesReportEntity salesReport = new SalesReportEntity();salesReport.setTenantId(tenantId);
 		StringBuilder orderDetailsBuilder = new StringBuilder();
 		List<CheckoutDataDTO> details = validityDTO.getDetails();
 		List<ItemAndQuantityDTO> itemAndQuantityList = new ArrayList<>();

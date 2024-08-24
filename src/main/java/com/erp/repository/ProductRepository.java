@@ -1,5 +1,7 @@
 package com.erp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     String findProductNameById(@Param("productId") Long productId);
 	//@Query("SELECT p.price FROM ProductEntity p WHERE p.id = :productId")
 	//double findProductPriceById(long productId);
+
+	List<ProductEntity> findByTenantId(long tenantId);
 }

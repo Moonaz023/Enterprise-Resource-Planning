@@ -30,4 +30,7 @@ public class IngredientStockEntity {
     private IngredientEntity ingredient;
     private double ingredientQuantity;
     //private  double averagePrice;
+    
+    
+    private long tenantId;
 }

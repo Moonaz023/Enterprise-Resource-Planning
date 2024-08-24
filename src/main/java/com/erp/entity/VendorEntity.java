@@ -35,6 +35,8 @@ public class VendorEntity {
 	private String phone;
 	private String email;
 	
+	private long tenantId;
+	
 	
 	@OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore

@@ -15,18 +15,20 @@ import com.erp.entity.VendorEntity;
 import jakarta.transaction.Transactional;
 @Repository
 public interface PurchaseIngredientRepository extends JpaRepository<PurchaseIngredientEntity, Long>{
-	@Query("SELECT SUM(p.bill) FROM PurchaseIngredientEntity p")
-	Double findTotalCost();
-	@Query("SELECT SUM(p.bill) FROM PurchaseIngredientEntity p WHERE p.dateOfPurchase >= :startDate AND p.dateOfPurchase <= :endDate")
-	Double findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	@Query("SELECT SUM(p.bill) FROM PurchaseIngredientEntity p where p.tenantId=:tenantId")
+	Double findTotalCost(@Param("tenantId") long tenantId);
+	@Query("SELECT SUM(p.bill) FROM PurchaseIngredientEntity p WHERE p.dateOfPurchase >= :startDate AND p.dateOfPurchase <= :endDate AND p.tenantId = :tenantId")
+	Double findByDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, long tenantId);
 	List<PurchaseIngredientEntity> getByVendor(VendorEntity vendor);
-	@Query("SELECT p from PurchaseIngredientEntity p WHERE p.bill > p.paid")
-	List<PurchaseIngredientEntity> getAllPurchageDue();
+	@Query("SELECT p from PurchaseIngredientEntity p WHERE p.bill > p.paid AND p.tenantId= :tenantId")
+	List<PurchaseIngredientEntity> getAllPurchageDue(@Param("tenantId") long tenantId);
 	
 	@Query("UPDATE PurchaseIngredientEntity p SET p.paid = p.paid + :recept WHERE p.id = :id")
 	@Modifying
 	@Transactional
 	void updateDue(@Param("id") long id, @Param("recept") double recept);
+	List<PurchaseIngredientEntity> findByTenantId(long tenantId);
+	
 
 
 }

@@ -12,18 +12,18 @@ import com.erp.repository.SalesReportRepository;
 @Service
 public class SalesReportServiceImp implements SalesReportService{
 	@Autowired
-	private SalesReportRepository salesReportRepository;
+	private SalesReportRepository salesReportRepository;   
 	@Override
-	public List<SalesReportEntity> getAllSales() {
-		return salesReportRepository.findAll();
+	public List<SalesReportEntity> getAllSales(long tenantId) {
+		return salesReportRepository.findByTenantId(tenantId);
 	}
 	@Override
 	public List<SalesReportEntity> getSalesReportByDistributor(DistributorEntity distributor) {
 		return salesReportRepository.findByDistributor(distributor);
 	}
 	@Override
-	public List<SalesReportEntity> getAllSalesDue() {
-		return salesReportRepository.findSalesDue();
+	public List<SalesReportEntity> getAllSalesDue(long tenantId) {
+		return salesReportRepository.findSalesDue(tenantId);
 	}
 	@Override
 	public void updateDue(ReceivableDTO receivableData) {

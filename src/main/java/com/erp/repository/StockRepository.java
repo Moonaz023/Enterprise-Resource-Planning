@@ -1,5 +1,7 @@
 package com.erp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +26,8 @@ public interface StockRepository extends JpaRepository<StockEntity, Long>  {
     @Transactional
     @Query("UPDATE StockEntity s SET s.productQuantity = :stock WHERE s.product = :product and s.productionUnit.id =:unit")
 	void updateProductQuantityById(@Param("product") ProductEntity product,@Param("unit") Long unit, @Param("stock") int stock);
+
+	List<StockEntity> findByTenantId(long tenantId);
 
 	//StockEntity findByProductAndUnit(ProductEntity product, UnitEntity unit);
 	

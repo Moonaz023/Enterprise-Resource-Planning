@@ -33,7 +33,7 @@ public class ProductionServiceImp implements ProductionService {
 
 	@Override
 	@Transactional
-	public String saveProduction(ProductionEntity production) {
+	public String saveProduction(ProductionEntity production,long tenantId) {
 
 		double totalCost = 0;
 		List<RecipeDataDOT> recipeDatas = production.getRecipe();
@@ -45,6 +45,7 @@ public class ProductionServiceImp implements ProductionService {
 				}
 				//production.setMargin(production.getProduct().getPrice()-(totalCost/production.getProductionQuantity()));
 				production.setUnitCost(totalCost/production.getProductionQuantity());
+				production.setTenantId(tenantId);
 				ProductionEntity savedProduction = productionRepository.save(production);
 
 				stockService.updateStock(savedProduction.getProduct(), savedProduction.getProductionQuantity(),savedProduction.getProductionUnit());
@@ -60,7 +61,7 @@ public class ProductionServiceImp implements ProductionService {
 				productBatchesStock.setQuantity(savedProduction.getProductionQuantity());
 				
 				productBatchesStock.setProductionUnit(production.getProductionUnit());
-
+				productBatchesStock.setTenantId(tenantId);
 				productBatchesStockRepository.save(productBatchesStock);
 
 				return "ok";
@@ -75,8 +76,8 @@ public class ProductionServiceImp implements ProductionService {
 	}
 
 	@Override
-	public List<ProductionEntity> getAllproduction() {
-		return productionRepository.findAll();
+	public List<ProductionEntity> getAllproduction(long tenantId) {
+		return productionRepository.findByTenantId(tenantId);
 	}
 
 	@Override
@@ -97,6 +98,8 @@ public class ProductionServiceImp implements ProductionService {
 
 			ProductEntity oldProduct = oldProduction.getProduct();
 			ProductEntity newProduct = updatedProduction.getProduct();
+			
+			updatedProduction.setTenantId(oldProduction.getTenantId());
 
 			ProductionEntity savedProduction = productionRepository.save(updatedProduction);
 			ProductBatchesStockEntity batch = productBatchesStockRepository.findByReferenceKey("Production-"+String.valueOf(savedProduction.getId()));

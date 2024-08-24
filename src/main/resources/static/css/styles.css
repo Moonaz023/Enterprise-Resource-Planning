@@ -64,9 +64,6 @@ aside li {
 	cursor: pointer;
 }
 /* CSS for header */
-#header {
-  order: -1;
-}
 
 /* CSS for padding on options */
 .option {

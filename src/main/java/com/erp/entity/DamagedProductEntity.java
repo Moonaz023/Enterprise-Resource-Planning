@@ -26,5 +26,7 @@ public class DamagedProductEntity {
 	@ManyToOne
 	private ProductionEntity productionId;
 	private int quantity;
+	
+	private long tenantId;
 
 }

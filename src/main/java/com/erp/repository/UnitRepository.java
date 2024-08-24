@@ -1,5 +1,7 @@
 package com.erp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +14,8 @@ public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
 
 	@Query("SELECT u.name FROM UnitEntity u WHERE u.id = :id")
 	String findUnitNameById(@Param("id") Long id);
+
+	List<UnitEntity> findByTenantId(long tenantId);
 	
 	/*@Query("SELECT p.name FROM ProductEntity p WHERE p.id = :productId")
     String findProductNameById(@Param("productId") Long productId);*/

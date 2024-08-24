@@ -20,7 +20,7 @@ var vendor = "";
 function getVendors() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllVendors",
+		url: "/admin/getAllVendors",
 		success: function(vendor_response) {
 			console.log(vendor_response);
 			vendor = vendor_response;
@@ -43,7 +43,7 @@ function getVendors() {
 function getAllIngredient() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllIngredients",
+		url: "/admin/getAllIngredients",
 		success: function(responseIngredient) {
 
 			Ingredientdata = responseIngredient;
@@ -73,7 +73,7 @@ $("#insertPurchase").click(function() {
 	//console.log("yes");
 	$.ajax({
 		type: "POST",
-		url: "/savePurchasedIngredient",
+		url: "/admin/savePurchasedIngredient",
 		data: form.serialize(),
 		success: function(result) {
 			getAllPurchasedIngredients();
@@ -91,7 +91,7 @@ var allPurchasedIngredientsdata = "";
 function getAllPurchasedIngredients() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllPurchasedIngredients",
+		url: "/admin/getAllPurchasedIngredients",
 		success: function(response) {
 			//console.log(response); 
 			allPurchasedIngredientsdata = response;
@@ -125,7 +125,7 @@ function getAllPurchasedIngredients() {
 function deleteIngredientPurchaseRecord(id) {
 	$.ajax({
 		type: "DELETE",
-		url: "/deleteIngredientPurchaseRecord?id=" + id,
+		url: "/admin/deleteIngredientPurchaseRecord?id=" + id,
 		success: function(result) {
 			getAllPurchasedIngredients();
 		},
@@ -215,7 +215,7 @@ function editIngredientPurchaseRecord(id) {
 		console.log(editForm.serialize())
 		$.ajax({
 			type: "POST",
-			url: "/updateIngredientPurchase",
+			url: "/admin/updateIngredientPurchase",
 			data: editForm.serialize(),
 			success: function(result) {
 				// Handle success, e.g., update the UI

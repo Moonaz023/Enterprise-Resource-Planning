@@ -45,4 +45,7 @@ public class SalesReportEntity {
 	@CollectionTable(joinColumns = @JoinColumn(name = "SalesId"))
 	private List<ItemAndQuantityDTO> itemAndQuantity;
 	
+	
+	private long tenantId;
+	
 }

@@ -47,5 +47,7 @@ public class ProductEntity {
 	@JsonIgnore
 	@ToString.Exclude
 	private List<ProductionEntity> productions;
+	
+	private long tenantId;
 
 }

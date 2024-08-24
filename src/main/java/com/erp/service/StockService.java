@@ -17,7 +17,7 @@ public interface StockService {
 
 	//void updateStockWhenProductionDeteted(ProductEntity product, int quantity);
 
-	List<StockEntity> getAllProductsStock();
+	List<StockEntity> getAllProductsStock(long tenantId);
 
 	void updateStockWhenProductionDeteted(ProductEntity product, UnitEntity unit, int quantity);
 

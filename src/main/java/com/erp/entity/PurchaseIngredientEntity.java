@@ -50,4 +50,8 @@ public class PurchaseIngredientEntity {
     @OneToMany(mappedBy = "purchaseId", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
     private List<IngredientBatchesStockEntity> ingredientBatchesStockEntity;
+    
+    
+    
+    private long tenantId;
 }

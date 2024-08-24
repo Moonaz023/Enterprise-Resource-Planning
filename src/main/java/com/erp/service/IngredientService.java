@@ -6,12 +6,12 @@ import com.erp.entity.IngredientEntity;
 
 public interface IngredientService {
 
-	void saveIngredient(IngredientEntity ingredient);
+	void saveIngredient(IngredientEntity ingredient,long tenantId);
 
-	List<IngredientEntity> getAllIngredients();
+	List<IngredientEntity> getAllIngredients(long tenantId);
 
 	void deleteIngredient(Long id);
 
-	void updateIngredient(IngredientEntity ingredient);
+	void updateIngredient(IngredientEntity ingredient,long tenantId);
 
 }

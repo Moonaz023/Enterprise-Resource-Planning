@@ -46,5 +46,8 @@ public class UnitEntity {
 	@OneToMany(mappedBy = "productionUnit", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<StockEntity> stockEntity;
+	
+	
+	private long tenantId;
 
 }

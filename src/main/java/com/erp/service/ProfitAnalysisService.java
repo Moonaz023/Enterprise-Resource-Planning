@@ -6,12 +6,12 @@ import com.erp.dto.OperatingProfitDTO;
 
 public interface ProfitAnalysisService {
 
-	GrossProfitDTO getLifetimeProfitData();
+	GrossProfitDTO getLifetimeProfitData(long tenantId);
 
-	GrossProfitDTO getFilteredProfitData(FilterByDate date);
+	GrossProfitDTO getFilteredProfitData(FilterByDate date,long tenantId);
 
-	OperatingProfitDTO getOperatingProfit();
+	OperatingProfitDTO getOperatingProfit(long tenantId);
 
-	OperatingProfitDTO getOperatingProfit(FilterByDate date);
+	OperatingProfitDTO getOperatingProfit(FilterByDate date,long tenantId);
 
 }

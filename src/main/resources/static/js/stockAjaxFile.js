@@ -9,7 +9,7 @@ var data = "";
 function getAllStockRecords() {
     $.ajax({
         type: "GET",
-        url: "/getAllProductsStock", 
+        url: "/admin/getAllProductsStock", 
         success: function (stock) {
             console.log(stock); 
             stockdata = stock;

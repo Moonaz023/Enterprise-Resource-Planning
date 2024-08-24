@@ -1,6 +1,7 @@
 package com.erp.adminController;
 
 
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +22,7 @@ import com.erp.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/admin")
 public class OrderController {
 
 	@Autowired
@@ -27,22 +30,34 @@ public class OrderController {
 	@Autowired
 	public OrderService orderService;
 	
+	@ModelAttribute
+	public void commonUser(Principal p, Model user) {
+		if (p != null) {
+			String name = p.getName();
+
+			user.addAttribute("user", name);
+		}
+	}
+	
+	
 	@GetMapping("/order")
 	public String index() {
 		return "Order";
 	}
 	@PostMapping("/addOrder")
 	@ResponseBody
-	public String addOrder(@ModelAttribute OrderEntity order) {
+	public String addOrder(@ModelAttribute OrderEntity order, HttpSession session) {
+		Long tenantId = (Long) session.getAttribute("tenantId");
 		
-		return orderService.addOrder(order);
+		return orderService.addOrder(order,tenantId);
 	    
 	}
 
 	@GetMapping("/getodd")
 	@ResponseBody
 	public List<OrderEntity> getSecondProducts(Model m, HttpSession session) {
-		return orderService.getAllOrder();
+		Long tenantId = (Long) session.getAttribute("tenantId");
+		return orderService.getAllOrder(tenantId);
 	    
 	}
 	@GetMapping("/checkOutValidity")
@@ -54,9 +69,10 @@ public class OrderController {
 	}
 	@PostMapping("/checkoutNow")
 	@ResponseBody
-	public String checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment) {
+	public String checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, HttpSession session) {
+		Long tenantId = (Long) session.getAttribute("tenantId");
 		
-		return orderService.checkoutNow(checkoutPayment);
+		return orderService.checkoutNow(checkoutPayment,tenantId);
 	    
 	}
 

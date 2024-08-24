@@ -41,6 +41,8 @@ public class ProductBatchesStockEntity {
 	@JoinColumn(nullable = false)
 	private ProductionEntity production;
 	*/
+	
+	private long tenantId;
 
 
 }

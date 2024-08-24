@@ -11,15 +11,19 @@ import com.erp.repository.DamagedProductRepository;
 
 @Service
 public class DamagedProductServiceImp implements DamagedProductService {
+	
 	@Autowired
 	private DamagedProductRepository damagedProductRepository;
 	@Autowired
 	private StockService stockService;
+	
+	
 	//@Autowired
 	//private ProductBatchesStockRepository productBatchesStockRepository;
 
 	@Override
-	public void save(DamagedProductEntity damagedProduct) {
+	public void save(DamagedProductEntity damagedProduct,long tenantId) {
+		damagedProduct.setTenantId(tenantId);
 		damagedProductRepository.save(damagedProduct);
 		stockService.updateStockWhenProductionDeteted(damagedProduct.getProductionId().getProduct(),damagedProduct.getProductionId().getProductionUnit(),damagedProduct.getQuantity());
 		//productBatchesStockRepository.modifyStockByProduction(damagedProduct.getProductionId(),damagedProduct.getQuantity());
@@ -28,9 +32,9 @@ public class DamagedProductServiceImp implements DamagedProductService {
 	}
 
 	@Override
-	public List<DamagedProductEntity> findAll() {
+	public List<DamagedProductEntity> findAll(long tenantId ) {
 
-		return damagedProductRepository.findAll();
+		return damagedProductRepository.findByTenantId(tenantId);
 	}
 
 }

@@ -8,7 +8,7 @@ var sales = "";
 function getAllDueRecords() {
     $.ajax({
         type: "GET",
-        url: "/getAllSalesDue", 
+        url: "/admin/getAllSalesDue", 
         success: function (sales) {
             console.log(sales); 
             salesdata = sales;
@@ -52,7 +52,7 @@ $("#insert").click(function() {
 	var formdata = form.serializeArray();
 	$.ajax({
 		type: "PUT",
-		url: "/updateDue",
+		url: "/admin/updateDue",
 		data: formdata,
 		success: function(response) {
 

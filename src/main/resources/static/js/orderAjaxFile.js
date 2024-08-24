@@ -14,7 +14,7 @@ $(document).ready(function() {
         var formData = form.serializeArray();
         $.ajax({
             type: "POST",
-            url: "/addOrder",
+            url: "/admin/addOrder",
             data: formData,
             success: function(result) {
                 console.log(result);
@@ -78,7 +78,7 @@ $(document).ready(function() {
         if (productId) {
             $.ajax({
                 type: "GET",
-                url: "/getProductById?id=" + productId,
+                url: "/admin/getProductById?id=" + productId,
                 success: function(response) {
                     var units = response.unitPrice;
                     unitInput.empty();
@@ -101,7 +101,7 @@ $(document).ready(function() {
     function getAllProduct() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllProducts",
+		url: "/admin/getAllProducts",
 		success: function(response) {
 
 			data = response;
@@ -122,7 +122,7 @@ $(document).ready(function() {
     function getAllDistributors() {
         $.ajax({
             type: "GET",
-            url: "/getAllDistributors",
+            url: "/admin/getAllDistributors",
             success: function(distributor_response) {
                 var distributorOption = distributor_response;
                 var dropdownDistributor = $("#distributor_id");
@@ -142,7 +142,7 @@ var orderList = "";
     function getOrderList() {
         $.ajax({
             type: "GET",
-            url: "/getodd",
+            url: "/admin/getodd",
             success: function(orderList_response) {
                 orderList = orderList_response;
                 $('#orderTable').DataTable().destroy();
@@ -173,7 +173,7 @@ var orderList = "";
         });
         $.ajax({
             type: "GET",
-            url: "/checkOutValidity?order_id=" + validity_id,
+            url: "/admin/checkOutValidity?order_id=" + validity_id,
             data: validity_id,
             success: function(response) {
                 if (response.success === true) {
@@ -240,7 +240,7 @@ var orderList = "";
                         event.preventDefault();
                         $.ajax({
                             type: "POST",
-                            url: "/checkoutNow",
+                            url: "/admin/checkoutNow",
                             data: paymentinfo,
                             success: function(result) {
                                 if (result === "Checkout successful") {
@@ -296,7 +296,7 @@ $('#productInput').change(function() {
 		// Fetch the selected product details to get unit prices
 		$.ajax({
 			type: "GET",
-			url: "/getProductById?id=" + productId,
+			url: "/admin/getProductById?id=" + productId,
 			success: function(response) {
 				var units = response.unitPrice;
 				$('#unitInput').empty();

@@ -31,7 +31,7 @@ var data = "";
 function getAllRecords() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllProducts", 
+		url: "/admin/getAllProducts", 
 		success: function(response) {
 			console.log(response); 
 			data = response;
@@ -188,7 +188,7 @@ function addRecipeItem() {
  function getUnits() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllUnits",
+		url: "/admin/getAllUnits",
 		success: function(respons_unit) {
 
 			unitlist = respons_unit;

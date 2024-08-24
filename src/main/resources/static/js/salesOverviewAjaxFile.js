@@ -4,7 +4,7 @@ $(document).ready(function() {
 var salesOverviewData;
 function getSalesOverview() {
 	$.ajax({
-		url: "/getSalesOverview",
+		url: "/admin/getSalesOverview",
 		success: function(salesOverview) {
 			salesOverviewData = salesOverview;
 			console.log(salesOverview);

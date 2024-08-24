@@ -33,7 +33,7 @@ var vendor = "";
 function getVendors() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllVendors", 
+		url: "/admin/getAllVendors", 
 		success: function(vendor_response) {
 			console.log(vendor_response); 
 			vendor = vendor_response;

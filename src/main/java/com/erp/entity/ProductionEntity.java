@@ -57,4 +57,7 @@ public class ProductionEntity {
 	//private double margin ;
 	private double unitCost ;
 
+	
+	
+	private long tenantId;
 }

@@ -34,4 +34,7 @@ public class OrderEntity {
 	private int[] productQuantity;
 	private String orderDetails;
 	
+	
+	private long tenantId;
+	
 }

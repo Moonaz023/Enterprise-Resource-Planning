@@ -8,9 +8,9 @@ import com.erp.entity.ProductEntity;
 
 public interface ProductService {
 
-	void saveProduct(ProductEntity product);
-	List<ProductEntity> getAllproduct();
+	void saveProduct(ProductEntity product,long tenantId);
+	List<ProductEntity> getAllproduct(long tenantId);
 	ProductEntity getProductById(long id);
-	void updateProduct(ProductEntity updatedProduct);
+	void updateProduct(ProductEntity updatedProduct,long tenantId);
 	void deleteProduct(long id);
 }

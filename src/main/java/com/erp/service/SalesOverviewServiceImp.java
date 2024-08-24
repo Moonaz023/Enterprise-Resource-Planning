@@ -14,9 +14,9 @@ public class SalesOverviewServiceImp implements SalesOverviewService {
 	@Autowired
 	private SalesReportRepository salesReportRepository;
 	@Override
-	public List<SalesOverviewDTO> getSalesOverview() {
-		// TODO Auto-generated method stub
-		return salesReportRepository.getSalesOverview();
+	public List<SalesOverviewDTO> getSalesOverview(long tenantId) {
+		
+		return salesReportRepository.getSalesOverview(tenantId);
 	}
 
 }

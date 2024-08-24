@@ -43,4 +43,7 @@ public class StockEntity {
     private int productQuantity;
 	@ManyToOne
 	private UnitEntity productionUnit;
+	
+	
+	private long tenantId;
 }

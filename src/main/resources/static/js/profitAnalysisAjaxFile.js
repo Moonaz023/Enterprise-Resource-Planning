@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 function getSalesOverview() {
 	$.ajax({
-		url: "/getLifetimeProfitData",
+		url: "/admin/getLifetimeProfitData",
 		success: function(profitData) {
 			console.log(profitData);
 
@@ -29,7 +29,7 @@ function getSalesOverview() {
 
 function getOperatingProfit() {
 	$.ajax({
-		url: "/getOperatingProfit",
+		url: "/admin/getOperatingProfit",
 		success: function(O_profitData) {
 			
 
@@ -64,7 +64,7 @@ $('#filterButton').on('click', function() {
 	event.preventDefault();
 	$.ajax({
 		type: "POST",
-		url: "/getFilteredProfitData",
+		url: "/admin/getFilteredProfitData",
 		data: form.serialize(),
 		success: function(profitData) {
 			console.log(profitData);
@@ -107,7 +107,7 @@ $('#filterButton2').on('click', function() {
 	event.preventDefault();
 	$.ajax({
 		type: "POST",
-		url: "/getFilteredOperatingProfit",
+		url: "/admin/getFilteredOperatingProfit",
 		data: form.serialize(),
 		success: function(profitData) {
 			console.log(profitData);

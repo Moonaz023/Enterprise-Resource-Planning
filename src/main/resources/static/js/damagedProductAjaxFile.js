@@ -28,7 +28,7 @@ $("#insert").click(function() {
 	var formdata = form.serializeArray();
 	$.ajax({
 		type: "POST",
-		url: "/saveDamagedProduct",
+		url: "/admin/saveDamagedProduct",
 		data: formdata,
 		success: function(response) {
 			//alert("YYYOOOOOOOOOOOO");
@@ -50,7 +50,7 @@ $("#cancle").click(function() {
 function getDamagedProductList() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllDamagedProduct",
+		url: "/admin/getAllDamagedProduct",
 		success: function(response) {
 
 			$('#damagedProduct').DataTable().destroy();

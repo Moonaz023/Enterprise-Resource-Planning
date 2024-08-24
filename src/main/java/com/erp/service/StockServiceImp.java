@@ -27,13 +27,14 @@ public class StockServiceImp implements StockService {
             stock = new StockEntity();
             stock.setProduct(product);
             stock.setProductionUnit(unit);
-            stock.setProductQuantity(productionQuantity);
+            stock.setProductQuantity(productionQuantity); 
+            stock.setTenantId(product.getTenantId());
         } else {
             
             stock.setProductQuantity(stock.getProductQuantity() + productionQuantity);
         }
 
-        
+       
         stockRepository.save(stock);
     
 		
@@ -47,6 +48,7 @@ public class StockServiceImp implements StockService {
             stock = new StockEntity();
             stock.setProduct(product);
             stock.setProductQuantity(productionQuantity);
+            stock.setTenantId(product.getTenantId());
         } else {
             
         	 stock.setProductQuantity(stock.getProductQuantity() + (productionQuantity - productionQuantity2));
@@ -67,6 +69,7 @@ public class StockServiceImp implements StockService {
         	oldStock.setProduct(oldProduct);
         	oldStock.setProductionUnit(oldUnit);
         	oldStock.setProductQuantity(oldQuantity);
+        	oldStock.setTenantId(oldProduct.getTenantId());
         } else {
             
         	oldStock.setProductQuantity(oldStock.getProductQuantity() - oldQuantity);
@@ -81,6 +84,7 @@ public class StockServiceImp implements StockService {
         	newStock.setProduct(newProduct);
         	newStock.setProductionUnit(newUnit);
         	newStock.setProductQuantity(newQuantity);
+        	newStock.setTenantId(newProduct.getTenantId());
         } else {
             
         	newStock.setProductQuantity(newStock.getProductQuantity() + newQuantity);
@@ -97,9 +101,9 @@ public class StockServiceImp implements StockService {
 		stockRepository.save(Stock);
 	}
 	@Override
-	public List<StockEntity> getAllProductsStock() {
+	public List<StockEntity> getAllProductsStock(long tenantId) {
 		// TODO Auto-generated method stub
-		return stockRepository.findAll();
+		return stockRepository.findByTenantId(tenantId);
 	}
 	
 

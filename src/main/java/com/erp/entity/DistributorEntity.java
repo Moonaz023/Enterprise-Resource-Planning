@@ -31,4 +31,6 @@ public class DistributorEntity {
 	private String phone;
 	private String email;
 	private long total_order; 
+	
+	private long tenantId;
 }

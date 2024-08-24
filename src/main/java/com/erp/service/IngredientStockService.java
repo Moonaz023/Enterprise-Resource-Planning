@@ -9,11 +9,11 @@ import com.erp.entity.PurchaseIngredientEntity;
 
 public interface IngredientStockService {
 
-	void saveIngredientStock(PurchaseIngredientEntity purchasedIngredient);
+	void saveIngredientStock(PurchaseIngredientEntity purchasedIngredient,long tenantId);
 
 	double modifystock_purchagedlt(IngredientEntity ingredient, double quantity);
 
-	List<IngredientStockEntity> getAllIngredientsStock();
+	List<IngredientStockEntity> getAllIngredientsStock(long tenantId);
 	public boolean checkAvailablity(List<RecipeDataDOT> recipe);
 
 }

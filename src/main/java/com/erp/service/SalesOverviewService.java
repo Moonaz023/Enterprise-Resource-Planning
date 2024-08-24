@@ -6,6 +6,6 @@ import com.erp.dto.SalesOverviewDTO;
 
 public interface SalesOverviewService {
 
-	public List<SalesOverviewDTO> getSalesOverview();
+	public List<SalesOverviewDTO> getSalesOverview(long tenantId);
 
 }

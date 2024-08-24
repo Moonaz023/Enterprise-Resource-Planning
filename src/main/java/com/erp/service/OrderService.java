@@ -8,13 +8,13 @@ import com.erp.entity.OrderEntity;
 
 public interface OrderService {
 
-	String addOrder(OrderEntity order);
+	String addOrder(OrderEntity order,long tenantId);
 
-	List<OrderEntity> getAllOrder();
+	List<OrderEntity> getAllOrder(long tenantId);
 
 	CheckoutValidityResultDTO CheckOutValidityTest(long order_id);
 
-	String checkoutNow(CheckoutPaymentDTO checkoutPayment);
+	String checkoutNow(CheckoutPaymentDTO checkoutPayment,long tenantId);
 	
 
 }

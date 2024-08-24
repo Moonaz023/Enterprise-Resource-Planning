@@ -7,13 +7,13 @@ import com.erp.entity.DistributorEntity;
 
 public interface DistributorService {
 
-	void saveDistributor(DistributorEntity distributor);
+	void saveDistributor(DistributorEntity distributor, long tenantId);
 
-	List<DistributorEntity> getAlldistributor();
+	List<DistributorEntity> getAlldistributor(long tenantId);
 
 	void deleteDistributor(long id);
 
-	void updateDistributor(DistributorEntity updatedDistributor);
+	void updateDistributor(DistributorEntity updatedDistributor,long tenantId);
 	public DistributorHistoryDTO distributorProfile(Long id);
 
 	

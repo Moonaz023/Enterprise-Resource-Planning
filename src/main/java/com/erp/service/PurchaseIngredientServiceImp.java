@@ -19,16 +19,17 @@ public class PurchaseIngredientServiceImp implements PurchaseIngredientService {
 	@Autowired
 	private IngredientStockService ingredientStockService;
 	@Override
-	public void savePurchasedIngredient(PurchaseIngredientEntity purchasedIngredient) {
+	public void savePurchasedIngredient(PurchaseIngredientEntity purchasedIngredient,long tenantId) {
+		purchasedIngredient.setTenantId(tenantId);
 		purchaseIngredientRepository.save(purchasedIngredient);
-		ingredientStockService.saveIngredientStock(purchasedIngredient);
+		ingredientStockService.saveIngredientStock(purchasedIngredient,tenantId);
 		
 		
 	}
 	@Override
-	public List<PurchaseIngredientEntity> getAllPurchasedIngredients() {
+	public List<PurchaseIngredientEntity> getAllPurchasedIngredients(long tenantId) {
 		
-		return purchaseIngredientRepository.findAll();
+		return purchaseIngredientRepository.findByTenantId(tenantId);
 	}
 	@Override
 	public void deleteIngredientPurchaseRecord(Long id) {
@@ -42,7 +43,7 @@ public class PurchaseIngredientServiceImp implements PurchaseIngredientService {
 		//return null;
 	}
 	@Override
-	public void updateIngredientPurchase(PurchaseIngredientEntity purchasedIngredient) {
+	public void updateIngredientPurchase(PurchaseIngredientEntity purchasedIngredient,long tenantId) {
 		
 		
 		Optional<PurchaseIngredientEntity> purchaseIngredientOpt= purchaseIngredientRepository.findById(purchasedIngredient.getId());
@@ -51,14 +52,15 @@ public class PurchaseIngredientServiceImp implements PurchaseIngredientService {
 		IngredientEntity ingredient=old_purchaseIngredient.getIngredient();
 		double quantity=purchasedIngredient.getQuantity();
 		ingredientStockService.modifystock_purchagedlt(ingredient,quantity);
+		purchasedIngredient.setTenantId(tenantId);
 		purchaseIngredientRepository.save(purchasedIngredient);
-		ingredientStockService.saveIngredientStock(purchasedIngredient);
+		ingredientStockService.saveIngredientStock(purchasedIngredient,tenantId);
 		
 	}
 	@Override
-	public List<PurchaseIngredientEntity> getAllPurchageDue() {
+	public List<PurchaseIngredientEntity> getAllPurchageDue(long tenantId) {
 		
-		return purchaseIngredientRepository.getAllPurchageDue();
+		return purchaseIngredientRepository.getAllPurchageDue(tenantId);
 	}
 	@Override
 	public void updateDue(ReceivableDTO receivableData) {

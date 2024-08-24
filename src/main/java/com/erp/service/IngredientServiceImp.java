@@ -14,14 +14,15 @@ public class IngredientServiceImp implements IngredientService{
 	@Autowired
 	private IngredientRepository ingredientRepository;
 	@Override
-	public void saveIngredient(IngredientEntity ingredient) {
+	public void saveIngredient(IngredientEntity ingredient,long tenantId) {
+		ingredient.setTenantId(tenantId);
 		ingredientRepository.save(ingredient);
 		
 	}
 	@Override
-	public List<IngredientEntity> getAllIngredients() {
+	public List<IngredientEntity> getAllIngredients(long tenantId) {
 		
-		return ingredientRepository.findAll();
+		return ingredientRepository.findByTenantId(tenantId);
 	}
 	@Override
 	public void deleteIngredient(Long id) {
@@ -29,7 +30,8 @@ public class IngredientServiceImp implements IngredientService{
 		
 	}
 	@Override
-	public void updateIngredient(IngredientEntity ingredient) {
+	public void updateIngredient(IngredientEntity ingredient,long tenantId) {
+		ingredient.setTenantId(tenantId);
 		ingredientRepository.save(ingredient);
 		
 	}

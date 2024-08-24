@@ -34,4 +34,7 @@ public class IngredientBatchesStockEntity {
     @JoinColumn(nullable = false)
     private PurchaseIngredientEntity purchaseId;
     
+    
+    
+    private long tenantId;
 }

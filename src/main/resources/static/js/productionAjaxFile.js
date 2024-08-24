@@ -5,7 +5,7 @@ $(document).ready(function() {
 	//getUnits();
 	$.ajax({
 		type: "GET",
-		url: "/getAllProducts",
+		url: "/admin/getAllProducts",
 		success: function(response) {
 			// Populate the dropdown with the fetched products
 			$('#product').empty();
@@ -68,7 +68,7 @@ function editRecord(id) {
 		if (productId) {
 			$.ajax({
 				type: "GET",
-				url: "/getProductById?id=" + productId,
+				url: "/admin/getProductById?id=" + productId,
 				success: function(response) {
 					var units = response.unitPrice;
 					$('#editProductionUnit').empty();
@@ -254,7 +254,7 @@ var ingredientlist = "";
 function getAllIngredients() {
 	$.ajax({
 		type: "GET",
-		url: "/getAllIngredients",
+		url: "/admin/getAllIngredients",
 		success: function(responsex) {
 
 			ingredientlist = responsex;
@@ -303,7 +303,7 @@ $('#product').change(function() {
 		// Fetch the selected product details to get unit prices
 		$.ajax({
 			type: "GET",
-			url: "/getProductById?id=" + productId,
+			url: "/admin/getProductById?id=" + productId,
 			success: function(response) {
 				var units = response.unitPrice;
 				$('#productionUnitdrop').empty();
