@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.erp.entity.DamagedProductEntity;
 import com.erp.repository.DamagedProductRepository;
 import com.erp.repository.ProductBatchesStockRepository;
+//import com.erp.repository.ProductBatchesStockRepository;
 
 @Service
 public class DamagedProductServiceImp implements DamagedProductService {
@@ -26,9 +27,9 @@ public class DamagedProductServiceImp implements DamagedProductService {
 		damagedProduct.setTenantId(tenantId);
 		damagedProductRepository.save(damagedProduct);
 		stockService.updateStockWhenProductionDeteted(damagedProduct.getProductionId().getProduct(),damagedProduct.getProductionId().getProductionUnit(),damagedProduct.getQuantity());
-		//productBatchesStockRepository.modifyStockByProduction(damagedProduct.getProductionId(),damagedProduct.getQuantity());
 		String refKey="Production-"+String.valueOf(damagedProduct.getProductionId().getId());
 		productBatchesStockRepository.modifyStockByProduction(refKey,damagedProduct.getQuantity());
+		
 
 	}
 
