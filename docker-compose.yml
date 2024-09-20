@@ -1,0 +1,227 @@
+version: '3'
+services:
+  mysql_customermanagement:
+    image: mysql:8.0
+    container_name: mysql_customermanagement
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: erp_customermanagement
+    networks:
+      - app-network
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mysql_aitest:
+    image: mysql:8.0
+    container_name: mysql_aitest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: akash
+    networks:
+      - app-network
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  mysql_productsandservices:
+    image: mysql:8.0
+    container_name: mysql_productsandservices
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: erp_productsandservices
+    networks:
+      - app-network
+    ports:
+      - "3309:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mysql_rawmaterials:
+    image: mysql:8.0
+    container_name: mysql_rawmaterials
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: erp_rawmaterials
+    networks:
+      - app-network
+    ports:
+      - "3310:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  mysql_salesandorders:
+    image: mysql:8.0
+    container_name: mysql_salesandorders
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: erp_salesandorders
+    networks:
+      - app-network
+    ports:
+      - "3311:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  ## Eureka Discovery Server
+  discovery-server:
+    image: moonaz023/discoveryservice:0.0.2
+    container_name: discovery-server
+    restart: unless-stopped
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_aitest:3306/akash
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka
+    depends_on:
+      - mysql_aitest
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/eureka/apps"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ## API Gateway
+  api-gateway:
+    image: moonaz023/apigateway:0.0.3
+    container_name: apigateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      - discovery-server
+
+
+
+  security-service:
+    image: moonaz023/security:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_productsandservices:
+        condition: service_healthy
+
+    ports:
+      - "8083:8083"
+
+
+  productsandservices-service:
+    image: moonaz023/productandservices:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_productsandservices:
+        condition: service_healthy
+
+    ports:
+      - "8081:8081"
+
+  rawmaterials-service:
+    image: moonaz023/rawmaterials:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_rawmaterials:
+        condition: service_healthy
+
+    ports:
+      - "8082:8082"
+
+  salesandorders-service:
+    image: moonaz023/salesandorders:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_salesandorders:
+        condition: service_healthy
+
+    ports:
+      - "8084:8084"
+
+  customermanagement-service:
+    image: moonaz023/customermanagement:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_customermanagement:
+        condition: service_healthy
+
+    ports:
+      - "8085:8085"
+
+  aitest-service:
+    image: moonaz023/aitest:0.0.3
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      mysql_aitest:
+        condition: service_healthy
+
+    ports:
+      - "8086:8086"
+
+networks:
+  app-network:
+    driver: bridge
