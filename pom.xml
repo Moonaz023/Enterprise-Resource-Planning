@@ -22,6 +22,8 @@
 		<module>ApiGateway</module>
 		<module>CustomerManagement</module>
 		<module>DiscoveryService</module>
+        <module>AccountsDue</module>
+		<module>BusinessOverview</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -62,7 +64,7 @@
 					<from>
 						<image>eclipse-temurin:17.0.4.1_1-jre</image>
 					</from>
-					<to><image>registry.hub.docker.com/moonaz023/${artifactId}:0.0.3</image></to>
+					<to><image>registry.hub.docker.com/moonaz023/${artifactId}:0.0.4</image></to>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -13,12 +13,22 @@ public class RouteValidator {
             "/auth/register",
             "/auth/loginpage2",
             "/auth/token",
-            "/eureka"
+            "/signup",
+            "/eureka",
+            "/"
     );
 
     public Predicate<ServerHttpRequest> isSecured =
             request -> openApiEndpoints
                     .stream()
-                    .noneMatch(uri -> request.getURI().getPath().contains(uri));
+                    .noneMatch(uri -> isExactMatch(uri, request.getURI().getPath()));
 
+    private boolean isExactMatch(String uri, String path) {
+
+        if ("/".equals(uri)) {
+            return "/".equals(path);
+        }
+
+        return path.startsWith(uri);
+    }
 }

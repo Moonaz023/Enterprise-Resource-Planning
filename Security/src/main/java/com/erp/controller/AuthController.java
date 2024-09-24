@@ -32,10 +32,7 @@ public class AuthController {
     {
     	return "abcHTMLPage";
     }
-    @PostMapping("/register")
-    public String addNewUser(@RequestBody User user) {
-        return service.saveUser(user);
-    }
+   
 
     @PostMapping("/token")
     public String getToken(@RequestBody AuthRequest authRequest, HttpServletResponse response) {//1.authenticationManager can't communicate with DB directly so have to create bean in config

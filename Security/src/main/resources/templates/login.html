@@ -56,7 +56,7 @@
 								<button type="submit" class="btn btn-primary col-md-12">Login</button>
 							</form>
 
-
+							<p  style="color:red">Don't have an account?<a href="/signup">Register</a></p> 
 
 
 
@@ -121,12 +121,14 @@
 							}
 						});
 					} else {
-						document.getElementById('error-message').textContent = 'Invalid username or password';
+//						document.getElementById('error-message').textContent = 'Invalid username or password';
+						alert("Invalid username or password");
 					}
 				})
 				.catch(error => {
-					console.error('Error during login:', error);
-					document.getElementById('error-message').textContent = 'An error occurred during login.';
+//					console.error('Error during login:', error);
+//					document.getElementById('error-message').textContent = 'An error occurred during login.';
+					alert("Invalid username or password");
 				});
 		});
 	</script>

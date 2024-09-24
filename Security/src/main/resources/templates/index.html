@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnterpriseHub ERP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #2f3640;
+        }
+
+        .navbar-brand {
+        	font-size: 2.0rem;
+            font-weight: bold;
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            margin-right: 15px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ddd !important;
+        }
+
+        .hero {
+/*             background: linear-gradient(rgba(0, 123, 255, 0.8), rgba(0, 123, 255, 0.8)), url('https://via.placeholder.com/1500x600') no-repeat center center; */
+            background-color: #a4b0be;
+            background-size: cover; 
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+        }
+
+        .hero .btn-primary {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+        }
+
+        .features {
+            padding: 60px 0;
+        }
+
+        .features .feature-box {
+            text-align: center;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .features .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .features h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .features p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .cta {
+            background-color: #40739e;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .cta .btn-outline-light {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+        
+            <a class="navbar-brand" href="/">EnterpriseHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto"th:if="${user == null}">
+                    
+                    <li class="nav-item" >
+                        <a class="nav-link" href="/auth/loginpage2">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Signup</a>
+                    </li>
+                    
+                </ul>
+                <ul class="navbar-nav ms-auto"th:if="${user != null}">
+					<li class="nav-item">
+					 <a href="/admin/product" style="color: #fff; text-decoration: none;">
+					 	<i class="fa fa-home"style="color: white; font-size: 30px;"></i>
+					 </a>
+					</li>
+					<li class="nav-item" >
+                        <a style="color: white;text-decoration: none;" href="/admin/profile">
+					<h4> [[${user}]] </h4>
+				</a>
+                    </li>
+                    <li class="nav-item">
+                       <h4 th:if="${user != null}">  <a href="/logout" style="color: #fff; text-decoration: none;">| Logout</a></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Welcome to EnterpriseHub</h1>
+            <p>Your one-stop solution for managing enterprise resources efficiently.</p>
+            <a href="#features" class="btn btn-primary">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-speedometer2" style="font-size: 3rem;"></i>
+                        <h3>Performance</h3>
+                        <p>Optimize and automate your business processes for better efficiency.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-shield-lock" style="font-size: 3rem;"></i>
+                        <h3>Security</h3>
+                        <p>Enterprise-grade security to keep your data safe and secure.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="bi bi-graph-up" style="font-size: 3rem;"></i>
+                        <h3>Analytics</h3>
+                        <p>Real-time analytics to make informed decisions quickly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to get started?</h2>
+            <a href="/signup" class="btn btn-outline-light">Get Started Today</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 EnterpriseHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

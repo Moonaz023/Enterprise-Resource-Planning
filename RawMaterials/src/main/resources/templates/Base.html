@@ -62,7 +62,6 @@
     }
 </script>
 	</header>
-		
 
 
 
@@ -86,7 +85,8 @@
 
 
 
-	<aside id="sidebar" th:fragment="sidebar">
+
+<aside id="sidebar" th:fragment="sidebar">
     <nav>
         <ul>
             <li class="option"><strong>Customer Management</strong>
@@ -94,61 +94,73 @@
                     <li class="sub-option" data-target="content-1-1">
                         <a href="/distributor/admin/distributor">Distributors</a>
                     </li>
-                    <li class="sub-option" data-target="content-1-2">.....</li>
-                    <li class="sub-option" data-target="content-1-3">.....</li>
+                    <!--                    <li class="sub-option" data-target="content-1-2">.....</li>-->
+                    <!--                    <li class="sub-option" data-target="content-1-3">.....</li>-->
                 </ul>
             </li>
             <li class="option"><strong>Product & Service</strong>
                 <ul class="sub-options">
-                    <li class="sub-option" data-target="content-2-1"><a href="/products/admin/product">Products</a></li>
-                    <li class="sub-option" data-target="content-2-2"><a href="/products/admin/production">Production</a></li>
+                    <li class="sub-option" data-target="content-2-1"><a href="/products/admin/product">Products</a>
+                    </li>
+                    <li class="sub-option" data-target="content-2-2"><a
+                            href="/products/admin/production">Production</a></li>
                     <li class="sub-option" data-target="content-2-3"><a href="/products/admin/stock">Stock</a></li>
-                    <li class="sub-option" data-target="content-2-4"><a href="/products/admin/damagedProduct">Damaged Product</a></li>
+                    <li class="sub-option" data-target="content-2-4"><a
+                            href="/products/admin/damagedProduct">Damaged Product</a></li>
                 </ul>
             </li>
             <li class="option"><strong>Sales & Orders</strong>
                 <ul class="sub-options">
                     <li class="sub-option" data-target="content-3-1"><a href="/orders/admin/order">Order</a></li>
-                    <li class="sub-option" data-target="content-3-2"><a href="/orders/admin/SalesReport">Sales Report</a></li>
+                    <li class="sub-option" data-target="content-3-2"><a href="/orders/admin/SalesReport">Sales
+                        Report</a></li>
                 </ul>
             </li>
             <li class="option"><strong>Raw Materials</strong>
                 <ul class="sub-options">
-                    <li class="sub-option" data-target="content-4-1"><a href="/rawmaterials/admin/ingredients">Ingredients</a></li>
-                    <li class="sub-option" data-target="content-4-2"><a href="/rawmaterials/admin/ingredientstock">Ingredients Stock</a></li>
-                    <li class="sub-option" data-target="content-4-3"><a href="/rawmaterials/admin/purchaseIngredient">Purchase</a></li>
-                    <li class="sub-option" data-target="content-4-4"><a href="/rawmaterials/admin/vendor">Vendors</a></li>
-                    
+                    <li class="sub-option" data-target="content-4-1"><a
+                            href="/rawmaterials/admin/ingredients">Ingredients</a></li>
+                    <li class="sub-option" data-target="content-4-2"><a
+                            href="/rawmaterials/admin/ingredientstock">Ingredients Stock</a></li>
+                    <li class="sub-option" data-target="content-4-3"><a
+                            href="/rawmaterials/admin/purchaseIngredient">Purchase</a></li>
+                    <li class="sub-option" data-target="content-4-4"><a
+                            href="/rawmaterials/admin/vendor">Vendors</a></li>
+
                 </ul>
             </li>
             <li class="option"><strong>Accounts Due</strong>
                 <ul class="sub-options">
-                    <li class="sub-option" data-target="content-5-1"><a href="/admin/receivables">Receivables</a></li>
-                    <li class="sub-option" data-target="content-5-2"><a href="/admin/payables">Payables</a></li>
-                    <li class="sub-option" data-target="content-5-3"><a href="#">.....</a></li>
-                    <li class="sub-option" data-target="content-5-4"><a href="#">.....</a></li>
-                    
+                    <li class="sub-option" data-target="content-5-1"><a
+                            href="/accountsdue/admin/receivables">Receivables</a></li>
+                    <li class="sub-option" data-target="content-5-2"><a
+                            href="/accountsdue/admin/payables">Payables</a></li>
+                    <!--                    <li class="sub-option" data-target="content-5-3"><a href="#">.....</a></li>-->
+                    <!--                    <li class="sub-option" data-target="content-5-4"><a href="#">.....</a></li>-->
+
                 </ul>
             </li>
             <li class="option"><strong>Business Overview</strong>
                 <ul class="sub-options">
-                    <li class="sub-option" data-target="content-6-1"><a href="/admin/SalesOverview">Sales Overview</a></li>
-                    <li class="sub-option" data-target="content-6-2"><a href="/admin/ProfitAnalysis">Profit Analysis</a></li>
-                    <li class="sub-option" data-target="content-6-3"><a href="#">.....</a></li>
-                    <li class="sub-option" data-target="content-6-4"><a href="#">.....</a></li>
-                    
+                    <li class="sub-option" data-target="content-6-1"><a href="/overview/admin/SalesOverview">Sales
+                        Overview</a></li>
+                    <li class="sub-option" data-target="content-6-2"><a href="/overview/admin/ProfitAnalysis">Profit
+                        Analysis</a></li>
+                    <!--                    <li class="sub-option" data-target="content-6-3"><a href="#">.....</a></li>-->
+                    <!--                    <li class="sub-option" data-target="content-6-4"><a href="#">.....</a></li>-->
+
                 </ul>
             </li>
             <li class="option"><strong>AI Recommendation</strong>
                 <ul class="sub-options">
-                    <li class="sub-option" data-target="content-6-1"><a href="/ai/admin/SmartSupport">Smart Suggestion</a></li>
+                    <li class="sub-option" data-target="content-6-1"><a href="/ai/admin/SmartSupport">Smart
+                        Suggestion</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
     <script src="/js-product/script.js"></script>
 </aside>
-
 
 
 

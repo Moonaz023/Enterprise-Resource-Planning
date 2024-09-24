@@ -85,7 +85,7 @@ services:
 
   ## Eureka Discovery Server
   discovery-server:
-    image: moonaz023/discoveryservice:0.0.2
+    image: moonaz023/discoveryservice:0.0.4
     container_name: discovery-server
     restart: unless-stopped
     ports:
@@ -109,7 +109,7 @@ services:
 
   ## API Gateway
   api-gateway:
-    image: moonaz023/apigateway:0.0.3
+    image: moonaz023/apigateway:0.0.4
     container_name: apigateway
     restart: unless-stopped
     ports:
@@ -126,7 +126,7 @@ services:
 
 
   security-service:
-    image: moonaz023/security:0.0.3
+    image: moonaz023/security:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -143,7 +143,7 @@ services:
 
 
   productsandservices-service:
-    image: moonaz023/productandservices:0.0.3
+    image: moonaz023/productandservices:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -159,7 +159,7 @@ services:
       - "8081:8081"
 
   rawmaterials-service:
-    image: moonaz023/rawmaterials:0.0.3
+    image: moonaz023/rawmaterials:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -175,7 +175,7 @@ services:
       - "8082:8082"
 
   salesandorders-service:
-    image: moonaz023/salesandorders:0.0.3
+    image: moonaz023/salesandorders:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -191,7 +191,7 @@ services:
       - "8084:8084"
 
   customermanagement-service:
-    image: moonaz023/customermanagement:0.0.3
+    image: moonaz023/customermanagement:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -207,7 +207,7 @@ services:
       - "8085:8085"
 
   aitest-service:
-    image: moonaz023/aitest:0.0.3
+    image: moonaz023/aitest:0.0.4
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
@@ -221,6 +221,36 @@ services:
 
     ports:
       - "8086:8086"
+
+  AccountsDue-service:
+    image: moonaz023/accountsdue:0.0.4
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      - discovery-server
+
+    ports:
+      - "8099:8099"
+
+  BusinessOverview-service:
+    image: moonaz023/businessoverview:0.0.4
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=true
+      - EUREKA_CLIENT_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
+    networks:
+      - app-network
+    depends_on:
+      - discovery-server
+
+    ports:
+      - "8092:8092"
 
 networks:
   app-network:

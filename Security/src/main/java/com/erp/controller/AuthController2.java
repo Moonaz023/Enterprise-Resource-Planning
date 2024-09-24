@@ -31,6 +31,11 @@ public class AuthController2 {
     {
     	return "loginsuccess";
     }
+    @PostMapping("/register")
+    @ResponseBody
+    public String addNewUser(@ModelAttribute User user) {
+        return service.saveUser(user);
+    }
 
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,

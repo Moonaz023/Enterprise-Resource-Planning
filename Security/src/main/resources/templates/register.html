@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Register</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		.mainbody {
+			height: 82vh;
+		}
+	</style>
+</head>
+
+<body>
+	<header id="header">
+		<div class="header-class">
+			<div class="header-title">
+				<h2><a href="/" style="color: #fff; text-decoration: none;">EnterpriseHub</a></h2>
+			</div>
+		</div>
+	</header>
+	<section class="mainbody">
+		<div class="container p-3">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					<div class="card">
+						<div class="card-header text-center fs-4">Register Page</div>
+						<div class="card-body">
+							<form id="registerForm">
+								<div class="mb-3">
+									<label>User</label> <input type="text" name="name" class="form-control">
+								</div>
+								<div class="mb-3">
+									<label>Enter Email</label> <input type="text" name="email" class="form-control">
+								</div>
+								<div class="mb-3">
+									<label>Enter Password</label> <input type="password" name="password" class="form-control">
+								</div>
+								<button class="btn btn-primary col-md-12" id="register">Register</button>
+							</form>
+							<p  style="color:green">Already have an account?<a href="/auth/loginpage2">Login</a></p> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		$(document).ready(function () {
+			$("#register").click(function (event) {
+				event.preventDefault();
+				var form = $("#registerForm");
+
+				$.ajax({
+					type: "POST",
+					url: "/auth/register",
+					data: form.serialize(),
+					success: function (response) {
+						//alert("Registration Successful! Logging in...");
+
+						// Automatically log in the user upon successful registration
+						$.ajax({
+							type: "POST",
+							url: "/auth/token",
+							contentType: 'application/json',
+							data: JSON.stringify({
+								username: form.find("input[name='name']").val(),
+								password: form.find("input[name='password']").val()
+							}),
+							success: function (token) {
+								// Save token and redirect to admin page
+								localStorage.setItem('jwtToken', token);
+								window.location.href = '/products/admin/product';
+							},
+							error: function () {
+								alert("Login failed after registration.");
+							}
+						});
+					},
+					error: function (err) {
+						alert("Error: " + JSON.stringify(err));
+					}
+				});
+			});
+		});
+	</script>
+</body>
+	<footer>
+		<style>
+			.header-class {
+				display: flex;
+				justify-content: space-between;
+
+			}
+
+
+			.header-log-details {
+				display: flex;
+				margin-right: 2%;
+			}
+
+
+			.admin-name {
+				padding-left: 0.5rem;
+			}
+
+			.admin-name a {
+				text-decoration: none;
+
+			}
+
+			#main {
+				display: flex;
+				min-height: 100vh;
+			}
+
+			footer {
+				text-align: center;
+			}
+
+			#content {
+				flex-grow: 1;
+				padding: 20px;
+			}
+
+			header,
+			footer {
+				background: #333;
+				color: #fff;
+				padding: 10px;
+			}
+		</style>
+		<p>&copy; 2024 Department of CSE. All rights reserved.</p>
+	</footer>
+</html>

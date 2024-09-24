@@ -16,42 +16,42 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
-	
+
 	@Bean
-    public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService();//2. have to make a custom user 
-    }
-	
+	public UserDetailsService userDetailsService(){
+		return new CustomUserDetailsService();//2. have to make a custom user
+	}
+
 	@Bean
-    public AuthenticationProvider authenticationProvider(){// 5.
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-	
-	
+	public AuthenticationProvider authenticationProvider(){// 5.
+		DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(userDetailsService());
+		authenticationProvider.setPasswordEncoder(passwordEncoder());
+		return authenticationProvider;
+	}
+
+
 	/*
 	 @Bean
  	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // @formatter:off
- 		
+
  		http
  		    .csrf((csrf) -> csrf.disable())
-            .authorizeHttpRequests((authorize) -> { 
-            	
+            .authorizeHttpRequests((authorize) -> {
+
                 authorize.requestMatchers("/user/**").hasRole("USER");
                 authorize.requestMatchers("/admin/**").hasRole("ADMIN");
                 authorize.requestMatchers("/**").permitAll();
                 authorize.anyRequest().authenticated();
-                
+
             })
             .formLogin(formLogin ->
             formLogin
                 .loginPage("/signin")
                 .loginProcessingUrl("/userLogin")
                 .successHandler(sucessHandler)
-                .permitAll()  
+                .permitAll()
             )
             .logout(logout->
             logout
@@ -59,23 +59,23 @@ public class AuthConfig {
             	.logoutSuccessUrl("/")
             	.permitAll());
     // @formatter:on
-         
+
     return http.build();
     }
 	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-		.csrf((csrf) -> csrf.disable())
-        .authorizeHttpRequests((authorize) -> { 
+				.csrf((csrf) -> csrf.disable())
+				.authorizeHttpRequests((authorize) -> {
 
-        	//authorize.requestMatchers("/auth/register", "/auth/token", "/auth/validate")
-			authorize.requestMatchers("/auth/register", "/auth/token", "/auth/validate", "/auth/loginpage", "/auth/abc", "/auth/loginpage2","/templates/**","/auth/logout")
-			.permitAll();
-			 authorize.anyRequest().authenticated();
+					//authorize.requestMatchers("/auth/register", "/auth/token", "/auth/validate")
+					authorize.requestMatchers("/auth/register","/signup", "/auth/token", "/auth/validate", "/auth/loginpage", "/auth/abc", "/auth/loginpage2","/","/templates/**","/auth/logout")
+							.permitAll();
+					authorize.anyRequest().authenticated();
         	/*authorize
             .anyRequest().permitAll();*/
-		});
+				});
 
 		return http.build();
 	}
@@ -89,13 +89,13 @@ public class AuthConfig {
     }*/
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		
-		return new BCryptPasswordEncoder();		
+
+		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
 
 }
