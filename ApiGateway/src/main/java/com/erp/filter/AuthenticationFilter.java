@@ -74,6 +74,18 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.http.HttpCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
+import com.erp.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.http.HttpStatus;
+import reactor.core.publisher.Mono;
+
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
@@ -89,21 +101,22 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     @Override
     public GatewayFilter apply(Config config) {
-        return ((exchange, chain) -> {
+        return (exchange, chain) -> {
+        	ServerHttpRequest request = null;
             String requestPath = exchange.getRequest().getURI().getPath();
             
             // Prevent logged-in users from accessing the login page
             if ("/auth/loginpage2".equals(requestPath)) {
                 String authHeader = extractAuthToken(exchange);
-                
+
                 if (authHeader != null) {
                     try {
                         // Validate the token
                         jwtUtil.validateToken(authHeader);
                         // If valid, redirect logged-in users away from login page
-                        return redirectToHomePage(exchange); // redirect to home/dashboard
+                        return redirectToHomePage(exchange);
                     } catch (Exception e) {
-                        // If token is invalid, allow access to the login page
+                        // If token is invalid, proceed to login page
                         System.out.println("Invalid token, proceed to login page");
                     }
                 }
@@ -120,14 +133,18 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 try {
                     // Validate the token
                     jwtUtil.validateToken(authHeader);
+                     request = exchange.getRequest()
+                    .mutate()
+                    .header("tenantId", String.valueOf(jwtUtil.extractUserId(authHeader)))
+                    .build();
                 } catch (Exception e) {
-                    System.out.println("Invalid access...!");//XXX   need to work ;remove token from cookie also  XXX
+                    System.out.println("Invalid access...!");
                     return redirectToLoginPage(exchange); // Invalid token, redirect to login
                 }
             }
 
-            return chain.filter(exchange);
-        });
+            return chain.filter(exchange.mutate().request(request).build());
+        };
     }
 
     // Extracts the authorization token from either the header or the cookie
@@ -153,8 +170,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     // Method to handle redirection to the login page
     private Mono<Void> redirectToLoginPage(ServerWebExchange exchange) {
-        exchange.getResponse().setStatusCode(HttpStatus.FOUND); // 302 redirect
-        exchange.getResponse().getHeaders().setLocation(URI.create("/auth/loginpage2")); // Set location to login page
+        if (!exchange.getRequest().getURI().getPath().equals("/auth/loginpage2")) {
+            exchange.getResponse().setStatusCode(HttpStatus.FOUND); // 302 redirect
+            exchange.getResponse().getHeaders().setLocation(URI.create("/auth/loginpage2")); // Set location to login page
+        }
         return exchange.getResponse().setComplete(); // Complete the response
     }
 
@@ -166,6 +185,5 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     }
 
     public static class Config {
-
     }
 }

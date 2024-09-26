@@ -21,6 +21,6 @@ public interface RowMetaralServiceClient {
 
 	
 	@GetMapping("/admin/getAllPurchasedIngredientsAndPrice")
-	public List<PurchaseIngredientEntity> getAllPurchasedIngredients() ;
+	public List<PurchaseIngredientEntity> getAllPurchasedIngredients(@RequestHeader("tenantId") String tenant) ;
 	
 }

@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.dto.AuthRequest;
 import com.erp.entity.User;
+import com.erp.repository.UserRepository;
 import com.erp.service.AuthService;
 
 import jakarta.servlet.http.Cookie;
@@ -25,6 +26,8 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserRepository userRepository;
     
     
     @GetMapping("/abc")
@@ -38,8 +41,9 @@ public class AuthController {
     public String getToken(@RequestBody AuthRequest authRequest, HttpServletResponse response) {//1.authenticationManager can't communicate with DB directly so have to create bean in config
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         if (authenticate.isAuthenticated()) {
-        	
-        	String jwtToken=service.generateToken(authRequest.getUsername());
+        	 User authenticateUser  = userRepository.findByName(authRequest.getUsername())
+                     .orElseThrow(() -> new RuntimeException("User not found"));
+        	String jwtToken=service.generateToken(authenticateUser);
         	// Manually set the SameSite=None attribute in the Set-Cookie header
             response.setHeader("Set-Cookie", String.format(
                 "JWT-TOKEN=%s; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=%d", 

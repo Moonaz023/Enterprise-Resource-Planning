@@ -49,8 +49,8 @@ public class BusinessOverviewController {
 	
 	@GetMapping("/getSalesOverview")
 	@ResponseBody
-	public List<SalesOverviewDTO> getSalesOverview(HttpSession session) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public List<SalesOverviewDTO> getSalesOverview(@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		List<SalesOverviewDTO> salesOverview = salesOverviewService.getSalesOverview(tenantId);
 		return salesOverview;
 	}

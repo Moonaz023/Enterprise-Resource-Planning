@@ -27,8 +27,8 @@ public class PayablesControllers {
 
 	@GetMapping("/getAllPurchageDue")
 	@ResponseBody
-	public List<PurchaseIngredientEntity> getAllPurchageDue(@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public List<PurchaseIngredientEntity> getAllPurchageDue(@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		return purchaseIngredientService.getAllPurchageDue(tenantId);
 	}
 	@PutMapping("/updatePayDue")

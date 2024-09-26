@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,16 +42,16 @@ public class VendorController {
 		}
 		@PostMapping("/saveVendor")
 		@ResponseBody
-		public String saveVendor(@ModelAttribute VendorEntity vendor , HttpSession session ) {
-			Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+		public String saveVendor(@ModelAttribute VendorEntity vendor , @RequestHeader("tenantId") String tenant ) {
+			Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 			System.out.println(vendor);
 			vendorService.saveVendor(vendor,tenantId);
 			return "Vendor saved";
 		}
 		@GetMapping("/getAllVendors")
 		@ResponseBody
-		public List<VendorEntity> getAllVendors(Model m, HttpSession session ) {
-			Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+		public List<VendorEntity> getAllVendors(Model m,  @RequestHeader("tenantId") String tenant ) {
+			Long tenantId =Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 			
 		    List<VendorEntity> listOfvendor = vendorService.getAllVendor(tenantId);
 
@@ -64,8 +65,8 @@ public class VendorController {
 		}
 		@PostMapping("/updateVendor")
 	    @ResponseBody
-	    public String updateVendor( @ModelAttribute VendorEntity updatedVendor, HttpSession session ) {
-			Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	    public String updateVendor( @ModelAttribute VendorEntity updatedVendor,  @RequestHeader("tenantId") String tenant ) {
+			Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 			vendorService.updateVendor(updatedVendor,tenantId);
 
 	        return "Vendor record updated successfully";

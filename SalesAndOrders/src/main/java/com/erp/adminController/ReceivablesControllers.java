@@ -28,8 +28,8 @@ public class ReceivablesControllers {
 	
 	@GetMapping("/getAllSalesDue")
 	@ResponseBody
-	public List<SalesReportEntity> getAllSales(@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<SalesReportEntity> getAllSales(@RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		
 	    List<SalesReportEntity> listOfsales = salesReportService.getAllSalesDue(tenantId);
 

@@ -53,16 +53,16 @@ public class ProductController {
 	
 	@GetMapping("/getTheIn")//just testinggg nothisg else...................
 	@ResponseBody
-	public IngredientEntity trygetin(@RequestHeader("Authorization") String token)
-	{IngredientEntity ingredientEntity =rowMetaralServiceClient.getIngredientsById(1L,token);
+	public IngredientEntity trygetin(@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant )
+	{IngredientEntity ingredientEntity =rowMetaralServiceClient.getIngredientsById( Long.parseLong(tenant),token);
 	return ingredientEntity;}
 
 	@GetMapping("/getAllProducts")
 	@ResponseBody
-	public List<ProductEntity> getAllproduct(Model m, HttpSession session) {
+	public List<ProductEntity> getAllproduct(Model m,  @RequestHeader("tenantId") String tenant ) {
 		//System.out.println("authorizationHeader_______>>>"+token);
 		
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 
 		List<ProductEntity> listOfproduct = productService.getAllproduct(tenantId);
 
@@ -70,8 +70,8 @@ public class ProductController {
 	}
 
 	@PostMapping("/saveProduct")
-	public String saveProduct(@ModelAttribute ProductEntity product, HttpSession session) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public String saveProduct(@ModelAttribute ProductEntity product,  @RequestHeader("tenantId") String tenant ) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 
 		System.out.println(product);
 		productService.saveProduct(product, tenantId);
@@ -80,8 +80,8 @@ public class ProductController {
 
 	@PostMapping("/updateProduct")
 	@ResponseBody
-	public String updateProduct(@ModelAttribute ProductEntity updatedProduct, HttpSession session) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public String updateProduct(@ModelAttribute ProductEntity updatedProduct,  @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 
 		productService.updateProduct(updatedProduct, tenantId);
 

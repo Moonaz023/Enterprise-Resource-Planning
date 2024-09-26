@@ -31,14 +31,14 @@ public class OrderController {
 	@Autowired
 	public OrderService orderService;
 	
-	@ModelAttribute
+	/*@ModelAttribute
 	public void commonUser(Principal p, Model user) {
 		if (p != null) {
 			String name = p.getName();
 
 			user.addAttribute("user", name);
 		}
-	}
+	}*/
 	
 	
 	@GetMapping("/order")
@@ -47,8 +47,8 @@ public class OrderController {
 	}
 	@PostMapping("/addOrder")
 	@ResponseBody
-	public String addOrder(@ModelAttribute OrderEntity order, HttpSession session,@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public String addOrder(@ModelAttribute OrderEntity order, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 		return orderService.addOrder(order,tenantId,token);
 	    
@@ -56,8 +56,8 @@ public class OrderController {
 
 	@GetMapping("/getodd")
 	@ResponseBody
-	public List<OrderEntity> getSecondProducts(Model m, HttpSession session) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<OrderEntity> getSecondProducts(Model m, @RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		return orderService.getAllOrder(tenantId);
 	    
 	}
@@ -71,8 +71,8 @@ public class OrderController {
 	
 	@PostMapping("/checkoutNow")
 	@ResponseBody
-	public String checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, HttpSession session,@RequestHeader("Authorization") String token) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 		return orderService.checkoutNow(checkoutPayment,tenantId,token);
 	    

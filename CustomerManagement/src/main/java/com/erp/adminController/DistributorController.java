@@ -51,17 +51,20 @@ public class DistributorController {
 	}
 	@PostMapping("/saveDistributor")
 	@ResponseBody
-	public String saveProduct(@ModelAttribute DistributorEntity distributor , HttpSession session ,@RequestHeader("Authorization") String token) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String saveProduct(@ModelAttribute DistributorEntity distributor , HttpSession session ,@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant ) {
+		Long tenantId =  Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		System.out.println(distributor);
 		distributorService.saveDistributor(distributor,tenantId);
 		return "Distributor added";
 	}
 	@GetMapping("/getAllDistributors")
 	@ResponseBody
-	public List<DistributorEntity> getAllDistributors(Model m, HttpSession session, @RequestHeader("Authorization") String token) {
+	public List<DistributorEntity> getAllDistributors(Model m, HttpSession session, @RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant ) {
+		
+		//System.out.println("Tanant id got successfully===========>>>"+tenant);
+		
 		//Long tenantId = (Long) session.getAttribute("tenantId");
-		Long tenantId =1L;
+		Long tenantId =Long.parseLong(tenant);
 	    List<DistributorEntity> listOfdistributor = distributorService.getAlldistributor(tenantId);
 
 	    return listOfdistributor;
@@ -74,8 +77,8 @@ public class DistributorController {
 	}
 	@PostMapping("/updateDistributor")
     @ResponseBody
-    public String updateDistributor( @ModelAttribute DistributorEntity updatedDistributor, HttpSession session, @RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+    public String updateDistributor( @ModelAttribute DistributorEntity updatedDistributor, HttpSession session, @RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
         
 		distributorService.updateDistributor(updatedDistributor,tenantId);
 

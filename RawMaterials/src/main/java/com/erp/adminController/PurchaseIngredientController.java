@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,15 +42,15 @@ public class PurchaseIngredientController {
 	}
 	@PostMapping("/savePurchasedIngredient")
 	@ResponseBody
-	public String savePurchasedIngredient(@ModelAttribute PurchaseIngredientEntity purchasedIngredient ,HttpSession session ) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String savePurchasedIngredient(@ModelAttribute PurchaseIngredientEntity purchasedIngredient , @RequestHeader("tenantId") String tenant ) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		purchaseIngredientService.savePurchasedIngredient(purchasedIngredient,tenantId);
 		return "purchased Ingredient saved";
 	}
 	@GetMapping("/getAllPurchasedIngredients")
 	@ResponseBody
-	public List<PurchaseIngredientEntity> getAllPurchasedIngredients(Model m,HttpSession session ) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public List<PurchaseIngredientEntity> getAllPurchasedIngredients(Model m, @RequestHeader("tenantId") String tenant ) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 	    List<PurchaseIngredientEntity> listPurchasedIngredients = purchaseIngredientService.getAllPurchasedIngredients(tenantId);
 
@@ -57,8 +58,8 @@ public class PurchaseIngredientController {
 	}
 	@GetMapping("/getAllPurchasedIngredientsAndPrice")
 	@ResponseBody
-	public List<PurchaseIngredientDTO> getAllPurchasedIngredientsAndPrice() {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public List<PurchaseIngredientDTO> getAllPurchasedIngredientsAndPrice( @RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 	    List<PurchaseIngredientEntity> listPurchasedIngredients = purchaseIngredientService.getAllPurchasedIngredients(tenantId);
 	    List<PurchaseIngredientDTO> listPurchaseIngredientDTO = new ArrayList<>();
@@ -77,6 +78,12 @@ public class PurchaseIngredientController {
 
 	    return listPurchaseIngredientDTO;
 	}
+	
+	
+	
+	
+	
+	
 	@DeleteMapping("/deleteIngredientPurchaseRecord")
 	@ResponseBody
 	public String deleteIngredientPurchaseRecord(@RequestParam Long id) {
@@ -86,8 +93,8 @@ public class PurchaseIngredientController {
 	
 	@PostMapping("/updateIngredientPurchase")
 	@ResponseBody
-	public String updateIngredientPurchase(@ModelAttribute PurchaseIngredientEntity purchasedIngredient ,HttpSession session ) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String updateIngredientPurchase(@ModelAttribute PurchaseIngredientEntity purchasedIngredient , @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		purchaseIngredientService.updateIngredientPurchase(purchasedIngredient,tenantId);
 		return "purchased Ingredient updated";
 	}

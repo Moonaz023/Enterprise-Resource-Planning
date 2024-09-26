@@ -15,7 +15,7 @@ public class RouteValidator {
             "/auth/token",
             "/signup",
             "/eureka",
-            "/"
+            "/" 
     );
 
     public Predicate<ServerHttpRequest> isSecured =
@@ -24,11 +24,11 @@ public class RouteValidator {
                     .noneMatch(uri -> isExactMatch(uri, request.getURI().getPath()));
 
     private boolean isExactMatch(String uri, String path) {
-
+        
         if ("/".equals(uri)) {
-            return "/".equals(path);
+            return "/".equals(path);  
         }
-
+        
         return path.startsWith(uri);
     }
 }

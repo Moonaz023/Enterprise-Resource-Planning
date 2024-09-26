@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,8 +39,8 @@ public class StockController {
 
 	@GetMapping("/getAllProductsStock")
 	@ResponseBody
-	public List<StockEntity> getAllProductsStock(Model m, HttpSession session ) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<StockEntity> getAllProductsStock(Model m,  @RequestHeader("tenantId") String tenant  ) {
+		Long tenantId = Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 	    List<StockEntity> listOfproductstock = stockService.getAllProductsStock(tenantId);
 
 	    return listOfproductstock;

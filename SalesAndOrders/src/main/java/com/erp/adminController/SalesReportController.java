@@ -24,14 +24,14 @@ public class SalesReportController {
 	@Autowired
 	private SalesReportService salesReportService;
 
-	@ModelAttribute
+	/*@ModelAttribute
 	public void commonUser(Principal p, Model user) {
 		if (p != null) {
 			String name = p.getName();
 
 			user.addAttribute("user", name);
 		}
-	}
+	}*/
 	
 	@GetMapping("/SalesReport")
 	public String salesReport() {
@@ -39,8 +39,8 @@ public class SalesReportController {
 	}
 	@GetMapping("/getAllSales")
 	@ResponseBody
-	public List<SalesReportEntity> getAllSales(Model m,HttpSession session ) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public List<SalesReportEntity> getAllSales(Model m,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 	    List<SalesReportEntity> listOfsales = salesReportService.getAllSales(tenantId);
 

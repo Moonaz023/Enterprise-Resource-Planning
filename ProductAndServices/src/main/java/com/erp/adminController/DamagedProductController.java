@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,16 +40,16 @@ public class DamagedProductController {
 
 	@PostMapping("/saveDamagedProduct")
 	@ResponseBody
-	public String saveDamagedProduct(@ModelAttribute DamagedProductEntity damagedProduct, HttpSession session) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public String saveDamagedProduct(@ModelAttribute DamagedProductEntity damagedProduct,  @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		damagedProductService.save(damagedProduct,tenantId);
 		return "ok";
 
 	}
 	@GetMapping("/getAllDamagedProduct")
 	@ResponseBody
-	public List<DamagedProductEntity> getAllDamagedProduct(HttpSession session) {
-		Long tenantId =  1L;//(Long) session.getAttribute("tenantId");
+	public List<DamagedProductEntity> getAllDamagedProduct( @RequestHeader("tenantId") String tenant ) {
+		Long tenantId = Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		return damagedProductService.findAll(tenantId);
 	}
 

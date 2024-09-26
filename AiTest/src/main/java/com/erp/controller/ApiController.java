@@ -56,7 +56,7 @@ public class ApiController {
     @GetMapping("/generate-content")
     public String generateContent(@RequestParam String prompt, Model model) {
         String resultText = apiService.generateContent(prompt);
-        model.addAttribute("resultText", resultText);  // Pass HTML to the template
+        model.addAttribute("resultText", resultText);  
         return "result";
     }
     @GetMapping("/SmartSupport")
@@ -66,10 +66,10 @@ public class ApiController {
     
     @GetMapping("/response")
     @ResponseBody
-    public String generateContent(@RequestHeader("Authorization") String token) {
-    	List<PurchaseIngredientEntity> list= rowMetaralServiceClient.getAllPurchasedIngredients();
+    public String generateContent(@RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+    	List<PurchaseIngredientEntity> list= rowMetaralServiceClient.getAllPurchasedIngredients(tenant);
     	System.out.println(list);
-    	List<IngredientUseHistoryDTO> list2=productAndServiceClient.getAllItemUseHistory(token);
+    	List<IngredientUseHistoryDTO> list2=productAndServiceClient.getAllItemUseHistory(token,tenant);
     	System.out.println(list2);
     	
     	IngredientBuyAndUseHistoryDTO ingredientBuyAndUseHistoryDTO= new IngredientBuyAndUseHistoryDTO();

@@ -48,18 +48,27 @@ public class IngredientController {
 	}
 	@PostMapping("/addIngredient")
 	@ResponseBody
-	public String saveIngredient(@ModelAttribute IngredientEntity ingredient , HttpSession session) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String saveIngredient(@ModelAttribute IngredientEntity ingredient ,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		ingredientService.saveIngredient(ingredient,tenantId);
 		return "Ingredient Saved";
 	}
 	@GetMapping("/getAllIngredients")
 	@ResponseBody
-	public List<IngredientEntity> getAllIngredients(Model m, HttpSession session,@RequestHeader("Authorization") String token) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public List<IngredientEntity> getAllIngredients(Model m,@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant ) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		return ingredientService.getAllIngredients(tenantId);
 	    
 	}
+	
+	@GetMapping("/getAllIngredientsByClint")
+	@ResponseBody
+	public List<IngredientEntity> getAllIngredientsByClint(Model m,@RequestHeader("Authorization") String token,@RequestParam Long tenantId ) {
+		//Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
+		return ingredientService.getAllIngredients(tenantId);
+	    
+	}
+	
 	@GetMapping("/getIngredientsById/{id}")//getIngredientsById/5
 	//@GetMapping("/getIngredientsById")//getIngredientsById?id=1
 	@ResponseBody
@@ -72,8 +81,8 @@ public class IngredientController {
 	
 	@PostMapping("/updateIngredient")
 	@ResponseBody
-	public String updateIngredient(@ModelAttribute IngredientEntity ingredient , HttpSession session) {
-		Long tenantId =1L;// (Long) session.getAttribute("tenantId");
+	public String updateIngredient(@ModelAttribute IngredientEntity ingredient ,  @RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		ingredientService.updateIngredient(ingredient,tenantId);
 		return "Ingredient Updated";
 	}

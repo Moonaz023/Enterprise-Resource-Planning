@@ -40,28 +40,28 @@ public class ProfitAnalysisController {
 	}
 	@GetMapping("/getLifetimeProfitData")
 	@ResponseBody
-	public GrossProfitDTO getLifetimeProfitData(@RequestHeader("Authorization") String token ) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public GrossProfitDTO getLifetimeProfitData(@RequestHeader("Authorization") String token , @RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		return profitAnalysisService.getLifetimeProfitData(tenantId,token);
 	}
 	@PostMapping("/getFilteredProfitData")
 	@ResponseBody
-	public GrossProfitDTO getFilteredProfitData(@ModelAttribute FilterByDate date,@RequestHeader("Authorization") String token ) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public GrossProfitDTO getFilteredProfitData(@ModelAttribute FilterByDate date,@RequestHeader("Authorization") String token , @RequestHeader("tenantId") String tenant ) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		return profitAnalysisService.getFilteredProfitData(date,tenantId,token);
 	}
 	
 	@GetMapping("/getOperatingProfit")
 	@ResponseBody
-	public OperatingProfitDTO getOperatingProfit(@RequestHeader("Authorization") String token ) {
-		Long tenantId = 1L;// (Long) session.getAttribute("tenantId");
+	public OperatingProfitDTO getOperatingProfit(@RequestHeader("Authorization") String token , @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		return profitAnalysisService.getOperatingProfit(tenantId,token);
 	}
 	
 	@PostMapping("/getFilteredOperatingProfit")
 	@ResponseBody
-	public OperatingProfitDTO getOperatingProfit(@ModelAttribute FilterByDate date,@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public OperatingProfitDTO getOperatingProfit(@ModelAttribute FilterByDate date,@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant ) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		return profitAnalysisService.getOperatingProfit(date,tenantId,token);
 	}
 	

@@ -12,5 +12,5 @@ import com.erp.dto.IngredientUseHistoryDTO;
 @FeignClient(name = "PRODUCTANDSERVICES")
 public interface ProductAndServiceClient {
 	@GetMapping("/admin/getAllItemUseHistory")
-	public List<IngredientUseHistoryDTO> getAllItemUseHistory(@RequestHeader("Authorization") String token);
+	public List<IngredientUseHistoryDTO> getAllItemUseHistory(@RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant);
 }

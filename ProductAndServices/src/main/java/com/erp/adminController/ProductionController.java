@@ -52,8 +52,8 @@ public class ProductionController {
 
 	@GetMapping("/getAllProductions")
 	@ResponseBody
-	public List<ProductionEntity> getAllproduction(Model m, HttpSession session) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<ProductionEntity> getAllproduction(Model m,  @RequestHeader("tenantId") String tenant ) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 
 		List<ProductionEntity> listOfproduct = productionService.getAllproduction(tenantId);
 
@@ -62,8 +62,8 @@ public class ProductionController {
 
 	@PostMapping("/saveProduction")
 	@ResponseBody
-	public String saveProduct(@ModelAttribute ProductionEntity production, HttpSession session,@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public String saveProduct(@ModelAttribute ProductionEntity production,  @RequestHeader("tenantId") String tenant ,@RequestHeader("Authorization") String token) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		System.out.println(production);
 		return productionService.saveProduction(production, tenantId,token);
 
@@ -87,20 +87,20 @@ public class ProductionController {
 	
 	@GetMapping("/getAllIngredients")
 	@ResponseBody
-	public List<IngredientEntity> getAllIngredients(Model m, HttpSession session,@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<IngredientEntity> getAllIngredients(Model m,  @RequestHeader("tenantId") String tenant,@RequestHeader("Authorization") String token) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		System.out.println(token);
-		List<IngredientEntity> listOfIngredients = rowMetaralServiceClient.getAllIngredients(token);
+		List<IngredientEntity> listOfIngredients = rowMetaralServiceClient.getAllIngredients(token,tenantId);
 
 		return listOfIngredients;
 	}
 	
 	@GetMapping("/getAllItemUseHistory")
 	@ResponseBody
-	public List<IngredientUseHistoryDTO> getAllItemUseHistory(@RequestHeader("Authorization") String token) {
-		Long tenantId = 1L;//(Long) session.getAttribute("tenantId");
+	public List<IngredientUseHistoryDTO> getAllItemUseHistory(@RequestHeader("Authorization") String token, @RequestHeader("tenantId") String tenant) {
+		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 		 List<IngredientUseHistoryDTO> ingredientUseHistoryList =new ArrayList<>();
-		List<IngredientEntity> listOfIngredients = rowMetaralServiceClient.getAllIngredients(token);
+		List<IngredientEntity> listOfIngredients = rowMetaralServiceClient.getAllIngredients(token,tenantId);
 		 Map<Long, String> ingredientMap = new HashMap<>();
 	        for (IngredientEntity ingredient : listOfIngredients) {
 	            ingredientMap.put(ingredient.getId(), ingredient.getIngredientName());

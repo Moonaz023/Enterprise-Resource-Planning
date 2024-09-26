@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.dto.AuthRequest;
 import com.erp.entity.User;
+import com.erp.repository.UserRepository;
 import com.erp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,8 @@ public class AuthController2 {
 
     @Autowired
     private AuthService service;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -48,8 +51,10 @@ public class AuthController2 {
             );
 
             if (authenticate.isAuthenticated()) {
-                String token = service.generateToken(username);
-                model.addAttribute("token", token);
+            	User authenticateUser  = userRepository.findByName(username)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+           	String jwtToken=service.generateToken(authenticateUser);
+                model.addAttribute("token", jwtToken);
                 return "redirect:/products/admin/product";
             } else {
                 model.addAttribute("error", "Invalid username or password");

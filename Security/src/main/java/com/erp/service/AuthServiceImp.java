@@ -25,8 +25,8 @@ public class AuthServiceImp implements AuthService {
 	}
 
 	@Override
-	public String generateToken(String username) {
-		return jwtService.generateToken(username);
+	public String generateToken(User authenticateUser) {
+		return jwtService.generateToken(authenticateUser);
 	}
 
 	@Override
