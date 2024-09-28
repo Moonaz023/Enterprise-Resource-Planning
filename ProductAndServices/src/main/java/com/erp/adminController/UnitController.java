@@ -7,12 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.erp.entity.UnitEntity;
@@ -26,8 +21,23 @@ public class UnitController {
 	@Autowired
 	private UnitRepository unitRepository;
 	
-	
-	
+	@GetMapping("/unitpage")
+	public String unitpage(){
+		return "unitpage";
+	}
+
+
+	@PostMapping("/saveNewUnit")
+	@ResponseBody
+	public void saveNewUnit(@ModelAttribute UnitEntity newUnit,  @RequestHeader("tenantId") String tenant  ) {
+		Long tenantId = Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
+
+		newUnit.setTenantId(tenantId);
+		unitRepository.save(newUnit);
+
+	}
+
+
 	@GetMapping("/getAllUnits")
 	@ResponseBody
 	public List<UnitEntity> getAllDistributors(Model m,  @RequestHeader("tenantId") String tenant  ) {
