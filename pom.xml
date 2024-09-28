@@ -64,7 +64,7 @@
 					<from>
 						<image>eclipse-temurin:17.0.4.1_1-jre</image>
 					</from>
-					<to><image>registry.hub.docker.com/moonaz023/${artifactId}:0.0.5</image></to>
+					<to><image>registry.hub.docker.com/moonaz023/${artifactId}:0.0.6</image></to>
 				</configuration>
 			</plugin>
 		</plugins>

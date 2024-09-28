@@ -109,7 +109,7 @@ services:
       - "8083:8083"
 
   productsandservices-service:
-    image: moonaz023/productandservices:0.0.5
+    image: moonaz023/productandservices:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
