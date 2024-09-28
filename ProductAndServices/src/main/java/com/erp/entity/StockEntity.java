@@ -29,7 +29,7 @@ import lombok.ToString;
 //@Table(name = "stock")
 //@Table(name = "stock", uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "product_quantity"}))
 @Table(name = "stock",
-uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "product_quantity"})})
+uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "productionUnit"})})
 
 public class StockEntity {
 

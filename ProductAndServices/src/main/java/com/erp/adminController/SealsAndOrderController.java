@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.erp.entity.UnitEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -99,6 +100,10 @@ public class SealsAndOrderController {
 	public void updateProductQuantityById(@RequestParam("productId") long productId,
 			@RequestParam("unitId") long unitId, @RequestParam("stock") int stock,
 			@RequestHeader("Authorization") String token) {
+
+
+
+
 		stockRepository.updateProductQuantityByProductUnitId(productId, unitId, stock);
 	}
 

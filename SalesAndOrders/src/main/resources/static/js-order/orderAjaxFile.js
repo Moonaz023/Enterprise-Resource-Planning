@@ -82,7 +82,7 @@ $(document).ready(function() {
         if (productId) {
             $.ajax({
                 type: "GET",
-                url: "/admin/getProductById?id=" + productId,
+                url: "/products/admin/getProductById?id=" + productId,
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
 				},
