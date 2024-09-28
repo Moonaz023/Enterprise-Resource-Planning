@@ -47,7 +47,7 @@ function getAllUnit() {
 				$("#unitTable_result").append(
 					'<tr class="tr">' +
 					'<td>' + record.name + '</td>' +
-					'<td><a href="#" onclick="CheckOutValidation(' + record.id + ');">Edit</a></td>' +
+					'<td><a href="#" onclick="EditRecord(' + record.id + ');">Edit</a></td>' +
 					'<td><a href="#" onclick="deleteRecord(' + record.id + ')">Delete</a></td>' +
 					'</tr>'
 				);
@@ -61,4 +61,21 @@ function getAllUnit() {
 		}
 
 	});
+
 }
+function deleteRecord(id) {
+     	$.ajax({
+     		type: "DELETE",
+     		url: "/products/admin/deleteUnit?id=" + id,
+     		headers: {
+     			'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+     		},
+     		success: function(result) {
+     			// Refresh the table after successful deletion
+     			getAllUnit();
+     		},
+     		error: function(err) {
+     			alert("Error deleting record: " + JSON.stringify(err));
+     		}
+     	});
+     }

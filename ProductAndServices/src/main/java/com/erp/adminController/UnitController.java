@@ -57,4 +57,12 @@ public class UnitController {
 		return unit;
 	}
 
+
+	@DeleteMapping("/deleteUnit")
+	@ResponseBody
+	public void deleteUnit(@RequestParam("id") long id) {
+		unitRepository.deleteById(id);
+
+	}
+
 }
