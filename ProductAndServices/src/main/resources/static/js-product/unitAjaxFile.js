@@ -30,7 +30,7 @@ $("#cancle").click(function() {
 	form[0].reset();
 
 });
-
+var data = "";
 function getAllUnit() {
 	$.ajax({
 		type: "GET",
@@ -39,7 +39,7 @@ function getAllUnit() {
 			'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
 		},
 		success: function(response) {
-
+            data = response;
 			$('#unitTable').DataTable().destroy();
 
 			$("#unitTable_result").empty();
@@ -79,3 +79,67 @@ function deleteRecord(id) {
      		}
      	});
      }
+
+
+
+
+
+
+ function EditRecord(id) {
+    var record = data.find(function(item) {
+        return item.id === id;
+    });
+
+    var editFormHtml = `
+         <h2>Edit Unit Record</h2>
+         <form id="editForm" name="editForm" class="edit-form">
+             <input type="hidden" id="id" name="id" value="${record.id}"><br>
+             <label for="editUnitName">Unit Name</label>
+             <input type="text" id="editUnitName" name="name" value="${record.name}"><br>
+             <input type="hidden" id="tenantId" name="tenantId" value="${record.tenantId}"><br>
+             <button type="button" id="update" class="btn btn-success">Save</button>
+             <button type="button" id="cancel" class="btn btn-primary">Cancel</button>
+         </form>
+     `;
+
+    // Show the edit form
+    $("#editFormContainer").html(editFormHtml).show();
+
+    // Hide the container
+    $(".container").addClass("hidden");
+
+    // Attach click event for the update button
+    $("#update").click(function(event) {
+        // Get the form associated with the clicked button
+        var editForm = $("#editForm");
+
+        // Prevent the default form submission
+        event.preventDefault();
+        console.log(editForm.serialize())
+        $.ajax({
+            type: "PUT",
+            url: "/products/admin/updateUnit",
+            data: editForm.serialize(),
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+            },
+            success: function(result) {
+                // Handle success, e.g., update the UI
+                alert("Unit updated successfully!");
+                $("#editFormContainer").empty().hide();
+                $(".container").removeClass("hidden");
+                getAllUnit();
+            },
+            error: function(err) {
+                alert("Error: " + JSON.stringify(err));
+            }
+        });
+    });
+
+    // Attach click event for the cancel button
+    $("#cancel").click(function(event) {
+        $("#editFormContainer").empty().hide();
+        $(".container").removeClass("hidden");
+        getAllUnit();
+    });
+ }

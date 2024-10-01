@@ -58,7 +58,7 @@ services:
 
   ## Eureka Discovery Server
   discovery-server:
-    image: moonaz023/discoveryservice:0.0.5
+    image: moonaz023/discoveryservice:0.0.6
     container_name: discovery-server
     restart: always
     ports:
@@ -78,7 +78,7 @@ services:
 
   ## API Gateway
   api-gateway:
-    image: moonaz023/apigateway:0.0.5
+    image: moonaz023/apigateway:0.0.6
     container_name: apigateway
     restart: always
     ports:
@@ -94,7 +94,7 @@ services:
       - app-network
 
   security-service:
-    image: moonaz023/security:0.0.5
+    image: moonaz023/security:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -124,7 +124,7 @@ services:
       - "8081:8081"
 
   rawmaterials-service:
-    image: moonaz023/rawmaterials:0.0.5
+    image: moonaz023/rawmaterials:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -139,7 +139,7 @@ services:
       - "8082:8082"
 
   salesandorders-service:
-    image: moonaz023/salesandorders:0.0.5
+    image: moonaz023/salesandorders:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -154,7 +154,7 @@ services:
       - "8084:8084"
 
   customermanagement-service:
-    image: moonaz023/customermanagement:0.0.5
+    image: moonaz023/customermanagement:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -172,7 +172,7 @@ services:
       - "8085:8085"
 
   aitest-service:
-    image: moonaz023/aitest:0.0.5
+    image: moonaz023/aitest:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -187,7 +187,7 @@ services:
       - "8086:8086"
 
   AccountsDue-service:
-    image: moonaz023/accountsdue:0.0.5
+    image: moonaz023/accountsdue:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -202,7 +202,7 @@ services:
       - "8099:8099"
 
   BusinessOverview-service:
-    image: moonaz023/businessoverview:0.0.5
+    image: moonaz023/businessoverview:0.0.6
     restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=docker

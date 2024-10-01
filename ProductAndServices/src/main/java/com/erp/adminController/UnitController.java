@@ -65,4 +65,13 @@ public class UnitController {
 
 	}
 
+
+	@PutMapping("/updateUnit")
+	@ResponseBody
+	public void updateUnit(@ModelAttribute UnitEntity updatedUnit ) {
+
+		unitRepository.update(updatedUnit.getName(),updatedUnit.getId());
+
+	}
+
 }
