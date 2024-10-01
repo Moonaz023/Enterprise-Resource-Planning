@@ -36,14 +36,14 @@ public class ProductController {
 	@Autowired
 	private RowMetaralServiceClient rowMetaralServiceClient;
 	
-	@ModelAttribute
+	/*@ModelAttribute
 	public void commonUser(Principal p, Model user) {
 		if (p != null) {
 			String name = p.getName();
 
 			user.addAttribute("user", name);
 		}
-	}
+	}*/
 	
 	@GetMapping("/product")
 	public String index() {
@@ -59,7 +59,7 @@ public class ProductController {
 
 	@GetMapping("/getAllProducts")
 	@ResponseBody
-	public List<ProductEntity> getAllproduct(Model m,  @RequestHeader("tenantId") String tenant ) {
+	public List<ProductEntity> getAllproduct(Model m,@RequestHeader("Authorization") String token,  @RequestHeader("tenantId") String tenant ) {
 		//System.out.println("authorizationHeader_______>>>"+token);
 		
 		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
@@ -70,12 +70,13 @@ public class ProductController {
 	}
 
 	@PostMapping("/saveProduct")
-	public String saveProduct(@ModelAttribute ProductEntity product,  @RequestHeader("tenantId") String tenant ) {
+	@ResponseBody
+	public void saveProduct(@ModelAttribute ProductEntity product,  @RequestHeader("tenantId") String tenant ) {
 		Long tenantId =  Long.parseLong(tenant);//(Long) session.getAttribute("tenantId");
 
 		System.out.println(product);
 		productService.saveProduct(product, tenantId);
-		return "redirect:/";
+		//return "redirect:/";
 	}
 
 	@PostMapping("/updateProduct")

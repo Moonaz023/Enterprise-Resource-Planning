@@ -173,7 +173,7 @@ function addRecipeItem() {
             const newItem = document.createElement('div');
             newItem.classList.add('recipeItem');
 
-            let ingredientOptions = '<option value="">Select Ingredient</option>';
+            let ingredientOptions = '<option value="">Select Unit</option>';
             unitlist.forEach(function(unit) {
                 ingredientOptions += `<option value="${unit.id}">${unit.name}</option>`;
             });
@@ -209,7 +209,7 @@ function addRecipeItem() {
 			unitlist = respons_unit;
 			var dropdown = $("#sellingUnit");
 			dropdown.empty();
-			dropdown.append('<option value="">Select Unity</option>');
+			dropdown.append('<option value="">Select Unit</option>');
 			$.each(respons_unit, function(index, unit) {
 				//alert(unit.id);
 				dropdown.append('<option value="' + unit.id + '">' + unit.name + '</option>');
@@ -228,13 +228,13 @@ function gatherFormData() {
     const productCode = document.getElementById('productCode').value;
     const name = document.getElementById('name').value;
     const category = document.getElementById('category').value;
-    const price = document.getElementById('price').value;
+    //const price = document.getElementById('price').value;
 
     const container = document.getElementById('recipeContainer');
     const ingredientInputs = container.getElementsByClassName('sellingUnit');
     const quantityInputs = container.getElementsByClassName('sellingPrice');
 
-    let formData = `productCode=${productCode}&name=${name}&category=${category}&price=${price}`;
+    let formData = `productCode=${productCode}&name=${name}&category=${category}`;
 
     for (let i = 0; i < ingredientInputs.length; i++) {
         let unitId = ingredientInputs[i].value;
