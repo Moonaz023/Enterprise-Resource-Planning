@@ -161,3 +161,8 @@ By incorporating advanced AI capabilities through the **Google Gemini API**, the
 | Md. Moonaz Rahman  | mdmoonaz023@gmail.com     | [LinkedIn](https://www.linkedin.com/in/moonaz023/)   | University of Barishal   |
 | Neamul Haq         | neamul.cse6.bu@gmail.com  | [LinkedIn](https://www.linkedin.com/in/neamulhaq/)   | University of Barishal   |
 
+
+### Video Documentation
+
+[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)]([https://www.youtube.com/watch?v=VIDEO_ID](https://youtu.be/2Bbav0eDb40?si=Jd_wdUCFVCaxxu6S))
+
