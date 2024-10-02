@@ -2,7 +2,7 @@
 
 ## Overview
 
-**EnterpriseHub** is a versatile, web-based ERP (Enterprise Resource Planning) platform designed to streamline business operations for organizations of all sizes. Whether it's managing inventory, sales, accounting, human resources, or customer relationships, EnterpriseHub brings it all together in one place, making it easier for businesses to stay organized and efficient.
+**EnterpriseHub** is a versatile, web-based ERP (Enterprise Resource Planning) platform designed to streamline business operations for organizations of all sizes. Whether it's managing Production, inventory, sales, accounting, human resources, or customer relationships, EnterpriseHub brings it all together in one place, making it easier for businesses to stay organized and efficient.
 
 The platform includes an intelligent recommendation system that analyzes data to provide insights on the best times to purchase raw materials and optimize production schedules based on customer demand. This smart feature allows businesses to make data-driven decisions, ultimately improving efficiency and profitability.
 
@@ -22,15 +22,12 @@ The key objectives of EnterpriseHub are:
 EnterpriseHub provides a wide range of features to meet the diverse needs of modern businesses:
 
 - **Platform Security**: Implements robust security measures, including data encryption, audit trails, and secure authentication using JWT (JSON Web Token).
-- **User Management**: Role-based access control and user profile management with granular permissions.
 - **Inventory Management**: Real-time tracking of stock levels, raw materials, and products, along with supplier and purchase order management.
 - **Production Management**: Optimize production schedules and track raw material usage to meet demand efficiently.
 - **Sales Management**: Streamline order processing, invoicing, customer database management, and sales reporting.
 - **Accounting and Finance**: Manage accounts payable/receivable, track expenses, and automatically generate financial statements.
-- **Human Resources (HR)**: Handle employee records, attendance tracking, leave requests, and automate payroll processing.
 - **Customer Relationship Management (CRM)**: Support lead management, customer support, and track marketing campaigns.
 - **Reporting and Analytics**: Generate custom reports and visualizations, with intelligent recommendations to optimize business operations.
-- **Notifications and Alerts**: Real-time notifications and email alerts for important system events.
 
 ## Motivation
 
@@ -50,25 +47,12 @@ The motivation behind EnterpriseHub is to provide businesses with a simple yet p
 
 ## Requirements
 
-- **Java 11+**
+- **Java 17**
 - **Spring Boot**
 - **MySQL**
 - **Docker**
 - **JWT Authentication**
-- **Microservices Architecture (Optional)**
+- **Microservices Architecture**
 
 ---
 
-For detailed documentation and installation instructions, please refer to the official [documentation](#).
-
-## Contributing
-
-We welcome contributions! Please read our [contributing guide](#) to get started.
-
-## License
-
-This project is licensed under the [MIT License](#).
-
---- 
-
-Let’s revolutionize business management together with **EnterpriseHub**!
