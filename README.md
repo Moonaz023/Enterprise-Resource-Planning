@@ -152,4 +152,12 @@ The **Enterprise Hub** platform provides a comprehensive, user-friendly solution
 By incorporating advanced AI capabilities through the **Google Gemini API**, the platform not only enhances decision-making with intelligent recommendations but also empowers businesses to manage their resources more effectively. As a result, **Enterprise Hub** stands as an ideal choice for startups and medium-sized enterprises looking to improve operational efficiency and drive growth in a competitive market.
 
 ---
+### Team
+
+**Team Name**: Binary Duo
+
+| Name               | Email                     | LinkedIn Profile                                      | University               |
+|--------------------|---------------------------|------------------------------------------------------|--------------------------|
+| Md. Moonaz Rahman  | mdmoonaz023@gmail.com     | [LinkedIn](https://www.linkedin.com/in/moonaz023/)   | University of Barishal   |
+| Neamul Haq         | neamul.cse6.bu@gmail.com  | [LinkedIn](https://www.linkedin.com/in/neamulhaq/)   | University of Barishal   |
 
