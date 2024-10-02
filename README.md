@@ -79,6 +79,24 @@ To facilitate communication between the microservices and manage system-wide con
 
 **OpenFeign** is used for inter-service communication within the platform. It simplifies REST client calls and allows for transparent load balancing between microservices. By leveraging OpenFeign alongside **Eureka Discovery**, the system dynamically balances the load between multiple instances of the same microservice, improving reliability and performance. This ensures that no single instance is overwhelmed with requests, leading to higher availability.
 
+### Database Architecture
+
+Each microservice has its own **MySQL** database, ensuring data is stored separately for each service. This approach follows the **database-per-service** pattern, which allows for better isolation, security, and easier scaling. Key benefits include:
+- Independent scaling of services and databases.
+- Fault isolation, ensuring that issues in one database do not affect others.
+- Flexibility in using different data storage technologies in the future, if needed.
+
+### Technology Stack
+
+1. **Backend:**
+   - **Spring Boot:** Provides a powerful, production-ready environment for creating stand-alone, web-based applications. It serves as the foundation for building the microservices architecture.
+   - **Spring Security with JWT Authentication:** Handles user authentication and authorization securely across the microservices.
+   - **MySQL:** Each microservice has its own MySQL database for independent data management.
+
+2. **Frontend:**
+   - **Thymeleaf:** A server-side template engine integrated with Spring Boot, used for rendering dynamic HTML content.
+   - **JavaScript (AJAX):** Enables asynchronous communication with the server to dynamically load content without refreshing the page, improving user experience
+
 ## Build & Deployment
 
 ### Using Maven Jib for Building Docker Images
@@ -112,15 +130,6 @@ The Docker Compose setup allows us to:
 - Launch all microservices simultaneously in a single environment.
 - Automatically configure networking between the services.
 - Ensure proper service discovery and load balancing through the **Discovery Server** and **API Gateway**.
-
-## Requirements
-
-- **Java 17**
-- **Spring Boot**
-- **MySQL**
-- **Docker**
-- **JWT Authentication**
-- **Microservices Architecture**
 
 ---
 
