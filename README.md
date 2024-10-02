@@ -87,7 +87,7 @@ To simplify the containerization process, we used **Maven Jib** for building Doc
 
 Here are the steps we followed to create and push the Docker images:
 
-1. **Configure Jib in Maven**:
+- **Configure Jib in Maven**:
    Maven Jib was configured in the parent pom.xml to automate the process of building Docker images for all microservices. This setup allowed us to package and push each service's Docker image to Docker Hub without needing individual Dockerfile configurations for each service.
    Example:
    ```xml
@@ -101,6 +101,9 @@ Here are the steps we followed to create and push the Docker images:
            </to>
        </configuration>
    </plugin>
+   - **Jib** in the parent `pom.xml` handles all microservices, automatically generating Docker images and pushing them to Docker Hub.
+- By running a single Maven command at the root of the project, all the microservices are built, containerized, and deployed to the Docker registry.
+
 ## Requirements
 
 - **Java 17**
