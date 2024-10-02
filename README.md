@@ -164,5 +164,9 @@ By incorporating advanced AI capabilities through the **Google Gemini API**, the
 
 ### Video Documentation
 
+You can watch the [video documentation here](https://youtu.be/2Bbav0eDb40?si=Jd_wdUCFVCaxxu6S).
+
+### Video Documentation
+
 [![Watch the video](https://images.app.goo.gl/vwkJsxUDWPSVTurB8)]([https://www.youtube.com/watch?v=VIDEO_ID](https://youtu.be/2Bbav0eDb40?si=Jd_wdUCFVCaxxu6S))
 
