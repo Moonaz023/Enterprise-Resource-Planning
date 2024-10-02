@@ -47,7 +47,7 @@ EnterpriseHub provides a wide range of features to meet the diverse needs of mod
 - **Enhanced Security**: Advanced security features to protect your business data.
 
 
-### System Design Overview
+## System Design Overview
 
 The **EnterpriseHub** platform follows a microservices architecture to ensure scalability, flexibility, and performance. Each service operates independently, allowing for better modularity and the ability to scale specific components of the system as the business grows.
 
