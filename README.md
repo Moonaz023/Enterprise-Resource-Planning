@@ -101,7 +101,8 @@ Here are the steps we followed to create and push the Docker images:
            </to>
        </configuration>
    </plugin>
-   - **Jib** in the parent `pom.xml` handles all microservices, automatically generating Docker images and pushing them to Docker Hub.
+   
+- **Jib** in the parent `pom.xml` handles all microservices, automatically generating Docker images and pushing them to Docker Hub.
 - By running a single Maven command at the root of the project, all the microservices are built, containerized, and deployed to the Docker registry.
 
 ## Requirements
