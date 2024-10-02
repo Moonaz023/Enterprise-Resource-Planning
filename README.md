@@ -97,6 +97,19 @@ Each microservice has its own **MySQL** database, ensuring data is stored separa
    - **Thymeleaf:** A server-side template engine integrated with Spring Boot, used for rendering dynamic HTML content.
    - **JavaScript (AJAX):** Enables asynchronous communication with the server to dynamically load content without refreshing the page, improving user experience
 
+### AI Innovation
+
+The **Enterprise Hub** platform leverages the **Google Gemini API** to enhance inventory management by analyzing ingredient purchasing and usage data. 
+
+#### Key Features:
+- **Data Analysis**: The system sends ingredient purchase and usage information to the Gemini API, which evaluates price trends and consumption rates.
+- **Smart Recommendations**: Gemini generates recommendations on when to buy more or less of specific ingredients, helping businesses optimize their procurement strategies and reduce costs.
+- **Price Trend Insights**: The AI analyzes historical data to predict future price movements, allowing for strategic purchasing decisions.
+
+By integrating AI-driven insights, **Enterprise Hub** empowers businesses to manage their ingredient inventories efficiently, leading to improved profitability and operational efficiency.
+
+
+
 ## Build & Deployment
 
 ### Using Maven Jib for Building Docker Images
