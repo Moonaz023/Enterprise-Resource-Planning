@@ -79,7 +79,7 @@ To facilitate communication between the microservices and manage system-wide con
 
 **OpenFeign** is used for inter-service communication within the platform. It simplifies REST client calls and allows for transparent load balancing between microservices. By leveraging OpenFeign alongside **Eureka Discovery**, the system dynamically balances the load between multiple instances of the same microservice, improving reliability and performance. This ensures that no single instance is overwhelmed with requests, leading to higher availability.
 
-### Database Architecture
+#### Database Architecture
 
 Each microservice has its own **MySQL** database, ensuring data is stored separately for each service. This approach follows the **database-per-service** pattern, which allows for better isolation, security, and easier scaling. Key benefits include:
 - Independent scaling of services and databases.
