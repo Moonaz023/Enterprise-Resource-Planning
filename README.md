@@ -79,7 +79,29 @@ To facilitate communication between the microservices and manage system-wide con
 
 **OpenFeign** is used for inter-service communication within the platform. It simplifies REST client calls and allows for transparent load balancing between microservices. By leveraging OpenFeign alongside **Eureka Discovery**, the system dynamically balances the load between multiple instances of the same microservice, improving reliability and performance. This ensures that no single instance is overwhelmed with requests, leading to higher availability.
 
+## Build & Deployment
 
+### Using Maven Jib for Building Docker Images
+
+To simplify the containerization process, we used **Maven Jib** for building Docker images for each microservice. Jib allows us to automatically package our Spring Boot applications into Docker images without needing a `Dockerfile`.
+
+Here are the steps we followed to create and push the Docker images:
+
+1. **Configure Jib in Maven**:
+   We configured Jib in each microservice's `pom.xml` to build and push Docker images directly to **Docker Hub**.
+
+   Example configuration for a microservice:
+   ```xml
+   <plugin>
+       <groupId>com.google.cloud.tools</groupId>
+       <artifactId>jib-maven-plugin</artifactId>
+       <version>3.1.4</version>
+       <configuration>
+           <to>
+               <image>dockerhubusername/microservice-name:latest</image>
+           </to>
+       </configuration>
+   </plugin>
 ## Requirements
 
 - **Java 17**
