@@ -104,6 +104,14 @@ Here are the steps we followed to create and push the Docker images:
    
 - **Jib** in the parent `pom.xml` handles all microservices, automatically generating Docker images and pushing them to Docker Hub.
 - By running a single Maven command at the root of the project, all the microservices are built, containerized, and deployed to the Docker registry.
+### Docker Compose for Deployment
+
+After all the microservices were containerized using Jib, we utilized a **Docker Compose** file to simplify the deployment process. The `docker-compose.yml` file defines the microservices, including **AccountsDue**, **AiTest**, **BusinessOverview**, **CustomerManagement**, **ProductAndServices**, **RawMaterials**, **SalesAndOrders**, along with essential services like the **API Gateway**, **Discovery Server**, and **Security**.
+
+The Docker Compose setup allows us to:
+- Launch all microservices simultaneously in a single environment.
+- Automatically configure networking between the services.
+- Ensure proper service discovery and load balancing through the **Discovery Server** and **API Gateway**.
 
 ## Requirements
 
