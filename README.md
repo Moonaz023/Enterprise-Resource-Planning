@@ -46,6 +46,40 @@ EnterpriseHub provides a wide range of features to meet the diverse needs of mod
 - **User-Friendly Design**: Intuitive interface for effortless navigation and use.
 - **Enhanced Security**: Advanced security features to protect your business data.
 
+
+### System Design Overview
+
+The **EnterpriseHub** platform follows a microservices architecture to ensure scalability, flexibility, and performance. Each service operates independently, allowing for better modularity and the ability to scale specific components of the system as the business grows.
+
+#### Core Microservices
+
+The project is composed of several key microservices, each responsible for a distinct business function:
+
+- **AccountsDue**: Manages accounts receivable and payable.
+- **AiTest**: Provides AI-based features for business insights and smart recomendation.
+- **BusinessOverview**: Offers an aggregated view of business performance through dashboards and reports.
+- **CustomerManagement**: Handles customer data, including lead management, support, and engagement.
+- **ProductAndServices**: Manages products, services,Production and associated inventory.
+- **RawMaterials**: Tracks and manages raw materials, ensuring production efficiency.
+- **SalesAndOrders**: Oversees sales processing, order management, and invoicing.
+
+Each of these microservices is hosted on separate servers to ensure optimal performance and scalability. This separation enables the system to handle large volumes of requests by distributing the load across multiple servers, ensuring no single service becomes a bottleneck.
+
+#### Key Modules
+
+To facilitate communication between the microservices and manage system-wide concerns like security and load balancing, several additional modules are employed:
+
+- **API Gateway**: Acts as the single entry point for all client requests, routing them to the appropriate microservices. This also allows for easier monitoring, logging, and rate-limiting of incoming requests.
+  
+- **Discovery Server (Eureka)**: This server is responsible for service discovery, enabling microservices to dynamically register themselves and discover other services. It allows for easy scaling and resilience, as new instances of services can be added or removed without manual intervention.
+
+- **Security Service**: This module ensures that all requests are authenticated and authorized. It leverages JWT (JSON Web Token) for secure authentication, ensuring that only authorized users have access to sensitive endpoints.
+
+#### Load Balancing with OpenFeign
+
+**OpenFeign** is used for inter-service communication within the platform. It simplifies REST client calls and allows for transparent load balancing between microservices. By leveraging OpenFeign alongside **Eureka Discovery**, the system dynamically balances the load between multiple instances of the same microservice, improving reliability and performance. This ensures that no single instance is overwhelmed with requests, leading to higher availability.
+
+
 ## Requirements
 
 - **Java 17**
