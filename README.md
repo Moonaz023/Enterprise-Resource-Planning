@@ -152,9 +152,9 @@ The **Enterprise Hub** platform provides a comprehensive, user-friendly solution
 By incorporating advanced AI capabilities through the **Google Gemini API**, the platform not only enhances decision-making with intelligent recommendations but also empowers businesses to manage their resources more effectively. As a result, **Enterprise Hub** stands as an ideal choice for startups and medium-sized enterprises looking to improve operational efficiency and drive growth in a competitive market.
 
 ---
-### Team
 
-**Team Name**: Binary Duo
+
+## Team Binary Duo
 
 | Name               | Email                     | LinkedIn Profile                                      | University               |
 |--------------------|---------------------------|------------------------------------------------------|--------------------------|
