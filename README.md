@@ -154,7 +154,7 @@ By incorporating advanced AI capabilities through the **Google Gemini API**, the
 ---
 
 
-## Devloper info
+## Developer info
 
 | Name               | Email                     | LinkedIn Profile                                     | University               |
 |--------------------|---------------------------|------------------------------------------------------|--------------------------|
