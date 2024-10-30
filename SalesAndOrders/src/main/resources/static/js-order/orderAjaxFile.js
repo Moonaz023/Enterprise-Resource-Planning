@@ -170,7 +170,18 @@ var orderList = "";
                         '<td>' + orderList_response[i].date + '</td>' +
                         '<td>' + orderList_response[i].distributor_id + '</td>' +
                         '<td><a href="#" onclick="CheckOutValidation(' + orderList[i].id + ');">Checkout Now</a></td>' +
-                        '<td><a href="#" onclick="deleteRecord(' + orderList_response[i].id + ')"><i class="fa fa-ellipsis-v" style="font-size:24px"></i></a></td>' +
+                        '<td>'+
+                            '<div class="dropdown">' +
+                                '<a href="#" onclick="toggleDropdown(event, ' + orderList_response[i].id + ')">' +
+                                    '<i class="fa fa-ellipsis-v" style="font-size:24px"></i>' +
+                                '</a>' +
+                                '<div id="dropdown-' + orderList_response[i].id + '" class="dropdown-content">' +
+                                    '<a href="#" onclick="editOrder(' + orderList_response[i].id + ')">Edit</a>' +
+                                    '<a href="#" onclick="deleteOrder(' + orderList_response[i].id + ')">Delete</a>' +
+                                    '<a href="#" onclick="downloadOrder(' + orderList_response[i].id + ')">Download</a>' +
+                                '</div>' +
+                            '</div>' +
+                        '</td>' +
                         '</tr>'
                     );
                 }
@@ -264,13 +275,29 @@ var orderList = "";
 							headers: {
 								'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
 							},
-                            success: function(result) {
-                                if (result === "Checkout successful") {
-                                    alert("Checkout successful");
+                            xhrFields: {
+                                        responseType: 'blob'  // Important to handle binary data (PDF) correctly
+                                    },
+                            success: function(response) {
+                                //alert("Download starting...");
+
+                                // Create a link element and trigger download
+                                const url = URL.createObjectURL(response);
+                                const link = document.createElement('a');
+                                link.href = url;
+                                link.download = `Order.pdf`;  // Set a name for the downloaded file
+                                document.body.appendChild(link);
+                                link.click();
+
+                                // Clean up
+                                document.body.removeChild(link);
+                                URL.revokeObjectURL(url);
+
+
                                     getOrderList();
                                     $("#CheckOutContainer").hide();
                                     $(".container").removeClass("hidden");
-                                }
+
                             },
                             error: function(err) {
                                 alert("Error Checkout: " + JSON.stringify(err));
@@ -340,3 +367,54 @@ $('#productInput').change(function() {
 		$('#unitInput').append('<option value="">Select Unit</option>');
 	}
 });
+
+function toggleDropdown(event, orderId) {
+    event.stopPropagation(); // Prevents click event from bubbling to document
+    // Hide all dropdowns first
+    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+        dropdown.style.display = 'none';
+    });
+    // Toggle the current dropdown
+    const dropdown = document.getElementById(`dropdown-${orderId}`);
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close dropdown if clicked outside
+document.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+        dropdown.style.display = 'none';
+    });
+});
+
+function downloadOrder(id) {
+    alert(id);
+    $.ajax({
+        type: "GET",
+        url: "/orders/admin/creat_pdf?order_id=" + id,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+        },
+        xhrFields: {
+            responseType: 'blob'  // Important to handle binary data (PDF) correctly
+        },
+        success: function(response) {
+            alert("Download starting...");
+
+            // Create a link element and trigger download
+            const url = URL.createObjectURL(response);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Order_${id}.pdf`;  // Set a name for the downloaded file
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error generating PDF:", error);
+            alert("An error occurred while creating PDF. Please try again later.");
+        }
+    });
+}

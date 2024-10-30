@@ -15,6 +15,6 @@ public interface OrderService {
 	CheckoutValidityResultDTO CheckOutValidityTest(long order_id,String token);
 
 	String checkoutNow(CheckoutPaymentDTO checkoutPayment,long tenantId,String token);
-	
+	public CheckoutValidityResultDTO GetPdfData(long order_id,String token) ;
 
 }

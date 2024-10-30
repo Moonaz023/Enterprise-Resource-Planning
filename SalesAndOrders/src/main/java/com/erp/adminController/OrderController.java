@@ -3,6 +3,8 @@ package com.erp.adminController;
 
 import java.security.Principal;
 import java.util.List;
+
+import com.erp.service.PDFGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +32,9 @@ public class OrderController {
 	public OrderRepository orderRepository;
 	@Autowired
 	public OrderService orderService;
-	
+	@Autowired
+	private PDFGenerator pdfGenerator;
+
 	/*@ModelAttribute
 	public void commonUser(Principal p, Model user) {
 		if (p != null) {
@@ -69,15 +73,23 @@ public class OrderController {
 	    
 	}
 	
-	@PostMapping("/checkoutNow")
+	/*@PostMapping("/checkoutNow")
 	@ResponseBody
 	public String checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
 		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 		
 		return orderService.checkoutNow(checkoutPayment,tenantId,token);
 	    
-	}
+	}*/
 
+	@PostMapping("/checkoutNow")
+	@ResponseBody
+	public byte[] checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
+
+		return pdfGenerator.generatePDF(checkoutPayment,tenantId,token);
+
+	}
 //	@GetMapping("/checkOutValidity")
 //	@ResponseBody
 //	public Boolean CheckOutValidityTest() {
@@ -86,5 +98,12 @@ public class OrderController {
 //	    
 //	}
 
+@GetMapping("/creat_pdf")
+@ResponseBody
+public byte[] CreatPDF(@RequestParam long order_id,@RequestHeader("Authorization") String token) {
+
+	return pdfGenerator.generatePDF(order_id,token,false);
+
+}
 
 }

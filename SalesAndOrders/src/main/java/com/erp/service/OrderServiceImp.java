@@ -105,6 +105,7 @@ public class OrderServiceImp implements OrderService {
 		Optional<ProductEntity> optionalOrderedProduct;
 		if (optionalOrder.isPresent()) {
 			OrderEntity order = optionalOrder.get();
+			checkoutValidityResult.setDate(order.getDate());
 			long[] products = order.getProduct();
 			int[] quantities = order.getProductQuantity();
 			long[] unit = order.getUnit();
@@ -153,6 +154,7 @@ public class OrderServiceImp implements OrderService {
 			return checkoutValidityResult;
 		} else {
 
+			checkoutValidityResult.setDate(null);
 			checkoutValidityResult.setSuccess(false);
 			checkoutValidityResult.setTotalPrice(0);
 			checkoutValidityResult.setDetails(null);
@@ -172,7 +174,7 @@ public class OrderServiceImp implements OrderService {
 		double cost = 0;
 		CheckoutValidityResultDTO validityDTO = CheckOutValidityTest(checkoutPayment.getOrderId(),token);
 		boolean validity = validityDTO.isSuccess();
-		if (validity == false) {
+		if (!validity) {
 			return "not enough item";
 		}
 		SalesReportEntity salesReport = new SalesReportEntity();salesReport.setTenantId(tenantId);
@@ -275,6 +277,67 @@ public class OrderServiceImp implements OrderService {
 
 		return "Checkout successful";
 	}
-	
+
+
+
+
+
+	@Override
+	public CheckoutValidityResultDTO GetPdfData(long order_id,String token) {
+		CheckoutValidityResultDTO checkoutValidityResult = new CheckoutValidityResultDTO();
+		Optional<OrderEntity> optionalOrder = orderRepository.findById(order_id);
+
+		double total = 0;
+		double price;
+		Optional<ProductEntity> optionalOrderedProduct;
+		if (optionalOrder.isPresent()) {
+			OrderEntity order = optionalOrder.get();
+			checkoutValidityResult.setDate(order.getDate());
+			long[] products = order.getProduct();
+			int[] quantities = order.getProductQuantity();
+			long[] unit = order.getUnit();
+			int i = 0;
+			List<CheckoutDataDTO> Checkoutdetails = new ArrayList<>();
+			;
+			for (long productId : products) {
+
+				Integer stock = productAndServicesClient.findProductQuantityById(productId, unit[i],token);
+				if (stock == null)
+					stock = 0;
+				if (stock - quantities[i] < 0) {
+					checkoutValidityResult.setSuccess(false);
+
+				}
+				ProductEntity orderedProduct = productAndServicesClient.findByIdd(productId,token);
+				List<SellingUnitPriceResponseDTO> unitWisePrice = orderedProduct.getUnitPrice();
+				Map<Long, Double> unitPriceMap = unitWisePrice.stream()
+						.collect(Collectors.toMap(it -> it.getUnit(), SellingUnitPriceResponseDTO::getPrice));
+
+				price = unitPriceMap.get(unit[i]);
+				total = total + (quantities[i] * price);
+				CheckoutDataDTO checkoutData = new CheckoutDataDTO();
+				checkoutData.setProductId(productId);
+				checkoutData.setUnit(unit[i]);
+				String unitName = productAndServicesClient.findUnitNameById(unit[i],token);
+				checkoutData.setUnitName(unitName);
+				checkoutData.setPrice(quantities[i] * price);
+				checkoutData.setQuantity(quantities[i]);
+				checkoutData.setProductName(orderedProduct.getName());
+				Checkoutdetails.add(checkoutData);
+				i++;
+			}
+			checkoutValidityResult.setSuccess(true);
+			checkoutValidityResult.setTotalPrice(total);
+			checkoutValidityResult.setDetails(Checkoutdetails);
+			return checkoutValidityResult;
+		} else {
+			checkoutValidityResult.setDate(null);
+			checkoutValidityResult.setSuccess(false);
+			checkoutValidityResult.setTotalPrice(0);
+			checkoutValidityResult.setDetails(null);
+			return checkoutValidityResult;
+		}
+	}
+
 
 }

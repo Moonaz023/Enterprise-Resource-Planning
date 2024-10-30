@@ -20,6 +20,7 @@ import lombok.ToString;
 public class CheckoutValidityResultDTO {
 
 	private boolean success;
+    private String date;
     private double totalPrice;
     private List<CheckoutDataDTO> details;
 }
