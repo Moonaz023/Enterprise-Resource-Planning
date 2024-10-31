@@ -84,10 +84,10 @@ public class OrderController {
 
 	@PostMapping("/checkoutNow")
 	@ResponseBody
-	public byte[] checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant) {
+	public byte[] checkoutNow(@ModelAttribute CheckoutPaymentDTO checkoutPayment, @RequestHeader("Authorization") String token,@RequestHeader("tenantId") String tenant,@RequestHeader("c_name") String c_name) {
 		Long tenantId = Long.parseLong(tenant);// (Long) session.getAttribute("tenantId");
 
-		return pdfGenerator.generatePDF(checkoutPayment,tenantId,token);
+		return pdfGenerator.generatePDF(checkoutPayment,tenantId,token,c_name);
 
 	}
 //	@GetMapping("/checkOutValidity")
@@ -100,9 +100,8 @@ public class OrderController {
 
 @GetMapping("/creat_pdf")
 @ResponseBody
-public byte[] CreatPDF(@RequestParam long order_id,@RequestHeader("Authorization") String token) {
-
-	return pdfGenerator.generatePDF(order_id,token,false);
+public byte[] CreatPDF(@RequestParam long order_id,@RequestHeader("Authorization") String token,@RequestHeader("c_name") String c_name) {
+	return pdfGenerator.generatePDF(order_id,token,false,c_name);
 
 }
 

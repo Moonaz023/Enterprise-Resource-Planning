@@ -387,7 +387,7 @@ document.addEventListener('click', function() {
 });
 
 function downloadOrder(id) {
-    alert(id);
+    //alert(id);
     $.ajax({
         type: "GET",
         url: "/orders/admin/creat_pdf?order_id=" + id,
@@ -398,7 +398,7 @@ function downloadOrder(id) {
             responseType: 'blob'  // Important to handle binary data (PDF) correctly
         },
         success: function(response) {
-            alert("Download starting...");
+            //alert("Download starting...");
 
             // Create a link element and trigger download
             const url = URL.createObjectURL(response);

@@ -25,6 +25,13 @@ public class JwtUtil {
         return claims.get("id", Integer.class);
     }
 
+    // Method to extract user 'id' from the token (as 'int')
+    public String extractC_name(final String token) {
+        Claims claims = extractAllClaims(token);
+        // Assuming 'id' is a claim of type Integer
+        return claims.get("c_name", String.class);
+    }
+
     // Helper method to extract all claims from the token
     private Claims extractAllClaims(final String token) {
         return Jwts.parserBuilder()

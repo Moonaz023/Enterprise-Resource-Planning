@@ -28,6 +28,7 @@ public class JwtService {
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());  // Include user ID in claims
+        claims.put("c_name",user.getC_name());
         return createToken(claims, user.getName());
     }
 
@@ -46,6 +47,12 @@ public class JwtService {
     public Integer extractUserId(String token) {
         Claims claims = extractAllClaims(token);
         return claims.get("id", Integer.class);  
+    }
+
+    // Extract user Cname from the JWT token
+    public String extractC_name(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("c_name", String.class);
     }
 
     // Extract all claims from the token

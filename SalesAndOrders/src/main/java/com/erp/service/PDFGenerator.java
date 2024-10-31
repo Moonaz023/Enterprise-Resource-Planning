@@ -25,7 +25,7 @@ public class PDFGenerator {
     @Autowired
     private OrderService orderService;
 
-    public byte[] generatePDF(CheckoutPaymentDTO checkoutPayment, long tenantId, String token) {
+    public byte[] generatePDF(CheckoutPaymentDTO checkoutPayment, long tenantId, String token,String c_name) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              PdfWriter writer = new PdfWriter(baos);
              PdfDocument pdf = new PdfDocument(writer);
@@ -35,7 +35,7 @@ public class PDFGenerator {
             CheckoutValidityResultDTO pdfData = orderService.GetPdfData(checkoutPayment.getOrderId(), token);
 
 
-            document.add(new Paragraph("Official Shop Invoice")
+            document.add(new Paragraph("Official Invoice From:"+c_name)
                     .setBold()
                     .setFontSize(20)
                     .setTextAlignment(TextAlignment.CENTER));
@@ -66,7 +66,7 @@ public class PDFGenerator {
             return null;
         }
     }
-    public byte[] generatePDF(long orderId, String token, boolean includeAdditionalInfo) {
+    public byte[] generatePDF(long orderId, String token, boolean includeAdditionalInfo,String c_name) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              PdfWriter writer = new PdfWriter(baos);
              PdfDocument pdf = new PdfDocument(writer);
@@ -75,7 +75,7 @@ public class PDFGenerator {
             // Fetch order details
             CheckoutValidityResultDTO pdfData = orderService.GetPdfData(orderId, token);
 
-            document.add(new Paragraph("Official Shop Invoice")
+            document.add(new Paragraph("Official Invoice From:"+c_name)
                     .setBold()
                     .setFontSize(20)
                     .setTextAlignment(TextAlignment.CENTER));

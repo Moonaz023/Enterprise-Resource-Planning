@@ -136,6 +136,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                      request = exchange.getRequest()
                     .mutate()
                     .header("tenantId", String.valueOf(jwtUtil.extractUserId(authHeader)))
+                    .header("c_name", String.valueOf(jwtUtil.extractC_name(authHeader)))
                     .build();
                 } catch (Exception e) {
                     System.out.println("Invalid access...!");
